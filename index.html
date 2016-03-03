@@ -3,9 +3,9 @@
 	<head>
 		<script language="javascript" type="text/javascript" src="js/jquery.min.js"></script>
 		<!-- Using JQPlot to plot the graphs -->
-		<script language="javascript" type="text/javascript" src="js/jqplot/jquery.jqplot.min.js"></script>
+		<script language="javascript" type="text/javascript" src="js/highcharts.js"></script>
+		<script language="javascript" type="text/javascript" src="js/highcharts-more.js"></script>
 		<script language="javascript" type="text/javascript" src="js/ethercalc.js"></script>
-		<link rel="stylesheet" type="text/css" href="js/jqplot/jquery.jqplot.css" />
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
 	</head>
 	<body>
@@ -37,7 +37,9 @@
     <fieldset>
       <legend><span class="mini_title">Plot Options</span></legend> <hr>
       <label for="days">Days to run over:</label>
-      <input type="text" name="days" value="30">
+      <input type="text" name="days" value="10" required>
+      <label for="points">Data points:</label>
+      <input type="text" name="datapoints" value="50" required>
 			<label id="select_plots">Select Plots:</label>
       <ul class="checkbox">
         <li><input type="checkbox" name="probability" checked><label class="plots">Probability</label></li>
@@ -55,7 +57,7 @@
 		<div id="ProbabilityGraph" style="height:300px;width:80%;margin:auto;"></div>
 		<div id="ExpectationGraph" style="height:300px;width:80%;margin:auto;"></div>
 		<div id="VarianceGraph" style="height:300px;width:80%;margin:auto;"></div>
-		<div id="StdGraph" style="height:300px;width:80%;margin:auto;"></div>
+		<div id="StdGraph" style="height:500px;width:80%;margin:auto;"></div>
 		<div id="CurrencyGraph" style="height:300px;width:80%;margin:auto;"></div>
 
 	</body>

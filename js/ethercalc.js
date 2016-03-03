@@ -62,32 +62,169 @@ $(document).ready(function(){
 				//Return the standard deviation
 			return Math.sqrt(variance);
 		}
-		
+	
 		// Functions for Drawing Plots
+    function GenerateStandardGraph(id,title,data,xtitle,ytitle,toolTipHeader,toolTipFormat) {
+			$(id).highcharts({
+        chart: {
+          zoomType: 'x'
+        },
+				title: {
+          text: title,
+          x: -20
+        },
+        xAxis: {title: { text:  xtitle} },
+        yAxis: {
+          title: { text: ytitle
+          },
+        plotLines: [{
+          value: 0,
+          width: 1,
+          color: '#808080'
+        }]
+        },
+        tooltip:{
+          headerFormat: toolTipHeader,
+          pointFormat: toolTipFormat 
+        },
+        legend: {
+          enabled: false
+        },
+        credits: {
+          enabled: false
+        },
+        series: [{
+          name: ytitle,
+          marker: { enabled: false },
+          data: data
+        }]
+      });
+    }
 
-		function GenerateProbabilityGraph(probData){
-			$.jqplot('ProbabilityGraph',[probData],{
-				title: "Probability of Solving At Least 1 Block",
-				axes:{yaxis:{min:0, label:"Probability %"},
-					xaxis:{min:0,label:"Days"}}}).replot();
+    
 
-		}
+    function GenerateExpectationVarianceGraph(expData,stdData,std2UpperData,std2LowerData,maxPlotValue,minPlotValue) 
+{
+			$('#StdGraph').highcharts({
+        chart: {
+          zoomType: 'xy',
+        },
+				title: {
+          text: "Expected Solved Blocks with Variance",
+          x: -20
+        },
+        xAxis: {title: { text:  "Days"},
+            min:0,
+            max: expData[expData.length-1][0]
+        },
+        yAxis: {
+          title: { text: "Solved Blocks"},
+          min: 0,
+          max: maxPlotValue[1][2],
+          endOnTick: false,
+          plotLines: [{
+            color: 'black',
+            width: 1,
+            dashStyle: "Solid",
+            label: {
+              align: "right",
+              text: "1 Block\u00A0\u00A0\u00A0\u00A0",
+              style: {
+                fontWeight: "bold"
+              }
+            },
+            value: 1
+          }],
+          },
+        tooltip:{
+        },
+        legend: {
+          enabled: true
 
-		function GenerateExpectationGraph(expData){
-			$.jqplot('ExpectationGraph',[expData],{
-				title: "Expected Ether",
-				axes:{yaxis:{min:0, label:"Blocks"},
-					xaxis:{min:0,label:"Days"}}}).replot();
+        },
+        credits: {
+          enabled: false
+        },
+        series: [
+       {
+          name: "1 Sigma",
+          type: "arearange",
+          data: stdData,
+          color: 'green',
+          lineWidth: 0,
+          marker: { enabled: false },
+          tooltip: {
+            headerFormat: "<b>64.2%</b> of the time will be here<br>",
+            pointFormat: "Day: {point.x:,0.2f} Range: {point.low:0.2f} - {point.high:0.2f}"
+          },
+          fillOpacity: 0.3
+        },{
+          name: "1-2 \u03C3",
+          type: "arearange",
+          data: std2UpperData,
+          color: "#ffff66",
+          lineWidth: 0,
+          marker: { enabled: false },
+          tooltip: {
+            headerFormat: "<b>13.6%</b> of the time will be here<br>",
+            pointFormat: "Day: {point.x:,0.2f} Range: {point.low:0.2f} - {point.high:0.2f}"
+          },
+          fillOpacity: 0.3
+        },{
+          name: "Std Lower",
+          type: "arearange",
+          data: std2LowerData,
+          color: "#ffff66",
+          marker: { enabled: false },
+          fillOpacity: 0.3,
+          showInLegend: false,
+          tooltip: {
+            headerFormat: "<b>13.6%</b> of the time will be here<br>",
+            pointFormat: "Day: {point.x:,0.2f} Range: {point.low:0.2f} - {point.high:0.2f}"
+          },
+          lineWidth: 0
+        },{ 
+          name: "> 2\u03C3",
+          type: "arearange",
+          data: maxPlotValue,
+          marker: { enabled: false },
+          color: "red",
+          fillOpacity: 0.3,
+          showInLegend: true,
+          tooltip: {
+            headerFormat: "<b>2.1%</b> of the time will be here<br>",
+            pointFormat: "Day: {point.x:,0.2f} Range: {point.low:0.2f} -  \u221E"
+          },
+          lineWidth: 0
+        },{ 
+          name: "Min Plot Value",
+          type: "arearange",
+          data: minPlotValue,
+          marker: { enabled: false },
+          color: "red",
+          fillOpacity: 0.3,
+          showInLegend: false,
+          tooltip: {
+            headerFormat: "<b>2.1%</b> of the time will be here<br>",
+            pointFormat: "Day: {point.x:0.2f} Range: {point.low:0.2f} - {point.high:0.2f}"
+          },
+          lineWidth: 0
+        },{ 
+          name: "Average",
+          type: 'spline',
+          lineWidth: 2,
+          marker: { enabled: false },
+          data: expData,
+          tooltip: {
+            headerFormat: "<b>Expected Blocks (Average)</b><br>",
+            pointFormat: "Day: {point.x:0.2f} Expected: {point.y:0.2f}"
+          },
+          color: "green"
+        }]
+      });
+    }
 
-		}
 
-		function GenerateVarianceGraph(varData){
-			$.jqplot('VarianceGraph',[varData],{
-				title: "Standard Deviation per Day",
-				axes:{yaxis:{min:0, label:"Standard Deviation"},
-					xaxis:{min:0,label:"Days"}}}).replot();
-
-		}
 		
 		function GenerateCurrencyGraph(varData){
 			var yaxis = "";
@@ -119,48 +256,78 @@ $(document).ready(function(){
 			var hashrate = $("input[name='hashrate']").val();
 			var networkHashRate = document.forms["Calculator"]["networkhashrate"].value;
 			var difficulty = document.forms["Calculator"]["networkhashrate"].value;
+      var daysToCompute = $("input[name='days']").val();
 			var prob_solving_block_network = hashrate/(networkHashRate*1e3); //GH/s	
 			var prob_solving_block_difficulty = hashrate/(difficulty*1e6); //TH	
 			//Set up the arrays
 			var probData = new Array();
 			var expData = new Array();
 			var varData = new Array();
-			//1 Upper Std
-			var upperexpData = new Array();
-			var lowerexpData = new Array();
 			var currencyData = new Array();
-			
+
+      //Variance Data
+      var stdData = new Array();
+      var std2LowerData = new Array();
+      var std2UpperData = new Array();
+      var maximumPlotValue = new Array();
+      var lowerPlotValue = new Array();
 			// Set number of data points. I'm using a quadratic to sample more points earlier on
-			var DataPoints = 30
+			var DataPoints = $("input[name='datapoints']").val();
 			//Increment to satisfy number of days
-			var x = Math.sqrt(document.forms["Calculator"]["days"].value)/DataPoints;
+      //Quadratic Plotting in Graphs
+      //var x = Math.sqrt(daysToCompute)/DataPoints;
+      // Linear Plotting in Graphs
+      var x = daysToCompute/(DataPoints-1);
 			//var currencyConversion = document.forms["Calculator"]["exchange"].value; 
 
-			//Dependant variable for clarity;
-			var dependant = 0;
-			//build a dataset
-			for (i=1; i<=30; i++){
-			// I'm using a quadratic to get more data points earlier than later, so total is 2 weeks
-			dependant = Math.pow(i*x,2);
-			
-			// Only run this once and store as a variable to calculate std fluctuation
-			var expResult = expectation(dependant,prob_solving_block_network,5);
-			var varResult =  variance(dependant,prob_solving_block_network);
-	
-			probData.push([dependant,probability(dependant,prob_solving_block_network)]);
-			expData.push([dependant,expResult]);
-			varData.push([dependant,varResult]);
+			//Dependent variable for clarity;
+			var dependent = 0;
 
-			upperexpData.push([dependant, expResult+varResult]);
-			lowerexpData.push([dependant, expResult-varResult]);
-			//currencyData.push([dependant, expResult*currencyConversion]);	
-			
-			GenerateProbabilityGraph(probData);
-			GenerateExpectationGraph(expData);
-			GenerateVarianceGraph(varData);
-			GenerateStdGraph(upperexpData,expData,lowerexpData);
+      // Find Maximum Expectation Value and Variance to Fill Sdd Graph
+      // Will Fill the rest of this graph representing beyond 2 sigma
+      var maximumVal = expectation(daysToCompute,prob_solving_block_network) + 2*variance(daysToCompute,prob_solving_block_network);
+
+			//build a dataset
+			for (i=1; i<=DataPoints; i++){
+			// I'm using a quadratic to get more data points earlier than later, so total is Number of Days
+      // Quadratic
+			//dependent = Math.pow(i*x,2);
+		  // Linear
+      dependent = (i-1)*x;
+      
+			// Only run this once and store as a variable to calculate std fluctuation
+			var expResult = expectation(dependent,prob_solving_block_network);
+			var varResult =  variance(dependent,prob_solving_block_network);
+      
+			probData.push([dependent,probability(dependent,prob_solving_block_network)]);
+			expData.push([dependent,expResult]);
+			varData.push([dependent,varResult]);
+   
+
+
+      //STD Plot Stuff
+      stdData.push([dependent,Math.max(0,expResult - varResult), expResult + varResult]);
+      std2LowerData.push([dependent,Math.max(0,expResult - 2*varResult), Math.max(expResult - varResult)]);
+      std2UpperData.push([dependent,expResult + varResult, expResult + 2*varResult]);
+      
+      maximumPlotValue.push([dependent,expResult + 2*varResult,maximumVal*1.1]);
+      lowerPlotValue.push([dependent,0,Math.max(0,expResult - 2*varResult)]);
+
+      }
+      //Generate the graphs
+      //Generate Probability Graph
+      GenerateStandardGraph('#ProbabilityGraph',"Probability of Solving at Least One Block", probData,"Days","Probability (%)", "<b>{series.name}: {point.y:.2f}% </b><br>" , "Days: {point.x: .2f}");
+      //Generate Expectation Graph 
+      GenerateStandardGraph('#ExpectationGraph',"Expected Number of Solved Blocks", expData,"Days","Solved Blocks", "<b>{series.name}: {point.y:.2f} </b><br>" , "Days: {point.x: .2f}");
+      // Generate Std Graph
+      GenerateStandardGraph('#VarianceGraph',"Standard Deviation", varData,"Days","Solved Blocks", "<b>{series.name}: {point.y:.2f} </b><br>" , "Days: {point.x: .2f}");
+      //Generate Expectation with Variance Widths
+      GenerateExpectationVarianceGraph(expData,stdData,std2UpperData,std2LowerData,maximumPlotValue,lowerPlotValue);
+
+//			GenerateExpectationGraph(expData);
+//			GenerateVarianceGraph(varData);
+//			GenerateStdGraph(upperexpData,expData,lowerexpData);
 			//GenerateCurrencyGraph(currencyData);
-			}	
 		}
 
 
