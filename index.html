@@ -1,0 +1,63 @@
+
+<html>
+	<head>
+		<script language="javascript" type="text/javascript" src="js/jquery.min.js"></script>
+		<!-- Using JQPlot to plot the graphs -->
+		<script language="javascript" type="text/javascript" src="js/jqplot/jquery.jqplot.min.js"></script>
+		<script language="javascript" type="text/javascript" src="js/ethercalc.js"></script>
+		<link rel="stylesheet" type="text/css" href="js/jqplot/jquery.jqplot.css" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+	</head>
+	<body>
+
+
+
+
+
+
+	<div class="container">
+		<h1> Ethereum Mining Calculator </h1>
+		<form action="JavaScript:Calculate();" onsubmit="return validateForm()" name="Calculator">
+    <fieldset>
+      <legend><span class="mini_title">Mining Info</span></legend> <hr>
+      <label for="hashrate">Miner Hash Rate (MH/s):</label>
+			<input type="text" name="hashrate" placeholder="Insert your hashrate MH/s" required>
+			<label for="nethashrate">Network Hashrate (GH/s):</label> 
+      <input type="text" name="networkhashrate" required> 
+		  <label for="difficulty">Difficulty (TH):</label>
+      <input type="text" name="difficulty" required>
+      <label for="blocktime">Average Block Time (s):</label>
+      <input type="text" name="blocktime" required>
+      <label for="currency">Currency:</label>
+      <input type="radio" name="currency" id="AUD" checked><label class="radio">AUD</label>
+      <input type="radio" name="currency" id="USD"><label class="radio">USD</label>
+      <label for="exchange">Exchange Rate (ETH/AUD):</label>
+      <input type="text" name="exchange" required>
+    </fieldset>
+    <fieldset>
+      <legend><span class="mini_title">Plot Options</span></legend> <hr>
+      <label for="days">Days to run over:</label>
+      <input type="text" name="days" value="30">
+			<label id="select_plots">Select Plots:</label>
+      <ul class="checkbox">
+        <li><input type="checkbox" name="probability" checked><label class="plots">Probability</label></li>
+        <li><input type="checkbox" name="expectation" checked> <label class="plots">Expected Ether</label></li>
+        <li><input type="checkbox" name="expectedcurrency" checked> <label class="plots">Expected $'s</label></li> 
+        <li><input type="checkbox" name="variance" checked> <label class="plots">Standard Deviation</label> </li> 
+        <li><input type="checkbox" name="expectationvar" checked> <label class="plots">Expectation with Std</label> </li>
+      </ul>
+    </fieldset>
+			<input id="submit" type="submit" value="Calculate"> 
+		</form>	
+		</div>
+
+
+		<div id="ProbabilityGraph" style="height:300px;width:80%;margin:auto;"></div>
+		<div id="ExpectationGraph" style="height:300px;width:80%;margin:auto;"></div>
+		<div id="VarianceGraph" style="height:300px;width:80%;margin:auto;"></div>
+		<div id="StdGraph" style="height:300px;width:80%;margin:auto;"></div>
+		<div id="CurrencyGraph" style="height:300px;width:80%;margin:auto;"></div>
+
+	</body>
+
+</html>

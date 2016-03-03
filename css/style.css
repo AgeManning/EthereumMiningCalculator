@@ -1,0 +1,142 @@
+
+.container {
+	max-width: 600px;
+	padding: 10px 20px;
+  background: #f4f7f8;
+  margin: 10px auto;
+  padding: 0px 20px 5px;
+  border-radius: 8px;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.container fieldset {
+	border: none
+}
+
+.container legend {
+  font-size: 1.4em;
+  margin-bottom: 10px;
+}
+
+.container label {
+  display: inline-block;
+	width: 35%;
+	text-align: right;
+  margin-bottom: 8px;
+	padding: 0 2px;
+}
+
+.container input,
+
+.container textarea {
+	display: inline;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  background: rgba(255,255,255);
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  margin: 0;
+  outline: 0;
+  padding: 7px;
+  width: 60%;
+	box-sizing: border-box; 
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box; 
+	background-color: #e8eeef;
+	color:#5a6770;
+	-webkit-box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+	box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+	margin-bottom: 10px;
+}
+
+.container input[type="radio"]{
+	display: inline;
+	width: 10px;
+	margin-left: 5%;
+}
+
+.container .radio {
+	display: inline;
+	position: relative;
+	margin-left: 0.2em;
+}
+
+.container input:focus,
+.container textarea:focus {
+	background: #d2d9dd;
+}
+
+.container h1 {
+  background: #1abc9c;
+	color: #fff;
+	width: 100%;
+	padding: 20px;
+	margin-left: -20px;
+	text-align: center;
+  border-radius: 8px 8px 0px 0px;
+}
+.container .mini_title {
+	color: #222;
+	display: inline-block;
+	font-size: 0.8em;
+	font-weight: bold;
+	margin-right: 4px;
+	margin-bottom: 0px;
+	text-align: center;
+	text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+}
+.container hr {
+	margin-top: -10px;
+  background-color: #1abc9c;
+  color: #1abc9c;
+	height: 2px;
+	border: none;
+}
+
+
+.container #submit {
+	position: relative;
+	display: block;
+	padding: 10px 5px; 
+	color: #FFF;
+	margin: 0 auto;
+	background: #1abc9c;
+	font-size: 18px;
+	font-weight: bold;
+	text-align: center;
+	font-style: normal;
+	width: 40%;
+	border: 1px solid #16a085;
+	border-width: 1px 1px 3px;
+}
+
+.container #submit:hover {
+	background: #109177;
+}
+
+.container input[type="checkbox"] {
+	width: 20px;
+}
+.container ul {
+  width: 100%;
+}
+
+.container #select_plots {
+  display: block;
+  margin: auto;
+  text-align: center;
+  font-weight: bold;
+}
+
+.container li {
+	display: inline-block;
+	width: 49%;
+}
+
+.container .plots {
+	display: inline;
+	margin-left: 3px;
+}
+
+
+

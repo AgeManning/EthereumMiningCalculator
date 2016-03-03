@@ -1,0 +1,45 @@
+<html>
+<head><title>Hello All </title>
+<!--[if lt IE 9]><script language="javascript" type="text/javascript" src="excanvas.js"></script><![endif]-->
+<script language="javascript" type="text/javascript" src="js/jquery.min.js"></script>
+<script language="javascript" type="text/javascript" src="js/jqplot/jquery.jqplot.min.js"></script>
+<link rel="stylesheet" type="text/css" href="js/jqplot/jquery.jqplot.css" />
+
+<script type='text/javascript' src='js/jqplot/plugins/jqplot.pieRenderer.js'></script>
+</head>
+<body>
+<h1>My Hello World Chart</h1>
+<div id="div_report" style="height:300px;width:400px; "></div>
+
+<script>
+var xy=[[1, 2],[3,5.12],[5,13.1],[7,33.6],[9,85.9],[11,219.9]];
+var data2=[[1, 1],[2,4], [3,9],[4,16],[6,36],[10,100],[11,121]];
+$.jqplot('div_report',  [xy,data2],
+{ title:'Exponential Line',
+  axes:{yaxis:{min:-10, max:240}},
+  legend:{  labels: ['UI Tutorial Data','x*x'],
+		show:true},  
+  series:[{color:'#5FAB78'}]
+});
+</script>
+
+
+<h1>Stat for the most spoken languages</h1>
+<div id="div_stat" style="height:300px;width:400px; "></div>
+<script>
+var st=[
+         ['English', 30],['Chinese', 20],['Spanish',15],['Arabic',15],['Other',20]
+];
+$.jqplot('div_stat',  [st],
+{
+  seriesDefaults:{
+            renderer:$.jqplot.PieRenderer, 
+	    rendererOptions: {
+		showDataLabels: true
+	    }            
+  },
+  title:'Languages Pie Chat',
+  legend:{show:true}
+});
+</script>
+</body>
