@@ -1,34 +1,45 @@
 
-.container {
-	max-width: 600px;
-	padding: 10px 20px;
+.calccontainer{
+	max-width: 500px;
   background: #f4f7f8;
-  margin: 10px auto;
-  padding: 0px 20px 5px;
-  border-radius: 8px;
+  margin: auto;
+  padding: 10px 20px 5px;
+  border-radius: 0px 0px 8px 8px;
   font-family: Georgia, "Times New Roman", Times, serif;
 }
 
-.container fieldset {
+.title h1 {
+  max-width: 500px;
+  background: #1abc9c;
+  margin: 10px auto 0px;
+	color: #fff;
+	padding: 20px;
+	text-align: center;
+  border-radius: 8px 8px 0px 0px;
+}
+
+
+.calccontainer fieldset {
 	border: none
 }
 
-.container legend {
+.calccontainer legend {
   font-size: 1.4em;
   margin-bottom: 10px;
 }
 
-.container label {
+.calccontainer label {
   display: inline-block;
-	width: 35%;
+	width: 50%;
+  font-weight: normal;
 	text-align: right;
   margin-bottom: 8px;
 	padding: 0 2px;
 }
 
-.container input,
+.calccontainer input,
 
-.container textarea {
+.calccontainer textarea {
 	display: inline;
   font-family: Georgia, "Times New Roman", Times, serif;
   background: rgba(255,255,255);
@@ -38,7 +49,7 @@
   margin: 0;
   outline: 0;
   padding: 7px;
-  width: 60%;
+  width: 45%;
 	box-sizing: border-box; 
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box; 
@@ -49,33 +60,28 @@
 	margin-bottom: 10px;
 }
 
-.container input[type="radio"]{
+.calccontainer label[for="hashrate"]  {
+  font-weight: bold;
+}
+
+.calccontainer input[type="radio"]{
 	display: inline;
 	width: 10px;
 	margin-left: 5%;
 }
 
-.container .radio {
+.calccontainer .radio {
 	display: inline;
 	position: relative;
-	margin-left: 0.2em;
+	margin-left: 0.2cm;
 }
 
-.container input:focus,
-.container textarea:focus {
+.calccontainer input:focus,
+.calccontainer textarea:focus {
 	background: #d2d9dd;
 }
 
-.container h1 {
-  background: #1abc9c;
-	color: #fff;
-	width: 100%;
-	padding: 20px;
-	margin-left: -20px;
-	text-align: center;
-  border-radius: 8px 8px 0px 0px;
-}
-.container .mini_title {
+.calccontainer .mini_title {
 	color: #222;
 	display: inline-block;
 	font-size: 0.8em;
@@ -85,7 +91,7 @@
 	text-align: center;
 	text-shadow: 0 1px 0 rgba(255,255,255,0.4);
 }
-.container hr {
+.calccontainer hr {
 	margin-top: -10px;
   background-color: #1abc9c;
   color: #1abc9c;
@@ -94,7 +100,7 @@
 }
 
 
-.container #submit {
+.calccontainer #submit {
 	position: relative;
 	display: block;
 	padding: 10px 5px; 
@@ -110,30 +116,30 @@
 	border-width: 1px 1px 3px;
 }
 
-.container #submit:hover {
+.calccontainer #submit:hover {
 	background: #109177;
 }
 
-.container input[type="checkbox"] {
+.calccontainer input[type="checkbox"] {
 	width: 20px;
 }
 .container ul {
   width: 100%;
 }
 
-.container #select_plots {
+.calccontainer #select_plots {
   display: block;
   margin: auto;
   text-align: center;
   font-weight: bold;
 }
 
-.container li {
+.calccontainer li {
 	display: inline-block;
 	width: 49%;
 }
 
-.container .plots {
+.calccontainer .plots {
 	display: inline;
 	margin-left: 3px;
 }

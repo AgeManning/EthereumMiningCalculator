@@ -1,5 +1,6 @@
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
 		<script language="javascript" type="text/javascript" src="js/jquery.min.js"></script>
 		<!-- Using JQPlot to plot the graphs -->
@@ -7,32 +8,35 @@
 		<script language="javascript" type="text/javascript" src="js/highcharts-more.js"></script>
 		<script language="javascript" type="text/javascript" src="js/ethercalc.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
+    <!-- BootStrap CDN --> 
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> 
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
 	<body>
 
-
-
-
-
-
-	<div class="container">
+    <div class="container">
+      <div class="row content">
+  <div class="title">
 		<h1> Ethereum Mining Calculator </h1>
+  </div>
+	<div class="calccontainer">
 		<form action="JavaScript:Calculate();" onsubmit="return validateForm()" name="Calculator">
     <fieldset>
       <legend><span class="mini_title">Mining Info</span></legend> <hr>
       <label for="hashrate">Miner Hash Rate (MH/s):</label>
 			<input type="text" name="hashrate" placeholder="Insert your hashrate MH/s" required>
 			<label for="nethashrate">Network Hashrate (GH/s):</label> 
-      <input type="text" name="networkhashrate" required> 
+      <input type="text" name="networkhashrate" onchange="window.networkHashRate=this.value" required> 
 		  <label for="difficulty">Difficulty (TH):</label>
-      <input type="text" name="difficulty" required>
+      <input type="text" name="difficulty" onchange="window.difficulty=this.value" required>
       <label for="blocktime">Average Block Time (s):</label>
       <input type="text" name="blocktime" required>
       <label for="currency">Currency:</label>
-      <input type="radio" name="currency" id="AUD" checked><label class="radio">AUD</label>
-      <input type="radio" name="currency" id="USD"><label class="radio">USD</label>
-      <label for="exchange">Exchange Rate (ETH/AUD):</label>
-      <input type="text" name="exchange" required>
+      <input type="radio" name="currency" id="AUD" value="AUD" checked onchange="CurrencyChange();"><label class="radio">AUD</label>
+      <input type="radio" name="currency" id="USD" value="USD" onchange="CurrencyChange();"><label class="radio">USD</label><br>
+      <label for="exchange">Exchange Rate (AUD/ETH):</label>
+      <input type="text" name="exchange" onchange="UpdateCurrency()" required>
     </fieldset>
     <fieldset>
       <legend><span class="mini_title">Plot Options</span></legend> <hr>
@@ -52,14 +56,94 @@
 			<input id="submit" type="submit" value="Calculate"> 
 		</form>	
 		</div>
+  </div>
+  </div>
 
+  
+  <div class="container">
+    <div class="panel-group" id="tables">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="Collapse-Headings">
+          <a class="tables-toggle" data-toggle="collapse" data-parent="#tables" href="#tabledata">
+            <i class="indicator glyphicon glyphicon-chevron-up"></i>
+            Tables
+          </a> 
+          </h4>
+        </div>
+        <div id="tabledata" class="panel-collapse collapse">
+          <div class="container" id='expected'>
+            <table class="table table-hover">
+              <thread>
+              <tr>
+                <th> Duration </th>
+                <th> Expected Ether </th>
+                <th> Value ($) </th>
+              </tr>
+              </thread>
+              <tr> 
+                <td> Per Hour </td>
+                <td> <p id='eth_hour'></p> </td>
+                <td> <p id='cur_hour'></p> </td>
+              </tr>
+                <td> Per Day</td>
+                <td> <p id='eth_day'></p> </td>
+                <td> <p id='cur_day'></p> </td>
+              </tr>
+                <td> Per Week </td>
+                <td> <p id='eth_week'></p> </td>
+                <td> <p id='cur_week'></p> </td>
+              </tr>
+                <td> Per Month </td>
+                <td> <p id='eth_month'></p> </td>
+                <td> <p id='cur_month'></p> </td>
+              </tr>
+          </table>
+        </div>
+        <div class="container" id='generic-stats'>
+          <table class="table table-hover">
+            <tr> 
+              <td> Expected Days to solve 1 Block </td>
+              <td> <p id='exp_day'></p> </td>
+            </tr>
+            <tr> 
+              <td> 95% to solve a block in </td>
+              <td> <p id='95_days'></p> </td>
+            </tr>
+            <tr> 
+              <td> 68.2% (1 sigma) will solve a block in  </td>
+              <td> <p id='eth_week'></p> </td>
+            </tr>
+            <tr> 
+              <td> le 95% (2 sigma) Chance of not solving a block (check miner)  </td>
+              <td> <p id='95_days'></p> </td>
+            </tr>
+        </table>
+        </div>
+      </div>
+    </div>
 
-		<div id="ProbabilityGraph" style="height:300px;width:80%;margin:auto;"></div>
-		<div id="ExpectationGraph" style="height:300px;width:80%;margin:auto;"></div>
-		<div id="VarianceGraph" style="height:300px;width:80%;margin:auto;"></div>
-		<div id="StdGraph" style="height:500px;width:80%;margin:auto;"></div>
-		<div id="CurrencyGraph" style="height:300px;width:80%;margin:auto;"></div>
-
+  <div class="container">
+    <div class="panel-group" id="plots">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="Collapse-Headings">
+          <a class="plots-toggle" data-toggle="collapse" data-parent="#plots" href="#plotdata">
+            <i class="indicator glyphicon glyphicon-chevron-up"></i>
+            Plots
+          </a> 
+          </h4>
+        </div>
+        <div id="plotdata" class="panel-collapse collapse">
+          <div id="ProbabilityGraph" style="height:300px;width:80%;margin:auto;"></div>
+          <div id="ExpectationGraph" style="height:300px;width:80%;margin:auto;"></div>
+          <div id="VarianceGraph" style="height:300px;width:80%;margin:auto;"></div>
+          <div id="StdGraph" style="height:500px;width:80%;margin:auto;"></div>
+          <div id="CurrencyGraph" style="height:300px;width:80%;margin:auto;"></div>
+        </div>
+      </div>
+    <div>
+  </div>
 	</body>
 
 </html>
