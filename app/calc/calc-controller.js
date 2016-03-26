@@ -28,7 +28,6 @@ angular.module('ethMiningCalc')
           currencies.aud.ethRate = marketData.aud_eth;
           inputs.currencyCode = 'aud';
           updateCurrency();
-          console.log(inputs);
         });
       });
 
@@ -46,9 +45,11 @@ angular.module('ethMiningCalc')
     /**
      * Generate Reports
      */
+    var table = {};
     var doCalculations = function() {
-      console.log('doCalculations');
-      CalcService.calculate(inputs, plotOptions)
+      var results = CalcService.calculate(inputs, plotOptions);
+      $scope.table = results;
+      console.log($scope.table);
     }
 
     //
@@ -58,5 +59,6 @@ angular.module('ethMiningCalc')
     $scope.updateCurrency = updateCurrency;
     $scope.plotOptions = plotOptions;
     $scope.calculate = doCalculations;
+    $scope.table = table;
 
   }]);

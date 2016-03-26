@@ -8,6 +8,7 @@ angular.module('ethMiningCalc')
         var daysToCompute = plotOptions.days;
         var DataPoints = plotOptions.points + 1; //So that it lands nicely on integer days
         var blockTime = inputs.blockTime;
+        var currencyEthRate = inputs.currencyRate;
         var prob_solving_block_network = hashrate / (inputs.networkHashRate * 1e3); //GH/s	
         var prob_solving_block_difficulty = hashrate / (inputs.difficulty * 1e6); //TH	
         //Set up the arrays
@@ -74,10 +75,10 @@ angular.module('ethMiningCalc')
         results.eth_month = expectation(blockTime, 30, prob_solving_block_network) * eth_block;
 
         // Currency Expectations
-        results.cur_hour = eth_hour * inputs.currencyRate;
-        results.cur_day = eth_day * inputs.currencyRate;
-        results.cur_week = eth_week * inputs.currencyRate;
-        results.cur_month = eth_month * inputs.currencyRate;
+        results.cur_hour = results.eth_hour * currencyEthRate;
+        results.cur_day = results.eth_day * currencyEthRate;
+        results.cur_week = results.eth_week * currencyEthRate;
+        results.cur_month = results.eth_month * currencyEthRate;
 
         // Fill Tables
         /*
@@ -111,7 +112,7 @@ angular.module('ethMiningCalc')
         //			GenerateVarianceGraph(varData);
         //			GenerateStdGraph(upperexpData,expData,lowerexpData);
         //GenerateCurrencyGraph(currencyData);
-        console.log(results);
+        return(results);
     }
     
     // Probability of at least one block

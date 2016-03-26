@@ -67,20 +67,20 @@
               </thread>
               <tr> 
                 <td> Per Hour </td>
-                <td> <p id='eth_hour'></p> </td>
-                <td> <p id='cur_hour'></p> </td>
+                <td> <p id='eth_hour'>{{table.eth_hour | number:2}}</p>  </td>
+                <td> <p id='cur_hour'>${{table.cur_hour | number:2}}</p> </td>
               </tr>
                 <td> Per Day</td>
-                <td> <p id='eth_day'></p> </td>
-                <td> <p id='cur_day'></p> </td>
+                <td> <p id='eth_day'>{{table.eth_day | number:2}}</p> </td>
+                <td> <p id='cur_day'>${{table.cur_day | number:2}}</p> </td>
               </tr>
                 <td> Per Week </td>
-                <td> <p id='eth_week'></p> </td>
-                <td> <p id='cur_week'></p> </td>
+                <td> <p id='eth_week'>{{table.eth_week | number:2}}</p> </td>
+                <td> <p id='cur_week'>${{table.cur_week | number:2}}</p> </td>
               </tr>
                 <td> Per Month </td>
-                <td> <p id='eth_month'></p> </td>
-                <td> <p id='cur_month'></p> </td>
+                <td> <p id='eth_month'>{{table.eth_month | number:2}}</p> </td>
+                <td> <p id='cur_month'>${{table.cur_month | number:2}}</p> </td>
               </tr>
           </table>
         </div>
@@ -88,19 +88,19 @@
           <table class="table table-hover">
             <tr> 
               <td> Expected Days to solve 1 Block </td>
-              <td> <p id='exp_day'></p> </td>
+              <td> <p id='exp_day'>{{table.exp_day | number:2}} days</p> </td>
             </tr>
             <tr> 
               <td> 95% to solve a block in </td>
-              <td> <p id='95_days'></p> </td>
+              <td> <p id='95_days'>{{table.p95_days | number:2}} days</p> </td>
             </tr>
             <tr> 
               <td> 68.2% (1 sigma) will solve a block in  </td>
-              <td> <p id='eth_week'></p> </td>
+              <td> <p id='eth_week'>{{table.eth_week | number:2}} days</p> </td>
             </tr>
             <tr> 
               <td> le 95% (2 sigma) Chance of not solving a block (check miner)  </td>
-              <td> <p id='95_days'></p> </td>
+              <td> <p id='95_days'>{{table.p95_days | number:2}} days</p> </td>
             </tr>
         </table>
         </div>
