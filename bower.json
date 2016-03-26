@@ -1,41 +1,42 @@
 {
-    "name": "ethereum-mining-calculator",
-    "description": "Ethereum Mining Calculator",
-    "main": "index.js",
-    "authors": [
-        "Age Manning"
-    ],
-    "license": "MIT",
-    "keywords": [
-        "Ethereum",
-        "Mining",
-        "Blockchain",
-        "Crypto"
-    ],
-    "moduleType": [
-        "es6"
-    ],
-    "homepage": "",
-    "private": true,
-    "ignore": [
-        "**/.*",
-        "node_modules",
-        "bower_components",
-        "test",
-        "tests"
-    ],
-    "dependencies": {
-        "highcharts": "^4.2.3",
-        "angular": "^1.5.3",
-        "jquery": "^2.2.2",
-        "bootstrap": "^3.3.6"
-    },
-    "overrides": {
-        "bootstrap": {
-            "main": [
-                "dist/css/bootstrap.min.css",
-                "dist/js/bootstrap.min.js"
-            ]
-        }
+  "name": "ethereum-mining-calculator",
+  "description": "Ethereum Mining Calculator",
+  "main": "index.js",
+  "authors": [
+    "Age Manning"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "Ethereum",
+    "Mining",
+    "Blockchain",
+    "Crypto"
+  ],
+  "moduleType": [
+    "es6"
+  ],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "highcharts": "^4.2.3",
+    "angular": "^1.5.3",
+    "jquery": "^2.2.2",
+    "bootstrap": "^3.3.6",
+    "angular-ui-router": "^0.2.18"
+  },
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "dist/css/bootstrap.min.css",
+        "dist/js/bootstrap.min.js"
+      ]
     }
+  }
 }
