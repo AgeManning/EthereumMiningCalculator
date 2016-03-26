@@ -9,6 +9,7 @@ angular.module('ethMiningCalc', [
   $stateProvider
     .state('calc', {
       url: "/calc",
-      templateUrl: "app/views/main.html"
+      controller: 'CalcController as vm',
+      templateUrl: "app/calc/calc.html"
     });
 });
