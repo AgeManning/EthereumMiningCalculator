@@ -6,9 +6,21 @@ Currently under development, don't trust it just yet.
 
 ## Dev Requirements
 
-* node.js (I recommend using nvm (node version manager) to install node)
+* node.js & npm
 * bower (npm install -g bower)
 * grunt-cli (npm install -g grunt-cli)
+
+## Getting Started
+
+1. Install node.js. I reccomend using 'nvm' (node version manager) to do this so you can switch between
+node versions at will.
+2. Install bower globally ''''$ npm install -g bower''''
+3. Install grunt globally ''''$ npm install -g grunt-cli''''
+4. Switch to the this project dir and do an npm install ''''$ npm install''''
+5. Run the build script with npm ''''npm start''''
+
+PS. We're using node only cause it's easiest for angular dev - you don't need to write any actual node JS.
+
 
 ## What does what?
 
@@ -16,10 +28,8 @@ Currently under development, don't trust it just yet.
 We use node.js to run helpful dev packages, like the ones listed below.
 
 #### Bower
-Bower (like the bird) fetches pretty blue things and puts them in your nest. Except instead of pretty blue things, it
-fetches third-party packages and instead of putting them in your nest, it puts them in your bower_components foler.
-Now installing highcharts becomes the command 'bower install --save highcharts'. Updating is 'bower update highcharts'.
+Bower manages third-party dependencies.
 
 #### Grunt
-Grunt does menial tasks. For example, we have a grunt tasks the runs through our 'bower.json' file (where saved
-bower components are listed) and adds them to our index.html file.
+Grunt does menial tasks. Grunt automatically inserts script and link tags (from bower_components and the app folder)
+into our index.html and then runs a html server on localhost:9001
