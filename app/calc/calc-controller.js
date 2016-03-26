@@ -1,5 +1,5 @@
 angular.module('ethMiningCalc')
-  .controller('CalcController', ['$scope', 'MarketDataService', function($scope, marketDataService) {
+  .controller('CalcController', ['$scope', 'MarketDataService', 'CalcService', function($scope, marketDataService, CalcService) {
     //
     // Define controller functionality
     //
@@ -48,6 +48,7 @@ angular.module('ethMiningCalc')
      */
     var doCalculations = function() {
       console.log('doCalculations');
+      CalcService.calculate(inputs, plotOptions)
     }
 
     //
