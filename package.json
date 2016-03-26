@@ -1,0 +1,31 @@
+{
+  "name": "ethereum-mining-calculator",
+  "version": "0.0.1",
+  "description": "Ethereum Mining Calculator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AgeManning/EthereumMiningCalculator.git"
+  },
+  "keywords": [
+    "Ethereum",
+    "Mining",
+    "Blockchain",
+    "Crypto"
+  ],
+  "author": "Age Manning",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AgeManning/EthereumMiningCalculator/issues"
+  },
+  "homepage": "https://github.com/AgeManning/EthereumMiningCalculator#readme",
+  "dependencies": {
+    "bower": "^1.7.7",
+    "grunt": "^0.4.5",
+    "grunt-script-link-tags": "^1.0.2",
+    "grunt-wiredep": "^2.0.0"
+  }
+}

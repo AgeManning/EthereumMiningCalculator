@@ -1,20 +1,38 @@
-
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<script language="javascript" type="text/javascript" src="js/jquery.min.js"></script>
-		<!-- Using JQPlot to plot the graphs -->
-		<script language="javascript" type="text/javascript" src="js/highcharts.js"></script>
-		<script language="javascript" type="text/javascript" src="js/highcharts-more.js"></script>
-		<script language="javascript" type="text/javascript" src="js/ethercalc.js"></script>
-		<link rel="stylesheet" type="text/css" href="css/style.css" />
-    <!-- BootStrap CDN --> 
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> 
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
+<head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	</head>
-	<body>
+    <!-- 
+        -------------------------------
+        Inject bower_components 
+        -------------------------------
+    -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- endbower -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/highcharts/highcharts.js"></script>
+    <script src="bower_components/highcharts/highcharts-more.js"></script>
+    <script src="bower_components/highcharts/modules/exporting.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- endbower -->
+    
+    <!-- 
+        -------------------------------
+        Inject our own scripts 
+        -------------------------------
+    -->
+    <!-- start script-link-tags -->
+    <script src="app/app.js"></script>
+    <script src="app/ethercalc.js"></script>
+    <link rel="stylesheet" href="app/styles/main.css"/>
+    <!-- end script-link-tags -->
+</head>
 
+<body>
+    
     <div class="container">
       <div class="row content">
   <div class="title">
@@ -144,6 +162,6 @@
       </div>
     <div>
   </div>
-	</body>
-
+    <!-- Fresh codez go here -->
+</body>
 </html>
