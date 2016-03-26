@@ -48,8 +48,7 @@ angular.module('ethMiningCalc')
     var table = {};
     var doCalculations = function() {
       var results = CalcService.calculate(inputs, plotOptions);
-      $scope.table = results;
-      console.log($scope.table);
+      $scope.table = results.table;
     }
 
     //

@@ -69,33 +69,19 @@ angular.module('ethMiningCalc')
         //Generate Data for tables and fill them
         var eth_block = 5;
         var results = {};
-        results.eth_hour = expectation(blockTime, 0.0416667, prob_solving_block_network) * eth_block;
-        results.eth_day = expectation(blockTime, 1, prob_solving_block_network) * eth_block;
-        results.eth_week = expectation(blockTime, 7, prob_solving_block_network) * eth_block;
-        results.eth_month = expectation(blockTime, 30, prob_solving_block_network) * eth_block;
+        results.table = {};
+        results.table.eth_hour = expectation(blockTime, 0.0416667, prob_solving_block_network) * eth_block;
+        results.table.eth_day = expectation(blockTime, 1, prob_solving_block_network) * eth_block;
+        results.table.eth_week = expectation(blockTime, 7, prob_solving_block_network) * eth_block;
+        results.table.eth_month = expectation(blockTime, 30, prob_solving_block_network) * eth_block;
 
         // Currency Expectations
-        results.cur_hour = results.eth_hour * currencyEthRate;
-        results.cur_day = results.eth_day * currencyEthRate;
-        results.cur_week = results.eth_week * currencyEthRate;
-        results.cur_month = results.eth_month * currencyEthRate;
-
-        // Fill Tables
-        /*
-        $('#eth_hour').text(parseFloat(eth_hour).toFixed(2));
-        $('#eth_day').text(parseFloat(eth_day).toFixed(2));
-        $('#eth_week').text(parseFloat(eth_week).toFixed(2));
-        $('#eth_month').text(parseFloat(eth_month).toFixed(2));
-        $('#cur_hour').text(parseFloat(cur_hour).toFixed(2));
-        $('#cur_day').text(parseFloat(cur_day).toFixed(2));
-        $('#cur_week').text(parseFloat(cur_week).toFixed(2));
-        $('#cur_month').text(parseFloat(cur_month).toFixed(2));
-        */
-
-        results.p95_days = daysGivenProbability(blockTime, 0.95, prob_solving_block_network);
-        //$('#95_days').text(parseFloat(p95_days).toFixed(2) + " Days");
-        results.exp_day = daysGivenBlocks(blockTime, 1, prob_solving_block_network);
-        //$('#exp_day').text(parseFloat(exp_day).toFixed(2) + " Days");
+        results.table.cur_hour = results.table.eth_hour * currencyEthRate;
+        results.table.cur_day = results.table.eth_day * currencyEthRate;
+        results.table.cur_week = results.table.eth_week * currencyEthRate;
+        results.table.cur_month = results.table.eth_month * currencyEthRate;
+        results.table.p95_days = daysGivenProbability(blockTime, 0.95, prob_solving_block_network);
+        results.table.exp_day = daysGivenBlocks(blockTime, 1, prob_solving_block_network);
 
 
         //Generate the graphs
