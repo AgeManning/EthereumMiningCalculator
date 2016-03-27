@@ -42,6 +42,18 @@
 </head>
 
 <body ng-app="ethMiningCalc">
+  <!-- Define a navbar common to all pages -->
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Crypto Mining Calculator</a>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><em>An Open-Source Project by Age Manning</em></a></li>
+      </ul>
+    </div>
+  </nav>
+  <!-- Angular components are injected into the ui-view -->
   <div ui-view></div>
 </body>
 

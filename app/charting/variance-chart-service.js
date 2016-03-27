@@ -130,7 +130,12 @@ angular.module('ethMiningCalc')
             pointFormat: "Day: {point.x:0.2f} Expected: {point.y:0.2f}"
           },
           color: "green"
-        }]
+        }],
+        func: function (chart) {
+          $timeout(function () {
+            chart.reflow();
+          }, 0);
+        }
       });
     }
 

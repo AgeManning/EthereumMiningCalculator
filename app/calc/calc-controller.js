@@ -1,22 +1,38 @@
 angular.module('ethMiningCalc')
-  .controller('CalcController', ['$scope', 'MarketDataService', 'CalcService', 'ProbabilityChartService', 'VarianceChartService', function($scope, marketDataService, CalcService, probabilityChartService, varianceChartService) {
+  .controller('CalcController', ['$scope', '$timeout', 'MarketDataService', 'CalcService', 'ProbabilityChartService', 'VarianceChartService', function($scope, $timeout, marketDataService, CalcService, probabilityChartService, varianceChartService) {
     //
     // Define controller functionality
     //
     var currencies = {  // TO DO: pull exhange rates from server
       aud: {
+        title: "Australian Dollar (AUD)",
         ethRate: 0
       },
       usd: {
+        title: "US Dollar (USD)",
+        ethRate: 0
+      },
+      other: {
+        title: "Other",
         ethRate: 0
       }
     };
 
     /**
-     * A user has changed the reporting currency
+     * Specify a currency code
+     * 
+     * @param {string} code A currency code (eg, aud)
+     */
+    var setCurrencyCode = function(code) {
+      inputs.currencyCode = code;
+      inputs.currencyRate = currencies[inputs.currencyCode].ethRate;
+      updateCurrency();
+    }
+    
+    /**
+     * Update the reporting currency
      */
     var updateCurrency = function() {
-      inputs.currencyRate = currencies[inputs.currencyCode].ethRate;
       if($scope.userHasCalculated) {
         buildTable(CalcService.calculate(inputs, plotOptions).table);
       }
@@ -32,7 +48,7 @@ angular.module('ethMiningCalc')
           inputs.blockTime = marketData.blockTime;
           currencies.usd.ethRate = marketData.usd_eth;
           currencies.aud.ethRate = marketData.aud_eth;
-          inputs.currencyCode = 'aud';
+          setCurrencyCode('aud');
           updateCurrency();
         });
       });
@@ -54,8 +70,8 @@ angular.module('ethMiningCalc')
     var doCalculations = function() {
       var results = CalcService.calculate(inputs, plotOptions);
       buildTable(results.table);
-      buildCharts(results.charting);
       $scope.userHasCalculated = true;
+      $timeout(function() { buildCharts(results.charting); })   // $timeout is used here so we draw the charts after we have removed the hidden class from the chart containers
     }
     
     /**
@@ -82,7 +98,9 @@ angular.module('ethMiningCalc')
     // Define the components to be mapped to the view
     //
     $scope.inputs = inputs;
+    $scope.setCurrencyCode = setCurrencyCode;
     $scope.updateCurrency = updateCurrency;
+    $scope.currencies = currencies;
     $scope.plotOptions = plotOptions;
     $scope.calculate = doCalculations;
     $scope.table = {};
