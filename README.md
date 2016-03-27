@@ -18,7 +18,7 @@ node versions easily (not required for this project).
 ## What does what?
 
 #### Node.js
-We use node.js to run helpful dev packages, like the ones listed below.
+We use node.js to run helpful dev packages, like the ones listed below. No node coding is required.
 
 #### Bower
 Bower manages third-party dependencies.
