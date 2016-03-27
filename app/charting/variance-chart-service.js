@@ -3,26 +3,27 @@ angular.module('ethMiningCalc')
     var factory = {};
 
     // Functions for Drawing Plots
-    factory.generate = function(Name,Data,stdData,std2UpperData,std2LowerData,maxPlotValue,minPlotValue) 
+    factory.generate = function(Name,Title,yTitle,Data,Draw1BlockLine) 
     {
-			$(Name).highcharts({
+      var HighChartsData = {
         chart: {
           zoomType: 'xy',
         },
 				title: {
-          text: "Expected Solved Blocks with Variance",
+          text: Title, 
           x: -20
         },
         xAxis: {title: { text:  "Days"},
             min:0,
             //Make the graph the width of the data
-            max: Data[Data.length-1][0]
+            max: Data.expected[Data.expected.length-1][0]
         },
         yAxis: {
-          title: { text: "Solved Blocks"},
+          title: { text: yTitle},
           min: 0,
-          max: maxPlotValue[1][2],
+          max: Data.maximumPlotValue[1][2],
           endOnTick: false,
+          // Draw 1 Block Line
           plotLines: [{
             color: 'black',
             width: 1,
@@ -53,7 +54,7 @@ angular.module('ethMiningCalc')
        {
           name: "1 Sigma",
           type: "arearange",
-          data: stdData,
+          data: Data.oneSigmaRange,
           color: 'green',
           lineWidth: 0,
           marker: { enabled: false },
@@ -66,7 +67,7 @@ angular.module('ethMiningCalc')
         },{
           name: "1-2 \u03C3",
           type: "arearange",
-          data: std2UpperData,
+          data: Data.twoSigmaUpper,
           color: "#ffff66",
           lineWidth: 0,
           marker: { enabled: false },
@@ -79,7 +80,7 @@ angular.module('ethMiningCalc')
         },{
           name: "Std Lower",
           type: "arearange",
-          data: std2LowerData,
+          data: Data.twoSigmaLower,
           color: "#ffff66",
           marker: { enabled: false },
           fillOpacity: 0.3,
@@ -93,7 +94,7 @@ angular.module('ethMiningCalc')
         },{ 
           name: "> 2\u03C3",
           type: "arearange",
-          data: maxPlotValue,
+          data: Data.maximumPlotValue,
           marker: { enabled: false },
           color: "red",
           fillOpacity: 0.3,
@@ -107,7 +108,7 @@ angular.module('ethMiningCalc')
         },{ 
           name: "Min Plot Value",
           type: "arearange",
-          data: minPlotValue,
+          data: Data.minimumPlotValue,
           marker: { enabled: false },
           color: "red",
           fillOpacity: 0.3,
@@ -123,7 +124,7 @@ angular.module('ethMiningCalc')
           type: 'spline',
           lineWidth: 2,
           marker: { enabled: false },
-          data: Data,
+          data: Data.expected,
           tooltip: {
             shared: false,
             headerFormat: "<b>Expected Blocks (Average)</b><br>",
@@ -136,7 +137,13 @@ angular.module('ethMiningCalc')
             chart.reflow();
           }, 0);
         }
-      });
+       }
+      // Removes the 1 Block Line
+      if (!Draw1BlockLine){
+        HighChartsData.yAxis.plotLines=""
+      }
+     
+			$(Name).highcharts(HighChartsData);
     }
 
     return factory;

@@ -3,102 +3,93 @@ angular.module('ethMiningCalc')
     var factory = {};
 
     factory.calculate = function(inputs, plotOptions) {
-      //Get Data from forms. But use the global variables which contain better accuracy.
-        var hashrate = inputs.hashRate;
-        var daysToCompute = plotOptions.days;
-        var DataPoints = plotOptions.points + 1; //So that it lands nicely on integer days
-        var blockTime = inputs.blockTime;
-        var currencyEthRate = inputs.currencyRate;
-        var prob_solving_block_network = hashrate / (inputs.networkHashRate * 1e3); //GH/s	
-        var prob_solving_block_difficulty = hashrate / (inputs.difficulty * 1e6); //TH	
+
+        var probability = {};
+        probability.network = inputs.hashRate / (inputs.networkHashRate * 1e3); //GH/s	
+        probability.difficutly = inputs.hashRate / (inputs.difficulty * 1e6); //TH	
+  
         //Set up the arrays
-        var probData = new Array();
-        var expData = new Array();
-        var varData = new Array();
-        var currencyData = new Array();
+        var data = {};
+        data.probData = new Array();
+        // Expected Block Data Set
+        data.expectedBlocks ={};
+        data.expectedBlocks.expected = new Array();
+        data.expectedBlocks.oneSigmaRange = new Array();
+        data.expectedBlocks.twoSigmaLower = new Array();
+        data.expectedBlocks.twoSigmaUpper = new Array();
+        data.expectedBlocks.maximumPlotValue = new Array();
+        data.expectedBlocks.minimumPlotValue = new Array();
+        data.expectedBlocks.maximumValue = expectation(inputs.blockTime, plotOptions.days, probability.network) + 2 * variance(inputs.blockTime, plotOptions.days, probability.network, inputs.crypto_block); // This stores the maximum plot value. Required to fill the top of the graph with 2 sigma range.
+        // Currency Data Set
+        data.currencyData ={};
+        data.currencyData.expected = new Array();
+        data.currencyData.oneSigmaRange = new Array();
+        data.currencyData.twoSigmaLower = new Array();
+        data.currencyData.twoSigmaUpper = new Array();
+        data.currencyData.maximumPlotValue = new Array();
+        data.currencyData.minimumPlotValue = new Array();
+        data.currencyData.maximumValue = expectation(inputs.blockTime, plotOptions.days, probability.network) + 2 * variance(inputs.blockTime, plotOptions.days, probability.network, inputs.crypto_block)*inputs.currencyRate; 
+        
 
-        //Variance Data
-        var stdData = new Array();
-        var std2LowerData = new Array();
-        var std2UpperData = new Array();
-        var maximumPlotValue = new Array();
-        var lowerPlotValue = new Array();
-        // Set number of data points. I'm using a quadratic to sample more points earlier on
-        //Increment to satisfy number of days
-        //Quadratic Plotting in Graphs
-        //var x = Math.sqrt(daysToCompute)/DataPoints;
-        // Linear Plotting in Graphs
-        var x = daysToCompute / (DataPoints - 1);
-        //var currencyConversion = document.forms["Calculator"]["exchange"].value; 
+       /** 
+        * TODO: Make an option for the user to plot quadratically or linearly.
+        */
+        var dependents = {};
+        dependents.linearQuanta = plotOptions.days/plotOptions.points; //Linear increments
+        dependents.quadraticQuanta = Math.sqrt(plotOptions.days)/(plotOptions.points+1); //Quadratic increments
+       
+        var dependent =0;
+        //build the dataset
+        for (i = 1; i <= plotOptions.points+1; i++) {
 
-        //Dependent variable for clarity;
-        var dependent = 0;
-
-        // Find Maximum Expectation Value and Variance to Fill Sdd Graph
-        // Will Fill the rest of this graph representing beyond 2 sigma
-        var maximumVal = expectation(blockTime, daysToCompute, prob_solving_block_network) + 2 * variance(blockTime, daysToCompute, prob_solving_block_network);
-
-        //build a dataset
-        for (i = 1; i <= DataPoints; i++) {
-          // I'm using a quadratic to get more data points earlier than later, so total is Number of Days
-          // Quadratic
-          //dependent = Math.pow(i*x,2);
+          // Quadratic -- Uncomment for quadratic plotting
+          //dependent = Math.pow(i*dependent.quadraticQuanta,2);
           // Linear
-          dependent = (i - 1) * x;
+          dependent = (i - 1) * dependents.linearQuanta;
 
           // Only run this once and store as a variable to calculate std fluctuation
-          var expResult = expectation(blockTime, dependent, prob_solving_block_network);
-          var varResult = variance(blockTime, dependent, prob_solving_block_network);
+          var results = {};
+          results.expResult = expectation(inputs.blockTime, dependent, probability.network);
+          results.varResult = variance(inputs.blockTime, dependent, probability.network);
+          
+          buildDataSetWithVariance(data.expectedBlocks, dependent, results.expResult, results.varResult);
+          buildDataSetWithVariance(data.currencyData, dependent, results.expResult*inputs.currencyRate, results.varResult*inputs.currencyRate);
 
-          probData.push([dependent, probability(blockTime, dependent, prob_solving_block_network)]);
-          expData.push([dependent, expResult]);
-          varData.push([dependent, varResult]);
-
-
-
-          //STD Plot Stuff
-          stdData.push([dependent, Math.max(0, expResult - varResult), expResult + varResult]);
-          std2LowerData.push([dependent, Math.max(0, expResult - 2 * varResult), Math.max(expResult - varResult)]);
-          std2UpperData.push([dependent, expResult + varResult, expResult + 2 * varResult]);
-
-          maximumPlotValue.push([dependent, expResult + 2 * varResult, maximumVal * 1.1]);
-          lowerPlotValue.push([dependent, 0, Math.max(0, expResult - 2 * varResult)]);
+          data.probData.push([dependent, probabilityGivenDays(inputs.blockTime, dependent, probability.network)]);
 
         }
 
         //Generate Data for tables and fill them
-        var eth_block = 5;
-        var results = {};
+        // Note: We are using the avg network difficulty to calculate table data. This is debatable the most appropriate and accurate measure. Perhaps we shift to difficulty estimates for other currencies.
         results.table = {};
-        results.table.eth_hour = expectation(blockTime, 0.0416667, prob_solving_block_network) * eth_block;
-        results.table.eth_day = expectation(blockTime, 1, prob_solving_block_network) * eth_block;
-        results.table.eth_week = expectation(blockTime, 7, prob_solving_block_network) * eth_block;
-        results.table.eth_month = expectation(blockTime, 30, prob_solving_block_network) * eth_block;
+        results.table.eth_hour = expectation(inputs.blockTime, 0.0416667, probability.network) * inputs.crypto_block;
+        results.table.eth_day = expectation(inputs.blockTime, 1, probability.network) * inputs.crypto_block;
+        results.table.eth_week = expectation(inputs.blockTime, 7, probability.network) * inputs.crypto_block;
+        results.table.eth_month = expectation(inputs.blockTime, 30, probability.network) * inputs.crypto_block;
 
         // Currency Expectations
-        results.table.cur_hour = results.table.eth_hour * currencyEthRate;
-        results.table.cur_day = results.table.eth_day * currencyEthRate;
-        results.table.cur_week = results.table.eth_week * currencyEthRate;
-        results.table.cur_month = results.table.eth_month * currencyEthRate;
-        results.table.p95_days = daysGivenProbability(blockTime, 0.95, prob_solving_block_network);
-        results.table.exp_day = daysGivenBlocks(blockTime, 1, prob_solving_block_network);
-
+        results.table.cur_hour = results.table.eth_hour * inputs.currencyRate
+        results.table.cur_day = results.table.eth_day * inputs.currencyRate;
+        results.table.cur_week = results.table.eth_week * inputs.currencyRate;
+        results.table.cur_month = results.table.eth_month * inputs.currencyRate;
+        results.table.exp_day = daysGivenBlocks(inputs.blockTime, 1, probability.network);
+        results.table.probability_day = probabilityGivenDays(inputs.blockTime,1,probability.network);
+        results.table.ci ={};
+        results.table.ci.upper = daysGivenProbability(inputs.blockTime, 0.95, probability.network);
+        results.table.ci.lower = daysGivenProbability(inputs.blockTime, 0.05, probability.network);
+        results.table.check= daysGivenProbability(inputs.blockTime, 0.98, probability.network);
+        
         // Generate charting stats
         results.charting = {};
-        results.charting.probData = probData;
+        results.charting.probData = data.probData;
      
-        results.charting.expData = expData;
-        results.charting.stdData = stdData;
-        results.charting.std2UpperData = std2UpperData;
-        results.charting.std2LowerData = std2LowerData;
-        results.charting.maximumPlotValue = maximumPlotValue;
-        results.charting.lowerPlotValue = lowerPlotValue;
-        
+        results.charting.expectedBlocks = data.expectedBlocks;
+        results.charting.currencyData = data.currencyData;
         return(results);
     }
     
     // Probability of at least one block
-		function probability(blockTime,days,prob_solving_block) {
+		function probabilityGivenDays(blockTime,days,prob_solving_block) {
 			//Average number of blocks in "days" 
 			var blocks_days = 3600*24*days/blockTime;
 			var probability = 1 - Math.pow((1 - prob_solving_block),blocks_days);
@@ -133,34 +124,23 @@ angular.module('ethMiningCalc')
 				//Return the standard deviation
 			return Math.sqrt(variance);
 		}
-	
-		/*
-    function GenerateStdGraph(upperexpData,expData,lowerexpData){
-			$.jqplot('StdGraph',[upperexpData,expData,lowerexpData],{
-				title: "Expectation with 1 standard deviation limits",
-				axes:{yaxis:{min:0, label:"Blocks"},
-					xaxis:{min:0,label:"Days"}},
-					series:[{color:'green'},{color:"#4bb2c5"},{color:'green'}]
-			}).replot();
+    	
+    /**
+     *  Build Data Sets with Variance
+     * 
+     * 
+     */
+    function buildDataSetWithVariance(data,dependent, expected, std){
+      data.expected.push([dependent, expected]);
+      // Build Standard Deviation Areas
+      data.oneSigmaRange.push([dependent, Math.max(0, expected - std), expected + std]);
+      data.twoSigmaLower.push([dependent, Math.max(0, expected - 2 * std), Math.max(expected - std)]);
+      data.twoSigmaUpper.push([dependent, expected + std, expected + 2 * std]);
+      data.maximumPlotValue.push([dependent, expected + 2 * std, data.maximumValue * 1.1]);
+      data.minimumPlotValue.push([dependent, 0, Math.max(0, expected - 2 * std)]);
+    }
 
-		}
 
-		function GenerateCurrencyGraph(varData){
-			var yaxis = "";
-			
-			if (document.getElementById("AUD").checked){
-				yaxis = "AUD";}
-			else {
-				yaxis = "USD";}
-			
-			$.jqplot('CurrencyGraph',[varData],{
-				title: "Expected " + yaxis ,
-				axes:{yaxis:{min:0, label:yaxis + "($)"},
-					xaxis:{min:0,label:"Days"}}}).replot();
-		}
-    */
-			
-		
 
     return factory;
   }]);

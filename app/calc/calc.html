@@ -117,27 +117,26 @@
         <div class="panel-body">
           <table class="table table-hover">
             <tr>
-              <td> Expected Days to solve 1 Block </td>
+              <td> Average Time to Solve a Block </td>
               <td>
-                <p id='exp_day'>{{table.exp_day | number:2}} days</p>
+                <p id='exp_day'>{{table.exp_day | legibleDaysMins}}</p>
               </td>
             </tr>
             <tr>
-              <td> 95% to solve a block in </td>
+              <td>  Probability to Solve At Least 1 Block in a Day </td>
               <td>
-                <p id='95_days'>{{table.p95_days | number:2}} days</p>
+                <p id='prob_day'>{{table.probability_day | number: 2}}%</p>
+              </td>
+            <tr>
+              <td> 95% Confidence Interval </td>
+              <td>
+                <p id='eth_week'>{{table.ci.lower | legibleDaysMins}} - {{table.ci.upper | legibleDaysMins}}</p>
               </td>
             </tr>
             <tr>
-              <td> 68.2% (1 sigma) will solve a block in </td>
+              <td> Check Miner No Block Has Been Solved (2% Chance) </td>
               <td>
-                <p id='eth_week'>{{table.eth_week | number:2}} days</p>
-              </td>
-            </tr>
-            <tr>
-              <td> le 95% (2 sigma) Chance of not solving a block (check miner) </td>
-              <td>
-                <p id='95_days'>{{table.p95_days | number:2}} days</p>
+                <p id='95_days'>{{table.check| legibleDaysMins}}</p>
               </td>
             </tr>
           </table>
@@ -146,25 +145,15 @@
     </div>
   </div>
 
-  <!-- Two Graphs -->
-  <div class="row" ng-class="{hidden: !userHasCalculated}">
-    <div class="col-lg-6">
+  <!-- Graphs -->
+  <div class="row" ng-class="{hidden: !userHasCalculated}" ng-repeat="i in plotOptions.plots | plotFilter">
+    <div class="col-lg-12">
       <div class="panel panel-default calculator-inputs">
         <div class="panel-heading">
-          <h3 class="panel-title"><i class="fa fa-line-chart"></i> Probability of Solving Atleast One Block</h3>
+          <h3 class="panel-title"><i class="fa fa-line-chart"></i> {{i.title }}</h3>
         </div>
         <div class="panel-body">
-          <div id="ProbabilityGraph"></div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-6">
-      <div class="panel panel-default calculator-inputs">
-        <div class="panel-heading">
-          <h3 class="panel-title"><i class="fa fa-line-chart"></i> Expected Solved Blocks with Variance</h3>
-        </div>
-        <div class="panel-body">
-          <div id="StdGraph"></div>
+          <div id={{i.id}}></div>
         </div>
       </div>
     </div>
