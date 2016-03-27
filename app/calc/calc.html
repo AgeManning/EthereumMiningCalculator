@@ -1,170 +1,171 @@
 <div class="container-fluid">
-  <div class="row content">
-    <div class="panel panel-default calculator-inputs">
-      <div class="panel-heading">
-        <h3 class="panel-title">Projection Variables</h3>
-      </div>
-      <div class="panel-body">
-        <form name="VariablesForm" ng-submit="calculate()" role="form" class='form-horizontal'>
-          <legend><span class="mini_title">Miner Variables</span></legend>
-          <div class="input-group">
-            <span class="input-group-addon">Miner Hash Rate (MH/s)</span>
-            <input type="number" step="any" ng-model="inputs.hashRate" class="form-control" placeholder="Insert your Mining Hash Rate in MH/s"
-            required>
-          </div>
-          <div class="input-group">
-            <span class="input-group-addon">Network Hash Rate (GH/s)</span>
-            <input type="number" step="any" ng-model="inputs.networkHashRate" class="form-control" placeholder="Loading..." required>
-          </div>
-          <div class="input-group">
-            <span class="input-group-addon">Difficulty (TH)</span>
-            <input type="number" step="any" ng-model="inputs.difficulty" class="form-control" placeholder="Loading..." required>
-          </div>
-          <div class="input-group">
-            <span class="input-group-addon">Average Block Time (s)</span>
-            <input type="number" step="any" ng-model="inputs.blockTime" class="form-control" placeholder="Loading..." required>
-          </div>
-          <div class="input-group">
-            <div class="input-group-btn">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Currency ({{inputs.currencyCode | uppercase}}) <span class="caret"></span></button>
-              <ul class="dropdown-menu">
-                <li ng-repeat="(key, value) in currencies">
-                  <a ng-click="setCurrencyCode(key)" href="">{{value.title}}</a>
-                </li>
-              </ul>
+
+  <!-- The variables input thing -->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel panel-default calculator-inputs">
+        <div class="panel-heading">
+          <h3 class="panel-title">Projection Variables</h3>
+        </div>
+        <div class="panel-body">
+          <form name="VariablesForm" ng-submit="calculate()" role="form" class='form-horizontal'>
+            <legend><span class="mini_title">Miner Variables</span></legend>
+            <div class="input-group">
+              <span class="input-group-addon">Miner Hash Rate (MH/s)</span>
+              <input type="number" step="any" ng-model="inputs.hashRate" class="form-control" placeholder="Insert your Mining Hash Rate in MH/s"
+              required>
             </div>
-            <input type="number" step="any" ng-model="inputs.currencyRate" ng-change="updateCurrency()" class="form-control" placeholder="Loading..." required>
-          </div>
-          <legend><span class="mini_title">Plot Options</span></legend>
-          <div class="input-group">
-            <span class="input-group-addon">Days to run over:</span>
-            <input type="number" ng-model="plotOptions.days" class="form-control" placeholder="Amount of days to graph" required>
-          </div>
-          <div class="input-group">
-            <span class="input-group-addon">Data Points:</span>
-            <input type="number" ng-model="plotOptions.points" class="form-control" placeholder="Amount of data points to graph" required>
-          </div>
-          <hr>
-          <button type="submit" class="btn">Calculate</button>
-        </form>
+            <div class="input-group">
+              <span class="input-group-addon">Network Hash Rate (GH/s)</span>
+              <input type="number" step="any" ng-model="inputs.networkHashRate" class="form-control" placeholder="Loading..." required>
+            </div>
+            <div class="input-group">
+              <span class="input-group-addon">Difficulty (TH)</span>
+              <input type="number" step="any" ng-model="inputs.difficulty" class="form-control" placeholder="Loading..." required>
+            </div>
+            <div class="input-group">
+              <span class="input-group-addon">Average Block Time (s)</span>
+              <input type="number" step="any" ng-model="inputs.blockTime" class="form-control" placeholder="Loading..." required>
+            </div>
+            <div class="input-group">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Currency ({{inputs.currencyCode | uppercase}}) <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li ng-repeat="(key, value) in currencies">
+                    <a ng-click="setCurrencyCode(key)" href="">{{value.title}}</a>
+                  </li>
+                </ul>
+              </div>
+              <input type="number" step="any" ng-model="inputs.currencyRate" ng-change="updateCurrency()" class="form-control" placeholder="Loading..."
+              required>
+            </div>
+            <legend><span class="mini_title">Plot Options</span></legend>
+            <div class="input-group">
+              <span class="input-group-addon">Days to run over:</span>
+              <input type="number" ng-model="plotOptions.days" class="form-control" placeholder="Amount of days to graph" required>
+            </div>
+            <div class="input-group">
+              <span class="input-group-addon">Data Points:</span>
+              <input type="number" ng-model="plotOptions.points" class="form-control" placeholder="Amount of data points to graph" required>
+            </div>
+            <hr>
+            <button type="submit" class="btn">Calculate</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="container-fluid" ng-class="{hidden: !userHasCalculated}">
-  <div class="row content">
-    <div class="panel panel-default calculator-inputs">
-      <div class="panel-heading">
-        <h3 class="panel-title">Projected Returns</h3>
-      </div>
-      <div class="panel-body">
-        <table class="table table-hover">
-          <thread>
+  <!-- Two Tables -->
+  <div class="row" ng-class="{hidden: !userHasCalculated}">
+    <div class="col-md-6">
+      <div class="panel panel-default calculator-inputs">
+        <div class="panel-heading">
+          <h3 class="panel-title">Projected Returns</h3>
+        </div>
+        <div class="panel-body">
+          <table class="table table-hover">
+            <thread>
+              <tr>
+                <th> Duration </th>
+                <th> Expected Ether </th>
+                <th> Value ({{inputs.currencyCode | uppercase}}) </th>
+              </tr>
+            </thread>
             <tr>
-              <th> Duration </th>
-              <th> Expected Ether </th>
-              <th> Value ({{inputs.currencyCode | uppercase}}) </th>
+              <td> Per Hour </td>
+              <td>
+                <p id='eth_hour'>{{table.eth_hour | number:2}}</p>
+              </td>
+              <td>
+                <p id='cur_hour'>${{table.cur_hour | number:2}}</p>
+              </td>
             </tr>
-          </thread>
-          <tr>
-            <td> Per Hour </td>
+            <td> Per Day</td>
             <td>
-              <p id='eth_hour'>{{table.eth_hour | number:2}}</p>
+              <p id='eth_day'>{{table.eth_day | number:2}}</p>
             </td>
             <td>
-              <p id='cur_hour'>${{table.cur_hour | number:2}}</p>
+              <p id='cur_day'>${{table.cur_day | number:2}}</p>
             </td>
-          </tr>
-          <td> Per Day</td>
-          <td>
-            <p id='eth_day'>{{table.eth_day | number:2}}</p>
-          </td>
-          <td>
-            <p id='cur_day'>${{table.cur_day | number:2}}</p>
-          </td>
-          </tr>
-          <td> Per Week </td>
-          <td>
-            <p id='eth_week'>{{table.eth_week | number:2}}</p>
-          </td>
-          <td>
-            <p id='cur_week'>${{table.cur_week | number:2}}</p>
-          </td>
-          </tr>
-          <td> Per Month </td>
-          <td>
-            <p id='eth_month'>{{table.eth_month | number:2}}</p>
-          </td>
-          <td>
-            <p id='cur_month'>${{table.cur_month | number:2}}</p>
-          </td>
-          </tr>
-        </table>
+            </tr>
+            <td> Per Week </td>
+            <td>
+              <p id='eth_week'>{{table.eth_week | number:2}}</p>
+            </td>
+            <td>
+              <p id='cur_week'>${{table.cur_week | number:2}}</p>
+            </td>
+            </tr>
+            <td> Per Month </td>
+            <td>
+              <p id='eth_month'>{{table.eth_month | number:2}}</p>
+            </td>
+            <td>
+              <p id='cur_month'>${{table.cur_month | number:2}}</p>
+            </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="panel panel-default calculator-inputs">
+        <div class="panel-heading">
+          <h3 class="panel-title">Projected Block Solution Statistics</h3>
+        </div>
+        <div class="panel-body">
+          <table class="table table-hover">
+            <tr>
+              <td> Expected Days to solve 1 Block </td>
+              <td>
+                <p id='exp_day'>{{table.exp_day | number:2}} days</p>
+              </td>
+            </tr>
+            <tr>
+              <td> 95% to solve a block in </td>
+              <td>
+                <p id='95_days'>{{table.p95_days | number:2}} days</p>
+              </td>
+            </tr>
+            <tr>
+              <td> 68.2% (1 sigma) will solve a block in </td>
+              <td>
+                <p id='eth_week'>{{table.eth_week | number:2}} days</p>
+              </td>
+            </tr>
+            <tr>
+              <td> le 95% (2 sigma) Chance of not solving a block (check miner) </td>
+              <td>
+                <p id='95_days'>{{table.p95_days | number:2}} days</p>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="container-fluid" ng-class="{hidden: !userHasCalculated}">
-  <div class="row content">
-    <div class="panel panel-default calculator-inputs">
-      <div class="panel-heading">
-        <h3 class="panel-title">Projected Block Solution Statistics</h3>
-      </div>
-      <div class="panel-body">
-        <table class="table table-hover">
-          <tr>
-            <td> Expected Days to solve 1 Block </td>
-            <td>
-              <p id='exp_day'>{{table.exp_day | number:2}} days</p>
-            </td>
-          </tr>
-          <tr>
-            <td> 95% to solve a block in </td>
-            <td>
-              <p id='95_days'>{{table.p95_days | number:2}} days</p>
-            </td>
-          </tr>
-          <tr>
-            <td> 68.2% (1 sigma) will solve a block in </td>
-            <td>
-              <p id='eth_week'>{{table.eth_week | number:2}} days</p>
-            </td>
-          </tr>
-          <tr>
-            <td> le 95% (2 sigma) Chance of not solving a block (check miner) </td>
-            <td>
-              <p id='95_days'>{{table.p95_days | number:2}} days</p>
-            </td>
-          </tr>
-        </table>
+  <!-- Two Graphs -->
+  <div class="row" ng-class="{hidden: !userHasCalculated}">
+    <div class="col-lg-6">
+      <div class="panel panel-default calculator-inputs">
+        <div class="panel-heading">
+          <h3 class="panel-title">Probability of Solving Atleast One Block</h3>
+        </div>
+        <div class="panel-body">
+          <div id="ProbabilityGraph"></div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-
-<div class="container-fluid" ng-class="{hidden: !userHasCalculated}">
-  <div class="row content">
-    <div class="panel panel-default calculator-inputs">
-      <div class="panel-heading">
-        <h3 class="panel-title">Probability of Solving Atleast One Block</h3>
-      </div>
-      <div class="panel-body">
-        <div id="ProbabilityGraph"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="container-fluid" ng-class="{hidden: !userHasCalculated}">
-  <div class="row content">
-    <div class="panel panel-default calculator-inputs">
-      <div class="panel-heading">
-        <h3 class="panel-title">Probability of Solving Atleast One Block</h3>
-      </div>
-      <div class="panel-body">
-        <div id="StdGraph"></div>
+    <div class="col-lg-6">
+      <div class="panel panel-default calculator-inputs">
+        <div class="panel-heading">
+          <h3 class="panel-title">Probability of Solving Atleast One Block</h3>
+        </div>
+        <div class="panel-body">
+          <div id="StdGraph"></div>
+        </div>
       </div>
     </div>
   </div>
