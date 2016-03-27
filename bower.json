@@ -30,7 +30,8 @@
     "jquery": "^2.2.2",
     "bootstrap": "^3.3.6",
     "angular-ui-router": "^0.2.18",
-    "lodash": "^4.6.1"
+    "lodash": "^4.6.1",
+    "components-font-awesome": "^4.5.0"
   },
   "overrides": {
     "bootstrap": {
