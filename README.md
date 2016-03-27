@@ -6,7 +6,7 @@ Currently under development, don't trust it just yet.
 
 ## Getting Started
 
-_I haven't tested these setup commands. There may be extra steps, but it should be straight-forward. _
+_I haven't tested these setup commands. There may be extra steps, but it should be straight-forward._
 
 1. Install node.js. I reccomend using [nvm](https://github.com/creationix/nvm) so you can switch between
 node versions easily (not required for this project).
