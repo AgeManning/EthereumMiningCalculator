@@ -1,3 +1,7 @@
+body {
+  background: #222;
+}
+
 .calculator-inputs {
   margin: 1em;
 }
