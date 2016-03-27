@@ -37,7 +37,12 @@ angular.module('ethMiningCalc')
           name: ytitle,
           marker: { enabled: false },
           data: data
-        }]
+        }],
+        func: function (chart) {
+          $timeout(function () {
+            chart.reflow();
+          }, 0);
+        }
       });
     }
 
