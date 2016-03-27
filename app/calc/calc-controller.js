@@ -12,6 +12,9 @@ angular.module('ethMiningCalc')
       }
     };
 
+    /**
+     * A user has changed the reporting currency
+     */
     var updateCurrency = function() {
       inputs.currencyRate = currencies[inputs.currencyCode].ethRate;
       if($scope.userHasCalculated) {
