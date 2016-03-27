@@ -23,7 +23,9 @@ node versions easily (not required for this project).
 We use node.js to run helpful dev packages, like the ones listed below. No actual node.js coding is required.
 
 #### Bower
-Bower manages third-party dependencies.
+Bower manages third-party dependencies. Eg, Want to install highcharts? `bower install --save highcharts`. Highcharts
+will then be loaded in bower_components and the grunt script will automatically load its script and link tags
+to our index.html.
 
 #### Grunt
 Grunt does menial tasks. Grunt automatically inserts script and link tags (from bower_components and the app folder)
