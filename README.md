@@ -13,7 +13,9 @@ node versions easily (not required for this project).
 2. Install bower globally `$ npm install -g bower`
 3. Install grunt globally `$ npm install -g grunt-cli`
 4. Switch to the project dir and do an npm install `$ npm install`
-5. Run the build script with npm `$ npm start`
+5. Run the build script and launch the server with npm `$ npm start`
+6. _..._
+7. Profit
 
 ## What does what?
 
