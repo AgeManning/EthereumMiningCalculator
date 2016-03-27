@@ -83,21 +83,17 @@ angular.module('ethMiningCalc')
         results.table.p95_days = daysGivenProbability(blockTime, 0.95, prob_solving_block_network);
         results.table.exp_day = daysGivenBlocks(blockTime, 1, prob_solving_block_network);
 
-
-        //Generate the graphs
-        //Generate Probability Graph
-        probabilityChartService.generate('#ProbabilityGraph', "Probability of Solving at Least One Block", probData, "Days", "Probability (%)", "<b>{series.name}: {point.y:.2f}% </b><br>", "Days: {point.x: .2f}");
-        //Generate Expectation Graph 
-        // GenerateStandardGraph('#ExpectationGraph',"Expected Number of Solved Blocks", expData,"Days","Solved Blocks", "<b>{series.name}: {point.y:.2f} </b><br>" , "Days: {point.x: .2f}");
-        // Generate Std Graph
-        //GenerateStandardGraph('#VarianceGraph',"Standard Deviation", varData,"Days","Solved Blocks", "<b>{series.name}: {point.y:.2f} </b><br>" , "Days: {point.x: .2f}");
-        //Generate Expectation with Variance Widths
-        varianceChartService.generate("#StdGraph", expData, stdData, std2UpperData, std2LowerData, maximumPlotValue, lowerPlotValue);
-
-        //			GenerateExpectationGraph(expData);
-        //			GenerateVarianceGraph(varData);
-        //			GenerateStdGraph(upperexpData,expData,lowerexpData);
-        //GenerateCurrencyGraph(currencyData);
+        // Generate charting stats
+        results.charting = {};
+        results.charting.probData = probData;
+     
+        results.charting.expData = expData;
+        results.charting.stdData = stdData;
+        results.charting.std2UpperData = std2UpperData;
+        results.charting.std2LowerData = std2LowerData;
+        results.charting.maximumPlotValue = maximumPlotValue;
+        results.charting.lowerPlotValue = lowerPlotValue;
+        
         return(results);
     }
     

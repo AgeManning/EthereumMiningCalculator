@@ -1,5 +1,5 @@
 angular.module('ethMiningCalc')
-  .controller('CalcController', ['$scope', 'MarketDataService', 'CalcService', function($scope, marketDataService, CalcService) {
+  .controller('CalcController', ['$scope', 'MarketDataService', 'CalcService', 'ProbabilityChartService', 'VarianceChartService', function($scope, marketDataService, CalcService, probabilityChartService, varianceChartService) {
     //
     // Define controller functionality
     //
@@ -49,6 +49,9 @@ angular.module('ethMiningCalc')
     var doCalculations = function() {
       var results = CalcService.calculate(inputs, plotOptions);
       $scope.table = results.table;
+      
+      probabilityChartService.generate('#ProbabilityGraph', "Probability of Solving at Least One Block", results.charting.probData, "Days", "Probability (%)", "<b>{series.name}: {point.y:.2f}% </b><br>", "Days: {point.x: .2f}");
+      varianceChartService.generate("#StdGraph", results.charting.expData, results.charting.stdData, results.charting.std2UpperData, results.charting.std2LowerData, results.charting.maximumPlotValue, results.charting.lowerPlotValue);
     }
 
     //
