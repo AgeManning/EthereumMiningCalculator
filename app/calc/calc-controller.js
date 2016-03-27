@@ -14,6 +14,9 @@ angular.module('ethMiningCalc')
 
     var updateCurrency = function() {
       inputs.currencyRate = currencies[inputs.currencyCode].ethRate;
+      if($scope.userHasCalculated) {
+        buildTable(CalcService.calculate(inputs, plotOptions).table);
+      }
     };
 
     var inputs = {};
@@ -43,16 +46,34 @@ angular.module('ethMiningCalc')
     plotOptions.plots.expectationVar = true;
 
     /**
-     * Generate Reports
+     * A user has pressed the 'calcuate' button
      */
-    var table = {};
     var doCalculations = function() {
       var results = CalcService.calculate(inputs, plotOptions);
-      $scope.table = results.table;
-      
-      probabilityChartService.generate('#ProbabilityGraph', "Probability of Solving at Least One Block", results.charting.probData, "Days", "Probability (%)", "<b>{series.name}: {point.y:.2f}% </b><br>", "Days: {point.x: .2f}");
-      varianceChartService.generate("#StdGraph", results.charting.expData, results.charting.stdData, results.charting.std2UpperData, results.charting.std2LowerData, results.charting.maximumPlotValue, results.charting.lowerPlotValue);
+      buildTable(results.table);
+      buildCharts(results.charting);
+      $scope.userHasCalculated = true;
     }
+    
+    /**
+     * Expose the table data to the scope
+     * 
+     * @param {object} tableData The table object returned from the calcuation function
+     */
+    var buildTable = function(tableData) {
+      $scope.table = tableData;
+    }
+    
+    /**
+     * Draw the highcharts charts
+     * 
+     * @param {object} chartData The charting object returned from the caluculation function
+     */
+    var buildCharts = function(chartData) {
+      probabilityChartService.generate('#ProbabilityGraph', "Probability of Solving at Least One Block", chartData.probData, "Days", "Probability (%)", "<b>{series.name}: {point.y:.2f}% </b><br>", "Days: {point.x: .2f}");
+      varianceChartService.generate("#StdGraph", chartData.expData, chartData.stdData, chartData.std2UpperData, chartData.std2LowerData, chartData.maximumPlotValue, chartData.lowerPlotValue);
+    }   
+    
 
     //
     // Define the components to be mapped to the view
@@ -61,6 +82,7 @@ angular.module('ethMiningCalc')
     $scope.updateCurrency = updateCurrency;
     $scope.plotOptions = plotOptions;
     $scope.calculate = doCalculations;
-    $scope.table = table;
+    $scope.table = {};
+    $scope.userHasCalculated = false;
 
   }]);
