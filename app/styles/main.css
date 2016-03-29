@@ -9,3 +9,12 @@ body {
 .calculator-inputs form .input-group {
   margin-bottom: 1em;
 }
+
+.expand-chevron-active {
+  transform: rotate(90deg);
+  
+}
+
+.expand-chevron {
+  transition-duration: .2s;
+}

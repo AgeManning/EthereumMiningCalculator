@@ -9,44 +9,52 @@
         </div>
         <div class="panel-body">
           <form name="VariablesForm" ng-submit="calculate()" role="form" class='form-horizontal'>
-            <legend><span class="mini_title">Miner Variables</span></legend>
-            <div class="input-group">
-              <span class="input-group-addon">Miner Hash Rate (MH/s)</span>
-              <input type="number" step="any" ng-model="inputs.hashRate" class="form-control" placeholder="Insert your Mining Hash Rate in MH/s"
-              required>
-            </div>
-            <div class="input-group">
-              <span class="input-group-addon">Network Hash Rate (GH/s)</span>
-              <input type="number" step="any" ng-model="inputs.networkHashRate" class="form-control" placeholder="Loading..." required>
-            </div>
-            <div class="input-group">
-              <span class="input-group-addon">Difficulty (TH)</span>
-              <input type="number" step="any" ng-model="inputs.difficulty" class="form-control" placeholder="Loading..." required>
-            </div>
-            <div class="input-group">
-              <span class="input-group-addon">Average Block Time (s)</span>
-              <input type="number" step="any" ng-model="inputs.blockTime" class="form-control" placeholder="Loading..." required>
-            </div>
-            <div class="input-group">
-              <div class="input-group-btn">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Currency ({{inputs.currencyCode | uppercase}}) <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                  <li ng-repeat="(key, value) in currencies">
-                    <a ng-click="setCurrencyCode(key)" href="">{{value.title}}</a>
-                  </li>
-                </ul>
+            <!-- Miner Variables -->
+            <div>
+              <legend><span class="mini_title">Miner Variables</span></legend>
+              <div class="input-group">
+                <span class="input-group-addon">Miner Hash Rate (MH/s)</span>
+                <input type="number" step="any" ng-model="inputs.hashRate" class="form-control" placeholder="Insert your Mining Hash Rate in MH/s"
+                required>
               </div>
-              <input type="number" step="any" ng-model="inputs.currencyRate" ng-change="updateCurrency()" class="form-control" placeholder="Loading..."
-              required>
+              <div class="input-group">
+                <span class="input-group-addon">Network Hash Rate (GH/s)</span>
+                <input type="number" step="any" ng-model="inputs.networkHashRate" class="form-control" placeholder="Loading..." required>
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon">Difficulty (TH)</span>
+                <input type="number" step="any" ng-model="inputs.difficulty" class="form-control" placeholder="Loading..." required>
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon">Average Block Time (s)</span>
+                <input type="number" step="any" ng-model="inputs.blockTime" class="form-control" placeholder="Loading..." required>
+              </div>
+              <div class="input-group">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Currency ({{inputs.currencyCode | uppercase}}) <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li ng-repeat="(key, value) in currencies">
+                      <a ng-click="setCurrencyCode(key)" href="">{{value.title}}</a>
+                    </li>
+                  </ul>
+                </div>
+                <input type="number" step="any" ng-model="inputs.currencyRate" ng-change="updateCurrency()" class="form-control" placeholder="Loading..."
+                required>
+              </div>
             </div>
-            <legend><span class="mini_title">Plot Options</span></legend>
-            <div class="input-group">
-              <span class="input-group-addon">Days to run over:</span>
-              <input type="number" ng-model="plotOptions.days" class="form-control" placeholder="Amount of days to graph" required>
-            </div>
-            <div class="input-group">
-              <span class="input-group-addon">Data Points:</span>
-              <input type="number" ng-model="plotOptions.points" class="form-control" placeholder="Amount of data points to graph" required>
+            <!-- Plot Options -->
+            <div>
+              <legend ng-click="showPlotOptions = !showPlotOptions"><span class="mini_title"><i class="fa fa-angle-right expand-chevron" ng-class="{'expand-chevron-active': showPlotOptions}"></i> Plot Options</span></legend>
+              <div ng-show="showPlotOptions">
+                <div class="input-group">
+                  <span class="input-group-addon">Days to run over:</span>
+                  <input type="number" ng-model="plotOptions.days" class="form-control" placeholder="Amount of days to graph" required>
+                </div>
+                <div class="input-group">
+                  <span class="input-group-addon">Data Points:</span>
+                  <input type="number" ng-model="plotOptions.points" class="form-control" placeholder="Amount of data points to graph" required>
+                </div>
+              </div>
             </div>
             <hr>
             <button type="submit" class="btn pull-right">Calculate</button>
@@ -123,22 +131,22 @@
               </td>
             </tr>
             <tr>
-              <td>  Probability to Solve At Least 1 Block in a Day </td>
+              <td> Probability to Solve At Least 1 Block in a Day </td>
               <td>
                 <p id='prob_day'>{{table.probability_day | number: 2}}%</p>
               </td>
-            <tr>
-              <td> 95% Confidence Interval </td>
-              <td>
-                <p id='eth_week'>{{table.ci.lower | legibleDaysMins}} - {{table.ci.upper | legibleDaysMins}}</p>
-              </td>
-            </tr>
-            <tr>
-              <td> Check Miner No Block Has Been Solved (2% Chance) </td>
-              <td>
-                <p id='95_days'>{{table.check| legibleDaysMins}}</p>
-              </td>
-            </tr>
+              <tr>
+                <td> 95% Confidence Interval </td>
+                <td>
+                  <p id='eth_week'>{{table.ci.lower | legibleDaysMins}} - {{table.ci.upper | legibleDaysMins}}</p>
+                </td>
+              </tr>
+              <tr>
+                <td> Check Miner No Block Has Been Solved (2% Chance) </td>
+                <td>
+                  <p id='95_days'>{{table.check| legibleDaysMins}}</p>
+                </td>
+              </tr>
           </table>
         </div>
       </div>
