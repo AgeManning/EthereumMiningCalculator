@@ -1,16 +1,21 @@
 angular.module('ethMiningCalc')
-  .controller('CalcController', ['$scope', '$timeout', 'MarketDataService', 'CalcService', 'ProbabilityChartService', 'VarianceChartService', function($scope, $timeout, marketDataService, CalcService, probabilityChartService, varianceChartService) {
+  .controller('CalcController', ['$http','$scope', '$timeout', 'MarketDataService', 'CalcService', 'GethDataService', 'ProbabilityChartService', 'VarianceChartService', function($http,$scope, $timeout, marketDataService, CalcService, gethDataService, probabilityChartService, varianceChartService) {
     //
     // Define controller functionality
     //
+
+    // Defaults
 
     /**
      * Specify Plots
      * 
      */
     var plotOptions = {};
+    // Default Values
     plotOptions.days = 10;
     plotOptions.points = 50;
+  
+
     plotOptions.plots = {
       probability: {
         title: "Probability of Solving at Least One Block",
@@ -48,15 +53,45 @@ angular.module('ethMiningCalc')
     var currencies = {  // TO DO: pull exhange rates from server
       aud: {
         title: "Australian Dollar (AUD)",
-        ethRate: 0
+        cryptoRate: 0
       },
       usd: {
         title: "US Dollar (USD)",
-        ethRate: 0
+        cryptoRate: 0
       },
       other: {
         title: "Other",
-        ethRate: 0
+        cryptoRate: 0
+      }
+    };
+    
+    var cryptoCurrencies = {
+      eth: {
+        title: "Ethereum (ETH)",
+        crypto_Block: 5
+      },
+      btc: {
+        title: "Bitcoin (BTC)",
+        crypto_Block: 25 //May need to pull this data. It changes in July 2016
+      },
+      other: {
+        title: "Other",
+        crypto_Block: 0
+      }
+    };
+
+    var difficulties = {
+      fixed: {
+        title: "Fixed"
+      },
+      linear: {
+        title: "Predictive - Linear"
+      },
+      quadratic: {
+        title: "Predictive - Quadratic"
+      },
+      exponential: {
+        title: "Predictive - Exponential"
       }
     };
 
@@ -67,10 +102,17 @@ angular.module('ethMiningCalc')
      */
     var setCurrencyCode = function(code) {
       inputs.currencyCode = code;
-      inputs.currencyRate = currencies[inputs.currencyCode].ethRate;
+      inputs.currencyRate = currencies[inputs.currencyCode].cryptoRate;
       updateCurrency();
+    };
+   
+    var setCryptoCurrencyCode = function(code){
+      inputs.cryptoCurrencyCode = code;
+      inputs.cryptoTitle = cryptoCurrencies[code].title;
+      inputs.crypto_Block = cryptoCurrencies[code].crypto_Block;
+      updateCryptoCurrency(code);
     }
-    
+
     /**
      * Update the reporting currency
      */
@@ -82,21 +124,52 @@ angular.module('ethMiningCalc')
       }
     };
 
+    // TODO: Implement this correctly
+    var updateCryptoCurrency = function(code) {
+      //TODO: Re-run market Data Service
+      loadMarketData(code, inputs.currencyCode);
+    };
+
+    /**
+     * Update the Difficulty Type
+     * Place Holder to implement predictive difficulties
+     */
+    var updateDifficultyType = function(type) {
+      //Call Predictive Service
+      //difficultyDataService.get(inputs.cryptoCurrencyCode);
+      //predictDifficultyService.predict(type);
+      //if ($scope.userHasCalculated){
+      //var results = CalcService.calculate(inputs, plotOptions);
+      //buildTable(results.table);
+      // $timeout(function() { buildCharts(results.charting); })
+      //}
+    }
+
+    var loadMarketData = function(cryptoCurrencyCode, currencyCode){
+      marketDataService.get(cryptoCurrencyCode,currencyCode)
+        .then(function(marketData) {
+          $scope.$apply(function() {
+            inputs.networkHashRate = marketData.networkHashRate;
+            inputs.difficulty = marketData.difficulty;
+            inputs.blockTime = marketData.blockTime;
+            currencies.usd.cryptoRate = marketData.usd_crypto;
+            currencies.aud.cryptoRate = marketData.aud_crypto;
+            setCurrencyCode(currencyCode); //Default to AUD
+            });
+          });
+        };
+
+
     var inputs = {};
+    inputs.currencyCode='aud' //By Default
     inputs.hashRate = undefined;
-    marketDataService.get()
-      .then(function(marketData) {
-        $scope.$apply(function() {
-          inputs.networkHashRate = marketData.networkHashRate;
-          inputs.difficulty = marketData.difficulty;
-          inputs.blockTime = marketData.blockTime;
-          inputs.crypto_block = 5; // TODO: Generalise this for other crypto (make an input)
-          currencies.usd.ethRate = marketData.usd_eth;
-          currencies.aud.ethRate = marketData.aud_eth;
-          setCurrencyCode('aud');
-          updateCurrency();
-        });
-      });
+    inputs.difficultyType='fixed'; // Default to fixed Difficulty
+    // Check we have a running geth node for predictive difficulty
+    $scope.hasGethNode = gethDataService.availableGethNode(2244733); 
+    loadMarketData('eth','aud'); // Load initial Market Data with defaults
+    setCryptoCurrencyCode('eth');
+
+
 
 
     /**
@@ -143,8 +216,10 @@ angular.module('ethMiningCalc')
     //
     $scope.inputs = inputs;
     $scope.setCurrencyCode = setCurrencyCode;
+    $scope.setCryptoCurrencyCode = setCryptoCurrencyCode;
     $scope.updateCurrency = updateCurrency;
     $scope.currencies = currencies;
+    $scope.cryptoCurrencies = cryptoCurrencies;
     $scope.plotOptions = plotOptions;
     $scope.calculate = doCalculations;
     $scope.table = {};

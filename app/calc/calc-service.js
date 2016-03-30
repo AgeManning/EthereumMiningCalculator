@@ -62,10 +62,10 @@ angular.module('ethMiningCalc')
         //Generate Data for tables and fill them
         // Note: We are using the avg network difficulty to calculate table data. This is debatable the most appropriate and accurate measure. Perhaps we shift to difficulty estimates for other currencies.
         results.table = {};
-        results.table.eth_hour = expectation(inputs.blockTime, 0.0416667, probability.network) * inputs.crypto_block;
-        results.table.eth_day = expectation(inputs.blockTime, 1, probability.network) * inputs.crypto_block;
-        results.table.eth_week = expectation(inputs.blockTime, 7, probability.network) * inputs.crypto_block;
-        results.table.eth_month = expectation(inputs.blockTime, 30, probability.network) * inputs.crypto_block;
+        results.table.eth_hour = expectation(inputs.blockTime, 0.0416667, probability.network) * inputs.crypto_Block;
+        results.table.eth_day = expectation(inputs.blockTime, 1, probability.network) * inputs.crypto_Block;
+        results.table.eth_week = expectation(inputs.blockTime, 7, probability.network) * inputs.crypto_Block;
+        results.table.eth_month = expectation(inputs.blockTime, 30, probability.network) * inputs.crypto_Block;
 
         // Currency Expectations
         results.table.cur_hour = results.table.eth_hour * inputs.currencyRate

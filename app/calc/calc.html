@@ -6,6 +6,15 @@
       <div class="panel panel-default calculator-inputs">
         <div class="panel-heading">
           <h3 class="panel-title"><i class="fa fa-calculator"></i> Projection Variables</h3>
+            <div class="input-group">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{inputs.cryptoTitle}} <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li ng-repeat="(key,value) in cryptoCurrencies">
+                    <a ng-click="setCryptoCurrencyCode(key)" href="">{{value.title}}</a>
+                  </li>
+                </ul>
+              </div>
         </div>
         <div class="panel-body">
           <form name="VariablesForm" ng-submit="calculate()" role="form" class='form-horizontal'>
@@ -28,6 +37,10 @@
               <div class="input-group">
                 <span class="input-group-addon">Average Block Time (s)</span>
                 <input type="number" step="any" ng-model="inputs.blockTime" class="form-control" placeholder="Loading..." required>
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon">Reward Per Block ({{inputs.cryptoCurrencyCode | uppercase}})</span>
+                <input type="number" step="any" ng-model="inputs.crypto_Block" class="form-control" placeholder="Loading..." required>
               </div>
               <div class="input-group">
                 <div class="input-group-btn">
@@ -168,11 +181,3 @@
   </div>
 </div>
 
-
-<!-- Here are some old graphs just for keep sake
-  <div id="ProbabilityGraph" style="height:300px;width:80%;margin:auto;"></div> 
-  <div id="ExpectationGraph" style="height:300px;width:80%;margin:auto;"></div>
-  <div id="VarianceGraph" style="height:300px;width:80%;margin:auto;"></div>
-  <div id="StdGraph" style="height:500px;width:80%;margin:auto;"></div>
-  <div id="CurrencyGraph" style="height:300px;width:80%;margin:auto;"></div>
--->

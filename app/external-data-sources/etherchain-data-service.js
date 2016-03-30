@@ -14,5 +14,21 @@ angular.module('ethMiningCalc')
         });
     }
 
+
+    factory.getBlockDifficultyData = function(prevDays,blockTime,NoPoints) {
+      
+       
+
+
+
+
+
+
+      };
+
+
+
+
+
     return factory;
   }]);
