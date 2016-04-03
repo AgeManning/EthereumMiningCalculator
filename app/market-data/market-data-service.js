@@ -26,15 +26,16 @@ angular.module('ethMiningCalc')
                 externals.bitpay = data;
                 
                 var marketData = {};
-                marketData.difficulty = externals.etherchain.stats.difficulty / 1e12;
-                marketData.blockTime = externals.etherchain.stats.blockTime;
-                marketData.networkHashRate = externals.etherchain.stats.hashRate / 1e9;
+                marketData.difficulty = Number(externals.etherchain.stats.difficulty / 1e12);
+                marketData.blockTime = Number(externals.etherchain.stats.blockTime);
+                marketData.networkHashRate = Number(externals.etherchain.stats.hashRate / 1e9);
+                marketData.currentBlock = Number(externals.etherchain.blockCount.number);
                 marketData.btc_crypto = Number(externals.poloniex.BTC_ETH.last);
                 marketData.usd_btc = Number(externals.poloniex.USDT_BTC.last);
                 marketData.usd_crypto= Number(externals.poloniex.USDT_ETH.last);
-                marketData.aud_btc = bitpayDataService.findRate(externals.bitpay, 'AUD').rate;
-                marketData.aud_crypto = marketData.aud_btc * marketData.btc_crypto;
-                marketData.cur_crypto = marketData.aud_eth;
+                marketData.aud_btc = Number(bitpayDataService.findRate(externals.bitpay, 'AUD').rate);
+                marketData.aud_crypto = Number(marketData.aud_btc * marketData.btc_crypto);
+                marketData.cur_crypto = Number(marketData.aud_eth);
                 resolve(marketData);
               });
           });

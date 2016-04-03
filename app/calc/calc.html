@@ -30,9 +30,24 @@
                 <span class="input-group-addon">Network Hash Rate (GH/s)</span>
                 <input type="number" step="any" ng-model="inputs.networkHashRate" class="form-control" placeholder="Loading..." required>
               </div>
-              <div class="input-group">
-                <span class="input-group-addon">Difficulty (TH)</span>
-                <input type="number" step="any" ng-model="inputs.difficulty" class="form-control" placeholder="Loading..." required>
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Difficulty ({{inputs.difficultyType}})<span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li ng-repeat="(key,value) in difficulties">
+                    <a ng-click="setDifficultyType(key)" href="">{{value.title}}</a>
+                  </li>
+                </ul>
+                <input type="number" step="any" ng-model="inputs.difficulty" class="form-control" placeholder="Loading..."
+                required>
+                <label> Difficulty Form From Difficulties Here </label>
+
+                <label> If predictive difficulty, show following inputs. Only quadratic needs to see c. Maybe given them labels? Also if using predictive difficulty, hide the second table (It doesn't make sense). I might just get the filter to leave blank results </label> <br>
+                <label> R2:{{inputs.predictionVariables.R2}}</label> <label>{{inputs.predictionVariables.type}} </label>
+                <input type="number" step="any" ng-model="inputs.predictionNoPoints" class="form-control" placeholder=0>
+                <input type="number" step="any" ng-model="inputs.predictionPastDays" class="form-control" placeholder=0>
+                <input type="number" step="any" ng-model="inputs.predictionVariables.a" class="form-control" placeholder=0>
+                <input type="number" step="any" ng-model="inputs.predictionVariables.b" class="form-control" placeholder=0>
+                <input type="number" step="any" ng-model="inputs.predictionVariables.c" class="form-control" placeholder=0>
               </div>
               <div class="input-group">
                 <span class="input-group-addon">Average Block Time (s)</span>
@@ -53,6 +68,30 @@
                 </div>
                 <input type="number" step="any" ng-model="inputs.currencyRate" ng-change="updateCurrency()" class="form-control" placeholder="Loading..."
                 required>
+              </div>
+            </div>
+            <!-- Costs - Not Implemented Yet --> 
+            <div>
+              <legend ng-click="showCosts = !showCosts"><span class="mini_title"><i class="fa fa-angle-right expand-chevron" ng-class="{'expand-chevron-active': showCosts}"></i> Costs</span></legend>
+              <div ng-show="showCosts">
+                <div class="input-group">
+                  <span class="input-group-addon">Miner Power Consumption (W)</span>
+                  <input type="number" ng-model="costs.powerConsumption" class="form-control" placeholder="Miner Power Consumption (W)" required>
+                </div>
+                <div class="input-group">
+                  <span class="input-group-addon">Cost per KW/h ({{inputs.currencyCode}})</span>
+                  <input type="number" ng-model="costs.cur_kwh" class="form-control" placeholder="Electricity Costs" required>
+                </div>
+              </div>
+            </div>
+            <!-- Miner Performance - Also Not Implemented Yet - Only available for ETH -->
+            <div>
+              <legend ng-click="showPerformance= !showPerformance"><span class="mini_title"><i class="fa fa-angle-right expand-chevron" ng-class="{'expand-chevron-active': showPerformance}"></i> Miners Performance</span></legend>
+              <div ng-show="showPerformance">
+                <div class="input-group">
+                  <span class="input-group-addon">Miners Address:</span>
+                  <input type="number" ng-model="performance.address" class="form-control" placeholder="Miners ETH address to check performance" required>
+                </div>
               </div>
             </div>
             <!-- Plot Options -->
@@ -89,7 +128,7 @@
             <thread>
               <tr>
                 <th> Duration </th>
-                <th> Expected Ether </th>
+                <th> Expected {{inputs.cryptoCurrencyCode | uppercase}} </th>
                 <th> Value ({{inputs.currencyCode | uppercase}}) </th>
               </tr>
             </thread>

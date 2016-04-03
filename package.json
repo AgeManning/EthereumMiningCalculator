@@ -24,6 +24,7 @@
   "homepage": "https://github.com/AgeManning/EthereumMiningCalculator#readme",
   "dependencies": {
     "bower": "^1.7.7",
+    "complex-js": "^3.1.2",
     "grunt": "^0.4.5",
     "grunt-contrib-connect": "^1.0.1",
     "grunt-script-link-tags": "^1.0.2",

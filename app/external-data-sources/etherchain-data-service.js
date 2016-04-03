@@ -14,20 +14,13 @@ angular.module('ethMiningCalc')
         });
     }
 
-
-    factory.getBlockDifficultyData = function(prevDays,blockTime,NoPoints) {
-      
-       
-
-
-
-
-
-
-      };
-
-
-
+     factory.getDifficultyData = function(blockNo) {
+      return $http.get("https://www.etherchain.org/api/block/" + blockNo)
+        .then(function(result) {
+          console.log(result.data);
+          return result.data.data[0].difficulty;
+          });
+     }
 
 
     return factory;

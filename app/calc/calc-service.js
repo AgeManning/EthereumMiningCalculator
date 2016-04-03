@@ -1,12 +1,14 @@
 angular.module('ethMiningCalc')
-  .factory('CalcService', ['ProbabilityChartService', 'VarianceChartService', function(probabilityChartService, varianceChartService) {
+  .factory('CalcService', ['StatisticsService', function(statisticsService) {
     var factory = {};
 
-    factory.calculate = function(inputs, plotOptions) {
+    factory.calculate = function(inputs, plotOptions,predictionData, isPredictive) {
 
+        //Want to define probability per blocks. If we use difficulty, we must multiply by block time to get an estimate for probability per block. The hashrate just gives us the probability per block.
         var probability = {};
+        //Network Difficulty for Network Difficulty Graphs
         probability.network = inputs.hashRate / (inputs.networkHashRate * 1e3); //GH/s	
-        probability.difficutly = inputs.hashRate / (inputs.difficulty * 1e6); //TH	
+        probability.difficulty = inputs.hashRate /(inputs.difficulty * 1e6)*inputs.blockTime; //TH	
   
         //Set up the arrays
         var data = {};
@@ -19,7 +21,7 @@ angular.module('ethMiningCalc')
         data.expectedBlocks.twoSigmaUpper = new Array();
         data.expectedBlocks.maximumPlotValue = new Array();
         data.expectedBlocks.minimumPlotValue = new Array();
-        data.expectedBlocks.maximumValue = expectation(inputs.blockTime, plotOptions.days, probability.network) + 2 * variance(inputs.blockTime, plotOptions.days, probability.network, inputs.crypto_block); // This stores the maximum plot value. Required to fill the top of the graph with 2 sigma range.
+        data.expectedBlocks.maximumValue = statisticsService.expectation(inputs, plotOptions.days) + 2 * statisticsService.variance(inputs, plotOptions.days); // This stores the maximum plot value. Required to fill the top of the graph with 2 sigma range.
         // Currency Data Set
         data.currencyData ={};
         data.currencyData.expected = new Array();
@@ -28,8 +30,44 @@ angular.module('ethMiningCalc')
         data.currencyData.twoSigmaUpper = new Array();
         data.currencyData.maximumPlotValue = new Array();
         data.currencyData.minimumPlotValue = new Array();
-        data.currencyData.maximumValue = expectation(inputs.blockTime, plotOptions.days, probability.network) + 2 * variance(inputs.blockTime, plotOptions.days, probability.network, inputs.crypto_block)*inputs.currencyRate; 
-        
+        data.currencyData.maximumValue = (statisticsService.expectation(inputs, plotOptions.days) + 2 * statisticsService.variance(inputs, plotOptions.days))*inputs.currencyRate; 
+       // Predictive Data
+       if (isPredictive){
+          data.predictionData = [];
+         // Set up the forms for each prediction type
+         switch(inputs.difficultyType){
+           case("linear"):
+             var predictedDifficulty = function(day){
+               return inputs.predictionVariables.a*day + inputs.predictionVariables.b;
+             };
+             break;
+           case("quadratic"):
+             var predictedDifficulty = function(day){
+               return inputs.predictionVariables.a*Math.pow(day,2) + inputs.predictionVariables.b*day + inputs.predictionVariables.c;
+             };
+             break;
+           case("exponential"):
+             var predictedDifficulty = function(day){
+               return inputs.predictionVariables.a*Math.exp(inputs.predictionVariables.b*day);
+             };
+             break;
+         };
+
+         // Still have to fill past data, the following for loop only fills future data
+         // Also build a chart compatible array from predictionData
+         data.actualDiffData = [];
+         for(var day in predictionData){
+           //Need to order the 0 at the end for highcharts.
+           if (Number(day) != 0){
+             data.actualDiffData.push([Number(day), predictionData[day]]);
+             data.predictionData.push([Number(day), predictedDifficulty(Number(day))]);
+           };
+         };
+         //Add today's data at end of the array.
+         data.actualDiffData.push([0, predictionData["0"]]);
+         data.predictionData.push([0, predictedDifficulty(0)]);
+       };
+
 
        /** 
         * TODO: Make an option for the user to plot quadratically or linearly.
@@ -40,90 +78,65 @@ angular.module('ethMiningCalc')
        
         var dependent =0;
         //build the dataset
-        for (i = 1; i <= plotOptions.points+1; i++) {
+        for (var i = 1; i <= plotOptions.points+1; i++) {
 
           // Quadratic -- Uncomment for quadratic plotting
           //dependent = Math.pow(i*dependent.quadraticQuanta,2);
           // Linear
           dependent = (i - 1) * dependents.linearQuanta;
-
+        
+          // Set up predictive Data -- Specifically the probability with given difficulty
+          if (isPredictive && i != 1){
+            data.predictionData.push([dependent, predictedDifficulty(dependent)]);
+          };
+          
           // Only run this once and store as a variable to calculate std fluctuation
           var results = {};
-          results.expResult = expectation(inputs.blockTime, dependent, probability.network);
-          results.varResult = variance(inputs.blockTime, dependent, probability.network);
-          
+          results.expResult = statisticsService.expectation(inputs, dependent);
+          results.varResult = statisticsService.variance(inputs, dependent);
           buildDataSetWithVariance(data.expectedBlocks, dependent, results.expResult, results.varResult);
           buildDataSetWithVariance(data.currencyData, dependent, results.expResult*inputs.currencyRate, results.varResult*inputs.currencyRate);
 
-          data.probData.push([dependent, probabilityGivenDays(inputs.blockTime, dependent, probability.network)]);
+          data.probData.push([dependent, statisticsService.probabilityAtLeastOneBlock(inputs, dependent)]);
 
         }
 
         //Generate Data for tables and fill them
         // Note: We are using the avg network difficulty to calculate table data. This is debatable the most appropriate and accurate measure. Perhaps we shift to difficulty estimates for other currencies.
         results.table = {};
-        results.table.eth_hour = expectation(inputs.blockTime, 0.0416667, probability.network) * inputs.crypto_Block;
-        results.table.eth_day = expectation(inputs.blockTime, 1, probability.network) * inputs.crypto_Block;
-        results.table.eth_week = expectation(inputs.blockTime, 7, probability.network) * inputs.crypto_Block;
-        results.table.eth_month = expectation(inputs.blockTime, 30, probability.network) * inputs.crypto_Block;
+        results.table.eth_hour = statisticsService.expectation(inputs, 0.0416667)*inputs.crypto_Block;
+        results.table.eth_day = statisticsService.expectation(inputs, 1) * inputs.crypto_Block;
+        results.table.eth_week = statisticsService.expectation(inputs ,7) * inputs.crypto_Block;
+        results.table.eth_month = statisticsService.expectation(inputs, 30) * inputs.crypto_Block;
 
         // Currency Expectations
         results.table.cur_hour = results.table.eth_hour * inputs.currencyRate
         results.table.cur_day = results.table.eth_day * inputs.currencyRate;
         results.table.cur_week = results.table.eth_week * inputs.currencyRate;
         results.table.cur_month = results.table.eth_month * inputs.currencyRate;
-        results.table.exp_day = daysGivenBlocks(inputs.blockTime, 1, probability.network);
-        results.table.probability_day = probabilityGivenDays(inputs.blockTime,1,probability.network);
-        results.table.ci ={};
-        results.table.ci.upper = daysGivenProbability(inputs.blockTime, 0.95, probability.network);
-        results.table.ci.lower = daysGivenProbability(inputs.blockTime, 0.05, probability.network);
-        results.table.check= daysGivenProbability(inputs.blockTime, 0.98, probability.network);
-        
+
+        // Second Table -- Doesn't make sense with predictive data.
+        if(!isPredictive){
+          results.table.exp_day = statisticsService.daysGivenBlocks(inputs.blockTime, 1, probability.difficulty);
+          results.table.probability_day = statisticsService.probabilityAtLeastOneBlock(inputs,1);
+          results.table.ci ={};
+          results.table.ci.upper = statisticsService.daysGivenProbability(inputs.blockTime, 0.95, probability.difficulty);
+          results.table.ci.lower = statisticsService.daysGivenProbability(inputs.blockTime, 0.05, probability.difficulty);
+          results.table.check= statisticsService.daysGivenProbability(inputs.blockTime, 0.98, probability.difficulty);
+        } 
         // Generate charting stats
         results.charting = {};
         results.charting.probData = data.probData;
-     
         results.charting.expectedBlocks = data.expectedBlocks;
         results.charting.currencyData = data.currencyData;
+        if (isPredictive){
+          results.charting.predictiveDifficulty ={};
+          results.charting.predictiveDifficulty.actualDiffData = data.actualDiffData;
+          results.charting.predictiveDifficulty.predictedDiffData = data.predictionData;
+        }
         return(results);
     }
     
-    // Probability of at least one block
-		function probabilityGivenDays(blockTime,days,prob_solving_block) {
-			//Average number of blocks in "days" 
-			var blocks_days = 3600*24*days/blockTime;
-			var probability = 1 - Math.pow((1 - prob_solving_block),blocks_days);
-			//Turn it into a percent
-			return 100*probability;
-		}
-    //This function will return expected number of days required given a certainty. Eg how many days required to be 95% sure we will solve at least one block
-    function daysGivenProbability(blockTime, Probability, prob_solving_block){
-      var attempts = Math.log(1-Probability)/Math.log(1-prob_solving_block);
-      return attempts*blockTime/3600/24;
-    }
-
-    // Expected Days Given Block
-    function daysGivenBlocks(blockTime, Blocks, prob_solving_block) {
-      var attempts = Blocks/prob_solving_block;
-      return attempts*blockTime/3600/24;
-    }
-
-		//expected number of blocks solved
-		function expectation(blockTime,days,prob_solving_block) {
-			//average number of blocks in "days" 
-			var blocks_days = 3600*24*days/blockTime;
-			var expected = blocks_days*prob_solving_block;
-			return expected;
-		}
-
-		// STD as a function of days
-		function variance(blockTime, days,prob_solving_block) {
-			//average number of blocks in "days" 
-			var blocks_days = 3600*24*days/blockTime;
-			var variance = blocks_days*prob_solving_block*(1- prob_solving_block)
-				//Return the standard deviation
-			return Math.sqrt(variance);
-		}
     	
     /**
      *  Build Data Sets with Variance
