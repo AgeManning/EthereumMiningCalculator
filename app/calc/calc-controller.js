@@ -1,5 +1,5 @@
 angular.module('ethMiningCalc')
-  .controller('CalcController', ['$http','$scope', '$timeout', 'MarketDataService', 'CalcService', 'GethDataService', 'ProbabilityChartService', 'VarianceChartService','PredictiveDifficultyChartService','PredictionService','dataPredictionService', function($http,$scope, $timeout, marketDataService, CalcService, gethDataService, probabilityChartService, varianceChartService,predictiveDifficultyChartService,PredictionService,dataPredictionService) {
+  .controller('CalcController', ['$http','$scope', '$timeout', 'MarketDataService', 'CalcService', 'GethDataService', 'ProbabilityChartService', 'VarianceChartService','PredictiveDifficultyChartService','MinerPerformanceChartService','PredictionService','dataPredictionService','minerPerformanceService', function($http,$scope, $timeout, marketDataService, CalcService, gethDataService, probabilityChartService, varianceChartService,predictiveDifficultyChartService,minerPerformanceChartService,PredictionService,dataPredictionService,minerPerformanceService) {
     //
     // Define controller functionality
     //
@@ -41,6 +41,11 @@ angular.module('ethMiningCalc')
       expectedCurrencyDifficulty: {
         title: "Expected Return - Based on Difficulty",
         enabled: false 
+      },
+      minerPerformance: {
+        title: "Miner Performance",
+        id: "MinerPerformance",
+        enabled: true
       }
     };
 
@@ -234,6 +239,7 @@ angular.module('ethMiningCalc')
     inputs.costs.cur_kwh =0;
     inputs.costs.initialInvestment =0 // TODO: Validate these variables and not set as default.
     inputs.performance.address=0;
+    inputs.performance.pastBlocks=0;
     $scope.predictiveDifficulty=false; //Only predictive difficulty for ETH
     predictiveDataInputVariablesHasChanged = true; //Need to create predictive data for the first time.
     inputs.currencyCode='aud' //By Default
@@ -289,6 +295,26 @@ angular.module('ethMiningCalc')
     }   
     
 
+    // Place Holder I spose until Paul gives the UI direction
+    // Will do proper validation later
+    var checkMinerPerformance = function(){
+      if(inputs.performance.address != undefined){
+        if ((inputs.performance.address.length == 42) && inputs.hashRate !=0){
+          minerPerformanceService.checkMinerPerformance(inputs).then(function(dataSet){
+          //Build Miner Performance Graph
+          if(dataSet == undefined){
+            return;
+          };
+          plotOptions.plots.minerPerformance.enabled = true;
+          minerPerformanceChartService.generate("#"+plotOptions.plots.minerPerformance.id, dataSet);
+
+          });
+        };
+      };
+    };
+
+
+
     //
     // Define the components to be mapped to the view
     //
@@ -304,5 +330,6 @@ angular.module('ethMiningCalc')
     $scope.calculate = doCalculations;
     $scope.table = {};
     $scope.userHasCalculated = false;
+    $scope.checkMinerPerformance = checkMinerPerformance;
 
   }]);

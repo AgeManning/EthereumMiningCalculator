@@ -87,13 +87,17 @@
                 </div>
               </div>
             </div>
-            <!-- Miner Performance - Also Not Implemented Yet - Only available for ETH -->
+            <!-- Only available for ETH -->
             <div>
               <legend ng-click="showPerformance= !showPerformance"><span class="mini_title"><i class="fa fa-angle-right expand-chevron" ng-class="{'expand-chevron-active': showPerformance}"></i> Miners Performance</span></legend>
               <div ng-show="showPerformance">
                 <div class="input-group">
                   <span class="input-group-addon">Miners Address:</span>
-                  <input type="string" ng-model="inputs.performance.address" class="form-control" placeholder="Miners ETH address to check performance" required>
+                  <input type="string" ng-model="inputs.performance.address" class="form-control" placeholder="Miners ETH address to check performance" ng-change="checkMinerPerformance()" required>
+                </div>
+                <div class="input-group">
+                  <span class="input-group-addon">Past Blocks:</span>
+                  <input type="string" ng-model="inputs.performance.pastBlocks" class="form-control" placeholder="The number of most recent blocks to check" required>
                 </div>
               </div>
             </div>

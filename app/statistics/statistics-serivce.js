@@ -21,7 +21,7 @@ angular.module('ethMiningCalc')
      * Depending on prediction type - we take integrals of each probability function 
      * as an approximation of the summation over block quanta (close estimate for large number of blocks/days). 
      */
-
+    //TODO: Remove difficulty type - Its now stored in predictionVariables.
 		//Expected number of blocks solved
 		factory.expectation = function(inputs,days,difficultyType) {
       var difficultyType = inputs.difficultyType;
