@@ -20,9 +20,10 @@ angular.module('ethMiningCalc')
         },
         yAxis: {
           title: { text: yTitle},
-          min: 0,
-          max: Data.maximumPlotValue[1][2],
+          min: Data.minimumValue,
+          max: Data.maximumValue,
           endOnTick: false,
+          startOnTick: false,
           // Draw 1 Block Line
           plotLines: [{
             color: 'black',
@@ -142,6 +143,24 @@ angular.module('ethMiningCalc')
       if (!Draw1BlockLine){
         HighChartsData.yAxis.plotLines=""
       }
+      //Draw Vertical Line Showing Point of Non-Profitability
+      if (Data.profitabilityTurningPoint != 0 && Data.profitabilityTurningPoint != undefined){
+        HighChartsData.xAxis.plotLines = [{
+          width: 1,
+          color: '#FF0000',
+          dashStyle: "LongDash",
+          label: {
+            align: "left",
+            rotation: 0,
+            style: {
+              fonWeight: "bold"
+            },
+            text: "No longer Profitable at: " + Data.profitabilityTurningPoint + " Days <br> Max Profit: " + Math.round(Data.maxProfit*100)/100
+          },
+          value: Data.profitabilityTurningPoint
+        }];
+      };
+
      
 			$(Name).highcharts(HighChartsData);
     }

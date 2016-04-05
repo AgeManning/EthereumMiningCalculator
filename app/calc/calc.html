@@ -70,17 +70,20 @@
                 required>
               </div>
             </div>
-            <!-- Costs - Not Implemented Yet --> 
             <div>
               <legend ng-click="showCosts = !showCosts"><span class="mini_title"><i class="fa fa-angle-right expand-chevron" ng-class="{'expand-chevron-active': showCosts}"></i> Costs</span></legend>
               <div ng-show="showCosts">
                 <div class="input-group">
                   <span class="input-group-addon">Miner Power Consumption (W)</span>
-                  <input type="number" ng-model="costs.powerConsumption" class="form-control" placeholder="Miner Power Consumption (W)" required>
+                  <input type="number"step="any" ng-model="inputs.costs.powerConsumption" class="form-control" placeholder="Miner Power Consumption (W)" required>
                 </div>
                 <div class="input-group">
-                  <span class="input-group-addon">Cost per KW/h ({{inputs.currencyCode}})</span>
-                  <input type="number" ng-model="costs.cur_kwh" class="form-control" placeholder="Electricity Costs" required>
+                  <span class="input-group-addon">Cost per KWh ({{inputs.currencyCode}})</span>
+                  <input type="number" step="any" ng-model="inputs.costs.cur_kwh" class="form-control" placeholder="Electricity Costs" required>
+                </div>
+                <div class="input-group">
+                  <span class="input-group-addon">Initial Investment ({{inputs.currencyCode}})</span>
+                  <input type="number" step="any" ng-model="inputs.costs.initialInvestment" class="form-control" placeholder="Electricity Costs" required>
                 </div>
               </div>
             </div>
@@ -90,7 +93,7 @@
               <div ng-show="showPerformance">
                 <div class="input-group">
                   <span class="input-group-addon">Miners Address:</span>
-                  <input type="number" ng-model="performance.address" class="form-control" placeholder="Miners ETH address to check performance" required>
+                  <input type="string" ng-model="inputs.performance.address" class="form-control" placeholder="Miners ETH address to check performance" required>
                 </div>
               </div>
             </div>
@@ -163,6 +166,14 @@
             </td>
             <td>
               <p id='cur_month'>${{table.cur_month | number:2}}</p>
+            </td>
+            </tr>
+            <td> Per Year </td>
+            <td>
+              <p id='eth_year'>{{table.eth_year | number:2}}</p>
+            </td>
+            <td>
+              <p id='cur_year'>${{table.cur_year | number:2}}</p>
             </td>
             </tr>
           </table>

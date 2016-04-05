@@ -15,5 +15,12 @@ angular.module('ethMiningCalc')
           });
      }
 
+     factory.getMinedBlocks = function(address){
+      return $http.get("http://api.etherscan.io/api?module=account&action=getminedblocks&address=" + address + "&blocktype=blocks")
+        .then(function(result) {
+          return result.data.result;
+          });
+     };
+
     return factory;
   }]);

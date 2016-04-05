@@ -22,7 +22,7 @@ angular.module('ethMiningCalc')
       predictiveDifficulty: {
         title: "Predicted Difficulty",
         id: "PredictiveDifficultyGraph",
-        enabled: true
+        enabled: false
       },
       expectedBlocks: {
         title: "Expected Solved Blocks",
@@ -169,6 +169,7 @@ angular.module('ethMiningCalc')
         $scope.predictiveDifficulty=false;
       }else{
         $scope.predictiveDifficulty=true;
+        plotOptions.plots.predictiveDifficulty.enabled = true;
       };
       updateDifficulty(type);
     }
@@ -227,8 +228,12 @@ angular.module('ethMiningCalc')
 
     var inputs = {};
     predictionData = {}; // Global Object to store predictive data
-    $scope.costs = {};
-    $scope.performance = {};
+    inputs.costs = {};
+    inputs.performance = {};
+    inputs.costs.powerConsumption = 0; //Default no costs
+    inputs.costs.cur_kwh =0;
+    inputs.costs.initialInvestment =0 // TODO: Validate these variables and not set as default.
+    inputs.performance.address=0;
     $scope.predictiveDifficulty=false; //Only predictive difficulty for ETH
     predictiveDataInputVariablesHasChanged = true; //Need to create predictive data for the first time.
     inputs.currencyCode='aud' //By Default
@@ -299,8 +304,5 @@ angular.module('ethMiningCalc')
     $scope.calculate = doCalculations;
     $scope.table = {};
     $scope.userHasCalculated = false;
-    $scope.costs.powerConsumption = 0;
-    $scope.costs.cur_kwh = 0;
-    $scope.performance.address = 0;
 
   }]);

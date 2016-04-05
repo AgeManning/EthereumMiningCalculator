@@ -7,6 +7,7 @@
  *      computation time without losing really much accuracy I'll be taking the integrals of the prediction
  *      functions. 
  *     
+ *      Turns out some of the integrals are complex and JS isn't fun working with complex and arctan functions. So have resorted to simple sums in some cases.
  *
  *
  *
@@ -53,7 +54,6 @@ angular.module('ethMiningCalc')
           var b = predictionVariables.b;
           var c = predictionVariables.c;
 
-          /* Lets ignore integrals and complex numbers and just take the sums
           //Variable to simplify expression
           // Can be complex - Have to deal with complex nums.
           if(4*a*c - Math.pow(b,2) > 0){
@@ -61,17 +61,24 @@ angular.module('ethMiningCalc')
             var quadraticExpectation = 2*hashRate*(Math.atan(s*(2*a*n*s + b)/X) - Math.atan(s*b/X))/X; // Take my word for it.
             return quadraticExpectation; 
           }else{ // We are in the complex realm. 
+            // This shouldn't happen unless the prediction gives difficulty going negative?
+            // If someone tries this, do an infinite sum, forget about the complex solutions.
+
+            /*console.log(a,b,c);
             var X = Complex(0,Math.sqrt(-4*a*c + Math.pow(b,2)));
+            console.log("X:",X);
             var quadraticExpectation = 2*hashRate*(Complex.arctan((Complex(s*(2*a*n*s + b),0))['/'](X)))['-'](Complex.arctan((Complex(s*b,0)['/'](X)))['/'](X)).real(); // Take my word for it.
             console.log("int",n,quadraticExpectation);
-           */ 
-            //Compare to summation -- Just use this
-          var sumQuadraticExpectation = 0;
-          for(var i=0;i<=n;i++){
-            var probability = hashRate/(a*Math.pow(i*s,2) + b*i*s + c);
-            sumQuadraticExpectation += probability; 
           };
-          return sumQuadraticExpectation; 
+          // */ 
+            //Compare to summation -- Just use this
+            var sumQuadraticExpectation = 0;
+            for(var i=0;i<n;i++){
+              var probability = hashRate/(a*Math.pow(i*s,2) + b*i*s + c);
+              sumQuadraticExpectation += probability; 
+            };
+            return sumQuadraticExpectation; 
+      };
 
           break;
         case "exponential":
@@ -117,7 +124,7 @@ angular.module('ethMiningCalc')
           var b = predictionVariables.b;
           var c = predictionVariables.c;
           var quadraticVariance = 0;
-          for(var j=0;j<=n;j++){
+          for(var j=0;j<n;j++){
             var probability = hashRate/(a*Math.pow(s*j,2) + b*j*s + c);
             quadraticVariance += probability*(1-probability); 
            }
@@ -163,7 +170,7 @@ angular.module('ethMiningCalc')
           var b = predictionVariables.b;
           var probabilityLeastOneBlock = 1;
           var probability = 0;
-          for(var j=0;j<=n;j++){
+          for(var j=0;j<n;j++){
             probability = hashRate/(a*j + b);
             probabilityLeastOneBlock *= (1-probability); 
            }
@@ -174,7 +181,7 @@ angular.module('ethMiningCalc')
           var b = predictionVariables.b;
           var c = predictionVariables.c;
           var probabilityLeastOneBlock = 1;
-          for(var j=0;j<=n;j++){
+          for(var j=0;j<n;j++){
             var probability = hashRate/(a*Math.pow(s*j,2) + b*j*s + c);
             probabilityLeastOneBlock *= (1-probability); 
            }
@@ -185,7 +192,7 @@ angular.module('ethMiningCalc')
           var a = predictionVariables.a;
           var b = predictionVariables.b*s;
           var probabilityLeastOneBlock = 1;
-          for(var j=0;j<=n;j++){
+          for(var j=0;j<n;j++){
             var probability = hashRate/(a*Math.exp(b*j));
             probabilityLeastOneBlock *= (1-probability); 
            }
