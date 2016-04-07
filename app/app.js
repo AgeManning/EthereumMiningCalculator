@@ -9,8 +9,12 @@ angular.module('ethMiningCalc', [
   $stateProvider
     .state('landing-page', {
       url: "/",
-      controller: 'CalcController as vm',
       templateUrl: "app/landing-page/landing-page.html"
+    })
+    .state('forecaster', {
+      url: "/forecaster",
+      controller: 'ForecasterController as vm',
+      templateUrl: "app/forecaster/forecaster.html"
     })
     .state('calc', {
       url: "/calc",

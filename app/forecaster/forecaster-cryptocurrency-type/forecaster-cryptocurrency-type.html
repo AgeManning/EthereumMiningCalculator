@@ -1,0 +1,15 @@
+<div>
+  <div ng-hide="hasBeenSelected">
+    <h3>Select a Cryptocurrency</h3>
+  </div>
+  <div ng-show="hasBeenSelected">
+    <a ng-click="toggleMinimised()" href=""><h3>Cryptocurrency: <strong>{{selected.title}}</strong></h3></a>
+  </div>
+  <div ng-hide="minimised">
+    <hr>
+    <p><em>Difficulty prediction is only supported for Ethereum. Cost analysis is only available for Ethereum and Bitcoin.</em></p>
+    <div class="list-group">
+      <button ng-repeat="item in items" type="button" class="list-group-item" ng-click="set(item)" ng-class="{active: isSelected(item)}">{{item.title}}</button>
+    </div>
+  </div>
+</div>

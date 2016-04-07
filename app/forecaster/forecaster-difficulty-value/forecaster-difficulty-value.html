@@ -1,0 +1,16 @@
+<div>
+  <div ng-hide="hasBeenSelected">
+    <h3>Specify a Network Hashrate (TH)</h3>
+  </div>
+  <div ng-show="hasBeenSelected">
+    <a ng-click="toggleMinimised()" href=""><h3>Hashrate (TH): <strong>{{value}}</strong></h3></a>
+  </div>
+  <div ng-hide="minimised">
+    <hr>
+    <p><em>The default difficulty value is pulled etherchain.com. Feel free to override it with your own value. </em></p>
+    <div class="input-group">
+      <input type="number" step="any" class="form-control" placeholder="Hashrate (TH)" ng-model="value">
+      <span class="btn input-group-addon" ng-click="set(value)">Set Hashrate</span>
+    </div>
+  </div>
+</div>

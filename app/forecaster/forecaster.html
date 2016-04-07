@@ -1,0 +1,12 @@
+<div class="container full-width-container">
+  <div class="jumbotron">
+    <h1>Statistical Forecaster</h1>
+  </div>
+</div>
+<div class="container">
+  <forecaster-cryptocurrency-type ng-show="isVisible.cryptocurrency"></forecaster-cryptocurrency-type>
+  <forecaster-difficulty-type ng-show="isVisible.difficultyType"></forecaster-difficulty-type>
+  <forecaster-difficulty-value ng-show="isVisible.difficultyValue"></forecaster-difficulty-value>
+  <hr>
+  <a class="btn btn-primary btn-lg" ng-click="logInputs()" role="button">Log inputs obj</a>
+</div>
