@@ -1,5 +1,23 @@
 body {
-  background: #222;
+  background: #FFF;
+}
+
+.navbar-default {
+  background: #1565C0;
+}
+
+.full-width-container {
+  width: 100%;
+  padding: 0px;
+  margin-top: -21px;
+}
+
+.jumbotron {
+  background: #E3F2FD;
+}
+
+.landing-page-info div:not(:first-child) {
+  margin-top: 2em;
 }
 
 .calculator-inputs {
