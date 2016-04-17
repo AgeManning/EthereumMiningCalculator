@@ -7,10 +7,42 @@
   <a ng-click="logInputs()" role="button">Log inputs obj</a>
   <forecaster-cryptocurrency-type ng-show="isVisible.cryptocurrency"></forecaster-cryptocurrency-type>
   <forecaster-difficulty-type ng-show="isVisible.difficultyType"></forecaster-difficulty-type>
-  <forecaster-difficulty-value ng-show="isVisible.difficultyValue"></forecaster-difficulty-value>
-  <forecaster-block-time ng-show="isVisible.blockTime"></forecaster-block-time>
-  <forecaster-plot-days ng-show="isVisible.plotDays"></forecaster-plot-days>
-  <forecaster-plot-length ng-show="isVisible.plotLength"></forecaster-plot-length>
+  
+  <!-- Difficulty Value -->
+  <forecaster-input-single-value 
+    component-id="difficultyValue"
+    component-name="Network Hashrate (TH)"
+    info-text="The default value is pulled from the etherchain.org public api. Feel free to replace it with your own."
+    ng-show="isVisible.difficultyValue">
+  </forecaster-input-single-value>
+  
+  <!-- Block Time -->
+  <forecaster-input-single-value 
+    component-id="blockTime"
+    component-name="Average Block Time (seconds)"
+    info-text="The default value is pulled from the etherchain.org public api. Feel free to replace it with your own."
+    ng-show="isVisible.blockTime">
+  </forecaster-input-single-value>
+  
+  <!-- Plot Length -->
+  <forecaster-input-single-value 
+    component-id="plotDays"
+    component-name="Plot Length (days)"
+    info-text="The amount of days the graph should run into the future."
+    default-value="30"
+    ng-show="isVisible.plotDays">
+  </forecaster-input-single-value>
+  
+  <!-- Plot Points -->
+  <forecaster-input-single-value 
+    component-id="plotLength"
+    component-name="Plot Resolution (total number of points)"
+    info-text="The granuality of the plot."
+    default-value="100"
+    ng-show="isVisible.plotLength">
+  </forecaster-input-single-value>
+    
+    
   <hr>
   <div ng-show="isVisible.calculate">
     <a class="btn btn-success" ng-click="calculate()" role="button">Calculate</a>

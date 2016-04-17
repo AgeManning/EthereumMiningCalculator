@@ -1,0 +1,20 @@
+<div>
+  <div ng-hide="state.accepted">
+    <h3>{{componentName}}</h3>
+  </div>
+  <div ng-show="state.accepted">
+    <a ng-click="state.minimised = !state.minimised" href=""><h3>{{componentName}}: <strong>{{state.value}}</strong></h3></a>
+  </div>
+  <div ng-hide="state.minimised || state.loading">
+    <hr>
+    <p><em>{{infoText}}</em></p>
+    <div class="input-group">
+      <input type="number" step="any" class="form-control" placeholder="{{componentName}}" ng-model="state.value">
+      <span class="btn input-group-addon" ng-click="accept(state.value)">Accept {{componentName}}</span>
+    </div>
+  </div>
+  <div ng-show="state.loading">
+    <hr>
+    <h4>Loading...</h4>
+  </div>
+</div>

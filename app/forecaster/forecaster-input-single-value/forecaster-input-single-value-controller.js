@@ -1,10 +1,8 @@
 angular.module('ethMiningCalc')
-  .controller('ForecasterDifficultyValueController', ['$scope', 'ForecasterService', function($scope, forecasterService) {
-
-    var componentId = 'difficultyValue';
+  .controller('ForecasterInputSingleValueController', ['$scope', 'ForecasterService', function($scope, forecasterService) {
 
     var state = {
-      value: undefined,
+      value: parseInt($scope.defaultValue),
       minimised: false,
       loading: false,
       accepted: false
@@ -14,10 +12,10 @@ angular.module('ethMiningCalc')
       state.minimised = true;
       state.accepted = true;
       state.value = value;
-      forecasterService.registerUserInput(componentId, value);
+      forecasterService.registerUserInput($scope.componentId, value);
     };
 
-    $scope.$on(componentId, function(event, data) {
+    $scope.$on($scope.componentId, function(event, data) {
       if (data.loading) { return state.loading = true; }
       if (data.empty) { return state.loading = false; }
       if (data.value) {
@@ -27,7 +25,7 @@ angular.module('ethMiningCalc')
       }
     });
 
-    // Configure scope
+    // Expose to $scope
     $scope.state = state;
     $scope.accept = acceptValue;
   }]);
