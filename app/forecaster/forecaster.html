@@ -4,7 +4,6 @@
   </div>
 </div>
 <div class="container">
-  <a ng-click="logInputs()" role="button">Log inputs obj</a>
   
   <!-- Cryptocurrency -->
   <forecaster-input-list
@@ -22,6 +21,51 @@
     ng-show="isVisible.difficultyType">
   </forecaster-input-list>
   
+  <!-- Predictive Difficulty Point Count -->
+  <forecaster-input-single-value
+    component-id="predictiveDifficultyPointCount"
+    component-name="Difficulty Prediction Resolution (points)"
+    info-text="The granularity of the difficulty prediction."
+    default-value="15"
+    ng-show="isVisible.predictiveDifficultyPointCount">
+  </forecaster-input-single-value>
+  
+  <!-- Predictive Difficulty Past Days -->
+  <forecaster-input-single-value
+    component-id="predictiveDifficultyPastDays"
+    component-name="Predictive Difficulty Look-Back (days)"
+    info-text="How far to look back in the past to gather data used to predict the future. Keep this low, because something takes a long time or something.. Need to check with Age."
+    default-value="100"
+    ng-show="isVisible.predictiveDifficultyPastDays">
+  </forecaster-input-single-value>
+  
+  <!-- Predictive Difficulty a -->
+  <forecaster-input-single-value
+    component-id="predictiveDifficultyAValue"
+    component-name="Predictive Difficulty a"
+    info-text="Some math thing Age understands"
+    default-value="0"
+    ng-show="isVisible.predictiveDifficultyAValue">
+  </forecaster-input-single-value>
+  
+  <!-- Predictive Difficulty b -->
+  <forecaster-input-single-value
+    component-id="predictiveDifficultyBValue"
+    component-name="Predictive Difficulty b"
+    info-text="Another math thing Age understands"
+    default-value="0"
+    ng-show="isVisible.predictiveDifficultyBValue">
+  </forecaster-input-single-value>
+  
+  <!-- Predictive Difficulty c -->
+  <forecaster-input-single-value
+    component-id="predictiveDifficultyCValue"
+    component-name="Predictive Difficulty c"
+    info-text="Yet another math thing Age understands."
+    default-value="0"
+    ng-show="isVisible.predictiveDifficultyCValue">
+  </forecaster-input-single-value>
+  
   <!-- Difficulty Value -->
   <forecaster-input-single-value 
     component-id="difficultyValue"
@@ -38,22 +82,58 @@
     ng-show="isVisible.blockTime">
   </forecaster-input-single-value>
   
-  <!-- Predict Costs? -->
+  <!-- Cost Analysis? -->
   <forecaster-input-list
-    component-id="costPrediction"
-    component-name="Cost Prediction"
-    info-text="Cost prediction is cool"
-    ng-show="isVisible.costPrediction">
+    component-id="costAnalysis"
+    component-name="Cost Analysis"
+    info-text="Cost analysis is cool"
+    ng-show="isVisible.costAnalysis">
   </forecaster-input-list>
   
-  <!-- Fiat Currency -->
+  <!-- Cost Analysis rate -->
   <forecaster-input-list-and-value
-    component-id="fiatCurrency"
-    component-name="Fiat Currency"
+    component-id="costAnalysisRate"
+    component-name="Cost Analysis Rate"
     list-title="Currency"
-    info-text="Fiat currencies are lame"
-    ng-show="isVisible.fiatCurrency">
+    info-text="The currency rate you would like to use to analyse your costs."
+    ng-show="isVisible.costAnalysisRate">
   </forecaster-input-list-and-value>
+  
+  <!-- Reward per block -->
+  <forecaster-input-single-value 
+    component-id="blockReward"
+    component-name="Reward for Solving a Block"
+    info-text="How many units of currency you are awarded for solving a block"
+    default-value="5"
+    ng-show="isVisible.blockReward">
+  </forecaster-input-single-value>
+  
+  <!-- Initial Investment -->
+  <forecaster-input-single-value 
+    component-id="initialInvestment"
+    component-name="Initial Miner Investment"
+    info-text="How much have you spent to obtain your miner?"
+    default-value="1000"
+    ng-show="isVisible.initialInvestment">
+  </forecaster-input-single-value>
+  
+  <!--Miner Electricitiy Usage -->
+  <forecaster-input-single-value 
+    component-id="electricityUsage"
+    component-name="Miner Power Consumption (W)"
+    info-text="How many Watts(W) of electricity does your miner consume?"
+    default-value="150"
+    ng-show="isVisible.electricityUsage">
+  </forecaster-input-single-value>
+  
+  <!-- Electricitiy Rate -->
+  <forecaster-input-single-value 
+    component-id="electricityRate"
+    component-name="Electricity Cost per kWh"
+    info-text="How much do you pay per kWh for electricity?"
+    default-value="0.25"
+    ng-show="isVisible.electricityRate">
+  </forecaster-input-single-value>
   
   <!-- Plot Length -->
   <forecaster-input-single-value 

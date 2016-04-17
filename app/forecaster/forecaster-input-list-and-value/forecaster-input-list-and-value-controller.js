@@ -21,7 +21,6 @@ angular.module('ethMiningCalc')
     };
     
     var selectListItem = function(item) {
-      console.log(item);
       state.value = item.value;
     }
     

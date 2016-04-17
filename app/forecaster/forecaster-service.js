@@ -48,7 +48,7 @@ angular.module('ethMiningCalc')
           form: "D = Aexp(bx)"
         }
       },
-      "costPrediction": {
+      "costAnalysis": {
         enable: {
           title: "Enable Cost Predicition",
           code: 'enable'
@@ -57,25 +57,11 @@ angular.module('ethMiningCalc')
           title: "Disable Cost Prediction",
           code: 'disable'
         }
-      },
-      "fiatCurrencies": {
-        aud: {
-          title: "Australian Dollar (AUD)",
-          code: "aud"
-        },
-        usd: {
-          title: "US Dollar (USD)",
-          code: "usd"
-        },
-        other: {
-          title: "Other",
-          code: "other"
-        }
       }
     };
 
-    var broadcastFiatCurrencyRates = function() {
-      var broadcastChannel = 'fiatCurrency';
+    var broadcastCurrencyRates = function() {
+      var broadcastChannel = 'costAnalysisRate';
       $rootScope.$broadcast(broadcastChannel, { "loading": true });
       marketDataService.getRates(userInputs.cryptocurrency)
         .then(function(list) {
@@ -138,7 +124,7 @@ angular.module('ethMiningCalc')
 
       if (type === 'difficultyType' && userInputs['difficultyType'] === 'none') { broadcastDifficultyValue(); };
       if (type === 'difficultyValue') { broadcastBlockTime(); }
-      if (type === 'costPrediction' && value === "enable") { broadcastFiatCurrencyRates(); }
+      if (type === 'costAnalysis' && value === "enable") { broadcastCurrencyRates(); }
 
       $rootScope.$broadcast('userInputs-updated');
     }
