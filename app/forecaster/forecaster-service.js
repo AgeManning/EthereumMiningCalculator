@@ -1,7 +1,20 @@
 angular.module('ethMiningCalc')
-  .factory('ForecasterService', ['$rootScope', '$timeout', 'MarketDataService', 'ForecasterCalcAdapterService', function($rootScope, $timeout, marketDataService, forecasterCalcAdapterService) {
+  .factory('ForecasterService', ['$rootScope', '$location', '$timeout', 'MarketDataService', 'ForecasterCalcAdapterService', function($rootScope, $location, $timeout, marketDataService, forecasterCalcAdapterService) {
     var factory = {};
-    var userInputs = {};
+    var userInputs = $location.search();
+    //var userInputs = {};
+
+    // I had to put this in a timeout cause sometimes the directives wouldn't be loaded.
+    // Need to get a better fix - this is dodgy and probably will cause bugs if someone uses it
+    // on a slow computer
+    $timeout(function() {
+      _.forEach(userInputs, function(value, key) {
+        $rootScope.$broadcast(key, { value: value, autoAccept: true });
+      });
+    }, 10);
+
+
+
 
     var lists = {
       "cryptocurrency": {
@@ -122,6 +135,8 @@ angular.module('ethMiningCalc')
     factory.registerUserInput = function(type, value) {
       userInputs[type] = value;
 
+      $location.search(type, value);
+
       if (type === 'difficultyType' && userInputs['difficultyType'] === 'none') { broadcastDifficultyValue(); };
       if (type === 'difficultyValue') { broadcastBlockTime(); }
       if (type === 'costAnalysis' && value === "enable") { broadcastCurrencyRates(); }
@@ -142,6 +157,15 @@ angular.module('ethMiningCalc')
       if (lists[list] === undefined) return {};
       return lists[list];
     };
+
+    factory.getListItemTitle = function(list, code) {
+      if (lists[list] === undefined) { return ''; }
+      var found = _.find(lists[list], function(item) {
+        return item.code === code;
+      });
+      if (found === undefined) { return ''; }
+      return found.title;
+    }
 
     /**
      * Generate plots & results

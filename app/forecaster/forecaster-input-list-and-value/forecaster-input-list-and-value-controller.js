@@ -27,10 +27,17 @@ angular.module('ethMiningCalc')
     $scope.$on($scope.componentId, function(event, data) {
       if (data.loading) { return state.loading = true; }
       if (data.empty) { return state.loading = false; }
+      if (data.autoAccept) { 
+        state.accepted = true;
+        state.minimised = true;
+      }
       if (data.value !== undefined) {
+        console.log(parseFloat(data.value));
+        state.value = parseFloat(data.value);
+      }
+      if (data.list !== undefined) {
         state.list = data.list;
         state.loading = false;
-        return;
       }
     });
 

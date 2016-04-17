@@ -2,7 +2,7 @@ angular.module('ethMiningCalc')
   .controller('ForecasterInputSingleValueController', ['$scope', 'ForecasterService', function($scope, forecasterService) {
 
     var state = {
-      value: parseInt($scope.defaultValue),
+      value: parseFloat($scope.defaultValue),
       minimised: false,
       loading: false,
       accepted: false
@@ -18,8 +18,12 @@ angular.module('ethMiningCalc')
     $scope.$on($scope.componentId, function(event, data) {
       if (data.loading) { return state.loading = true; }
       if (data.empty) { return state.loading = false; }
+      if (data.autoAccept) { 
+        state.accepted = true;
+        state.minimised = true;
+      }
       if (data.value) {
-        state.value = data.value;
+        state.value = parseFloat(data.value);
         state.loading = false;
         return;
       }
