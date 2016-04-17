@@ -27,6 +27,28 @@ angular.module('ethMiningCalc')
        return true;
      })();
      
+     isVisible.blockTime = (function() {
+       if(inputs.difficultyValue !== undefined) { return true; } 
+       return false;
+     })();
+     
+     isVisible.plotDays = (function() {
+       if(inputs.blockTime !== undefined) { return true; } 
+       return false;
+     })();
+     
+     isVisible.plotLength = (function() {
+       if(inputs.plotDays !== undefined) { return true; } 
+       return false;
+     })();
+     
+     isVisible.calculate = (function() {
+       if(inputs.plotLength !== undefined) { return true; } 
+       return false;
+     })();
+     
+     
+     
    });
     
     $scope.logInputs = function() {
@@ -34,6 +56,7 @@ angular.module('ethMiningCalc')
     }
     
     
-    $scope.inputs = forecasterService.inputs;
+    //$scope.inputs = forecasterService.inputs;
+    $scope.calculate = forecasterService.calculate;
     $scope.isVisible = isVisible;
   }]);

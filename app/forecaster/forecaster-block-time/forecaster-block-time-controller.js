@@ -1,7 +1,7 @@
 angular.module('ethMiningCalc')
-  .controller('ForecasterDifficultyValueController', ['$scope', 'ForecasterService', function($scope, forecasterService) {
+  .controller('ForecasterBlockTimeController', ['$scope', 'ForecasterService', function($scope, forecasterService) {
    
-   var componentId = 'difficultyValue';
+   var componentId = 'blockTime';
    
     var set = function(value) {
       $scope.hasBeenSelected = true;

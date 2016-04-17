@@ -1,16 +1,16 @@
 <div>
   <div ng-hide="hasBeenSelected">
-    <h3>Specify a Network Hashrate (TH)</h3>
+    <h3>Specify an Average Block Time (seconds)</h3>
   </div>
   <div ng-show="hasBeenSelected">
-    <a ng-click="toggleMinimised()" href=""><h3>Hashrate (TH): <strong>{{value}}</strong></h3></a>
+    <a ng-click="toggleMinimised()" href=""><h3>Block Time (seconds): <strong>{{value}}</strong></h3></a>
   </div>
   <div ng-hide="minimised || loading">
     <hr>
     <p><em>The default value is pulled from the <a href="http://etherchain.org" target="_blank" >etherchain.org</a> API. Feel free to replace it with your own value. </em></p>
     <div class="input-group">
-      <input type="number" step="any" class="form-control" placeholder="Hashrate (TH)" ng-model="value">
-      <span class="btn input-group-addon" ng-click="set(value)">Accept Hashrate</span>
+      <input type="number" step="any" class="form-control" placeholder="Block Time (seconds)" ng-model="value">
+      <span class="btn input-group-addon" ng-click="set(value)">Accept Block Time</span>
     </div>
   </div>
   <div ng-hide="!loading">

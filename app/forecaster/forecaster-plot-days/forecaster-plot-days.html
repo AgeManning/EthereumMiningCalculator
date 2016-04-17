@@ -1,0 +1,16 @@
+<div>
+  <div ng-hide="hasBeenSelected">
+    <h3>Specify an Amount of Days to Plot</h3>
+  </div>
+  <div ng-show="hasBeenSelected">
+    <a ng-click="toggleMinimised()" href=""><h3>Days to Plot: <strong>{{value}}</strong></h3></a>
+  </div>
+  <div ng-hide="minimised || loading">
+    <hr>
+    <p><em>How many days do you want this graph to run into the future?</em></p>
+    <div class="input-group">
+      <input type="number" step="any" class="form-control" placeholder="Plot Length (days)" ng-model="value">
+      <span class="btn input-group-addon" ng-click="set(value)">Accept Plot Length</span>
+    </div>
+  </div>
+</div>

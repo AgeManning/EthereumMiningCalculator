@@ -4,9 +4,15 @@
   </div>
 </div>
 <div class="container">
+  <a ng-click="logInputs()" role="button">Log inputs obj</a>
   <forecaster-cryptocurrency-type ng-show="isVisible.cryptocurrency"></forecaster-cryptocurrency-type>
   <forecaster-difficulty-type ng-show="isVisible.difficultyType"></forecaster-difficulty-type>
   <forecaster-difficulty-value ng-show="isVisible.difficultyValue"></forecaster-difficulty-value>
+  <forecaster-block-time ng-show="isVisible.blockTime"></forecaster-block-time>
+  <forecaster-plot-days ng-show="isVisible.plotDays"></forecaster-plot-days>
+  <forecaster-plot-length ng-show="isVisible.plotLength"></forecaster-plot-length>
   <hr>
-  <a class="btn btn-primary btn-lg" ng-click="logInputs()" role="button">Log inputs obj</a>
+  <div ng-show="isVisible.calculate">
+    <a class="btn btn-success" ng-click="calculate()" role="button">Calculate</a>
+  </div>
 </div>

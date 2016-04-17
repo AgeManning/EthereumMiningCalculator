@@ -1,7 +1,7 @@
 angular.module('ethMiningCalc')
-  .controller('ForecasterDifficultyValueController', ['$scope', 'ForecasterService', function($scope, forecasterService) {
+  .controller('ForecasterPlotDaysController', ['$scope', 'ForecasterService', function($scope, forecasterService) {
    
-   var componentId = 'difficultyValue';
+   var componentId = 'plotDays';
    
     var set = function(value) {
       $scope.hasBeenSelected = true;
@@ -28,7 +28,7 @@ angular.module('ethMiningCalc')
     });
     
     // Scope
-    $scope.value = 0;
+    $scope.value = 30;
     //
     $scope.minimised = false;
     $scope.toggleMinimised = toggleMinimised;
