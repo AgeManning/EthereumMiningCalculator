@@ -1,29 +1,13 @@
 angular.module('ethMiningCalc')
   .controller('ForecasterCryptocurrencyTypeController', ['$scope', 'ForecasterService', function($scope, forecasterService) {
-   
-   var items = {
-      eth: {
-        title: "Ethereum (ETH)",
-        code: 'eth',
-        crypto_Block: 5
-      },
-      btc: {
-        title: "Bitcoin (BTC)",
-        code: 'btc',
-        crypto_Block: 25 //May need to pull this data. It changes in July 2016
-      },
-      other: {
-        title: "Other",
-        code: 'other',
-        crypto_Block: 0
-      }
-    };
+    
+    var items = forecasterService.cryptocurrencies;
     
     var set = function(value) {
       $scope.hasBeenSelected = true;
       $scope.minimised = true;
       $scope.selected = value;
-      forecasterService.registerUserInput('cryptocurrency', value);
+      forecasterService.registerUserInput('cryptocurrency', value.code);
     };
     
     var toggleMinimised = function() {

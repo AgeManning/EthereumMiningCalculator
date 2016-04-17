@@ -1,9 +1,53 @@
 angular.module('ethMiningCalc')
-  .factory('ForecasterService', ['$rootScope', 'MarketDataService', function($rootScope, marketDataService) {
+  .factory('ForecasterService', ['$rootScope', 'MarketDataService', 'ForecasterCalcAdapterService', function($rootScope, marketDataService, forecasterCalcAdapterService) {
     var factory = {};
     var userInputs = {};
     
+    factory.cryptocurrencies = {
+      eth: {
+        title: "Ethereum (ETH)",
+        code: 'eth',
+        crypto_Block: 5
+      },
+      btc: {
+        title: "Bitcoin (BTC)",
+        code: 'btc',
+        crypto_Block: 25 //May need to pull this data. It changes in July 2016
+      },
+      other: {
+        title: "Other",
+        code: 'other',
+        crypto_Block: 0
+      }
+    };
     
+    factory.difficultyTypes = {
+      fixed: {
+        title: "None",
+        code: 'none',
+        form: ""
+      },
+      automatic: {
+        title: "Automatic (Find Best Fit)",
+        code: 'auto',
+        form: ""
+      },
+      linear: {
+        title: "Linear",
+        code: 'linear',
+        form: "D = a*B + b"
+      },
+      quadratic: {
+        title: "Quadratic",
+        code: 'quadratic',
+        form: "D= a*B^2 + b*B + c"
+      },
+      exponential: {
+        title: "Exponential",
+        code: 'exponential',
+        form: "D = Aexp(bx)"
+      }
+    };
 
     /**
      * Get this item and broadcast it to components
@@ -11,12 +55,16 @@ angular.module('ethMiningCalc')
     var broadcastDifficultyValue = function() {
       var broadcastChannel = 'difficultyValue'
       $rootScope.$broadcast(broadcastChannel, { "loading": true });
-      marketDataService.getDifficulty(userInputs.cryptocurrency.code)
-        .then(function(difficulty) {
-          $rootScope.$broadcast(broadcastChannel, { "value": difficulty });
+      marketDataService.getDifficulty(userInputs.cryptocurrency)
+        .then(function(result) {
+          $rootScope.$apply(function() {
+            $rootScope.$broadcast(broadcastChannel, { "value": result });  
+          });
         })
         .catch(function() {
-          $rootScope.$broadcast(broadcastChannel, { empty: true });
+          $rootScope.$apply(function() {
+            $rootScope.$broadcast(broadcastChannel, { empty: true });  
+          });
         });
     }
 
@@ -26,12 +74,17 @@ angular.module('ethMiningCalc')
     var broadcastBlockTime = function() {
       var broadcastChannel = 'blockTime'
       $rootScope.$broadcast(broadcastChannel, { "loading": true });
-      marketDataService.blockTime(userInputs.cryptocurrency.code)
-        .then(function(difficulty) {
-          $rootScope.$broadcast(broadcastChannel, { "value": difficulty });
+      marketDataService.blockTime(userInputs.cryptocurrency)
+        .then(function(result) {
+          $rootScope.$apply(function() {
+            $rootScope.$broadcast(broadcastChannel, { "value": result });  
+          });
         })
         .catch(function() {
-          $rootScope.$broadcast(broadcastChannel, { empty: true });
+          $rootScope.$apply(function() {
+            $rootScope.$broadcast(broadcastChannel, { empty: true });  
+          });
+          
         });
     }
 
@@ -44,7 +97,7 @@ angular.module('ethMiningCalc')
     factory.registerUserInput = function(type, value) {
       userInputs[type] = value;
 
-      if (type === 'difficultyType' && userInputs['difficultyType'].code === 'none') { broadcastDifficultyValue(); };
+      if (type === 'difficultyType' && userInputs['difficultyType'] === 'none') { broadcastDifficultyValue(); };
       if (type === 'difficultyValue') { broadcastBlockTime(); }
 
       $rootScope.$broadcast('userInputs-updated');
@@ -59,8 +112,11 @@ angular.module('ethMiningCalc')
       return userInputs;
     }
     
+    /**
+     * Generate plots & results
+     */
     factory.calculate = function() {
-      console.log('calculate');
+      forecasterCalcAdapterService.calculate(userInputs);
     };
 
     return factory;

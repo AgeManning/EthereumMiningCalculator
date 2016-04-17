@@ -20,11 +20,11 @@ angular.module('ethMiningCalc')
     
     $scope.$on(componentId, function(event, data) { 
       if(data.loading) { return $scope.loading = true; }
+      if(data.empty) { return $scope.loading = false; }
       if(data.value) { 
         $scope.value = data.value;
         $scope.loading = false; 
       }
-      $scope.$apply();
     });
     
     // Scope

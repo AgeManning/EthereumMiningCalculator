@@ -1,40 +1,33 @@
 angular.module('ethMiningCalc')
   .controller('ForecasterDifficultyValueController', ['$scope', 'ForecasterService', function($scope, forecasterService) {
-   
-   var componentId = 'difficultyValue';
-   
-    var set = function(value) {
-      $scope.hasBeenSelected = true;
-      $scope.minimised = true;
-      $scope.selected = value;
+
+    var componentId = 'difficultyValue';
+
+    var state = {
+      value: undefined,
+      minimised: false,
+      loading: false,
+      accepted: false
+    };
+
+    var acceptValue = function(value) {
+      state.minimised = true;
+      state.accepted = true;
+      state.value = value;
       forecasterService.registerUserInput(componentId, value);
     };
-    
-    var toggleMinimised = function() {
-      $scope.minimised = !$scope.minimised;
-    }
-    
-    var isSelected = function(value) {
-      return $scope.selected === value;
-    } 
-    
-    $scope.$on(componentId, function(event, data) { 
-      if(data.loading) { return $scope.loading = true; }
-      if(data.value) { 
-        $scope.value = data.value;
-        $scope.loading = false; 
+
+    $scope.$on(componentId, function(event, data) {
+      if (data.loading) { return state.loading = true; }
+      if (data.empty) { return state.loading = false; }
+      if (data.value) {
+        state.value = data.value;
+        state.loading = false;
+        return;
       }
-      $scope.$apply();
     });
-    
-    // Scope
-    $scope.value = 0;
-    //
-    $scope.minimised = false;
-    $scope.toggleMinimised = toggleMinimised;
-    $scope.hasBeenSelected = false;
-    $scope.selected = undefined;
-    $scope.isSelected = isSelected;
-    $scope.loading = false;
-    $scope.set = set;
+
+    // Configure scope
+    $scope.state = state;
+    $scope.accept = acceptValue;
   }]);

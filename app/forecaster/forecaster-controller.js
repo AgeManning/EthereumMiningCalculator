@@ -16,14 +16,14 @@ angular.module('ethMiningCalc')
      
      isVisible.difficultyType = (function() {
        if(inputs.cryptocurrency === undefined) { return false; }
-       if(inputs.cryptocurrency.code !== 'eth') { return false; }
+       if(inputs.cryptocurrency !== 'eth') { return false; }
        return true;
      })();
      
      isVisible.difficultyValue = (function() {
-       if(inputs.cryptocurrency.code !== 'eth') { return true; }
+       if(inputs.cryptocurrency !== 'eth') { return true; }
        if(inputs.difficultyType === undefined) { return false; }
-       if(inputs.difficultyType.code !== 'none') { return false; }
+       if(inputs.difficultyType !== 'none') { return false; }
        return true;
      })();
      
