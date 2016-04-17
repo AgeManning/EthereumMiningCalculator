@@ -51,6 +51,7 @@ angular.module('ethMiningCalc')
       })();
 
       isVisible.difficultyValue = (function() {
+        if (inputs.cryptocurrency === undefined) { return false; }
         if (inputs.cryptocurrency !== 'eth') { return true; }
         if (inputs.difficultyType === 'none') { return true; }
         return false;
