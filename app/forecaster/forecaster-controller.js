@@ -32,8 +32,19 @@ angular.module('ethMiningCalc')
        return false;
      })();
      
-     isVisible.plotDays = (function() {
+     isVisible.costPrediction = (function() {
        if(inputs.blockTime !== undefined) { return true; } 
+       return false;
+     })();
+     
+     isVisible.fiatCurrency = (function() {
+       if(inputs.costPrediction === "enable") { return true; } 
+       return false;
+     })();
+     
+     isVisible.plotDays = (function() {
+       if(inputs.costPrediction === "disable") { return true; }
+       //if(inputs.costPrediction !== undefined) { return true; } 
        return false;
      })();
      

@@ -1,9 +1,8 @@
 angular.module('ethMiningCalc')
-  .controller('ForecasterInputListController', ['$scope', 'ForecasterService', function($scope, forecasterService) {
-    
-    var items = forecasterService.getList($scope.componentId);
+  .controller('ForecasterInputListAndValueController', ['$scope', 'ForecasterService', function($scope, forecasterService) {
     
     var state = {
+      list: [],
       value: $scope.defaultValue,
       minimised: false,
       loading: false,
@@ -18,21 +17,26 @@ angular.module('ethMiningCalc')
       state.minimised = true;
       state.accepted = true;
       state.value = value;
-      forecasterService.registerUserInput($scope.componentId, state.value.code);
+      forecasterService.registerUserInput($scope.componentId, state.value);
     };
+    
+    var selectListItem = function(item) {
+      console.log(item);
+      state.value = item.value;
+    }
     
     $scope.$on($scope.componentId, function(event, data) {
       if (data.loading) { return state.loading = true; }
       if (data.empty) { return state.loading = false; }
-      if (data.list) {
-        items = data.list;
+      if (data.value !== undefined) {
+        state.list = data.list;
         state.loading = false;
         return;
       }
     });
 
     // Expose to $scope
-    $scope.items = items;
     $scope.state = state;
     $scope.accept = acceptValue;
+    $scope.select = selectListItem;
   }]);

@@ -38,6 +38,23 @@
     ng-show="isVisible.blockTime">
   </forecaster-input-single-value>
   
+  <!-- Predict Costs? -->
+  <forecaster-input-list
+    component-id="costPrediction"
+    component-name="Cost Prediction"
+    info-text="Cost prediction is cool"
+    ng-show="isVisible.costPrediction">
+  </forecaster-input-list>
+  
+  <!-- Fiat Currency -->
+  <forecaster-input-list-and-value
+    component-id="fiatCurrency"
+    component-name="Fiat Currency"
+    list-title="Currency"
+    info-text="Fiat currencies are lame"
+    ng-show="isVisible.fiatCurrency">
+  </forecaster-input-list-and-value>
+  
   <!-- Plot Length -->
   <forecaster-input-single-value 
     component-id="plotDays"

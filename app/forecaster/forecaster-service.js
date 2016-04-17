@@ -1,9 +1,9 @@
 angular.module('ethMiningCalc')
-  .factory('ForecasterService', ['$rootScope', 'MarketDataService', 'ForecasterCalcAdapterService', function($rootScope, marketDataService, forecasterCalcAdapterService) {
+  .factory('ForecasterService', ['$rootScope', '$timeout', 'MarketDataService', 'ForecasterCalcAdapterService', function($rootScope, $timeout, marketDataService, forecasterCalcAdapterService) {
     var factory = {};
     var userInputs = {};
 
-    var staticLists = {
+    var lists = {
       "cryptocurrency": {
         eth: {
           title: "Ethereum (ETH)",
@@ -47,8 +47,46 @@ angular.module('ethMiningCalc')
           code: 'exponential',
           form: "D = Aexp(bx)"
         }
+      },
+      "costPrediction": {
+        enable: {
+          title: "Enable Cost Predicition",
+          code: 'enable'
+        },
+        disable: {
+          title: "Disable Cost Prediction",
+          code: 'disable'
+        }
+      },
+      "fiatCurrencies": {
+        aud: {
+          title: "Australian Dollar (AUD)",
+          code: "aud"
+        },
+        usd: {
+          title: "US Dollar (USD)",
+          code: "usd"
+        },
+        other: {
+          title: "Other",
+          code: "other"
+        }
       }
     };
+
+    var broadcastFiatCurrencyRates = function() {
+      var broadcastChannel = 'fiatCurrency';
+      $rootScope.$broadcast(broadcastChannel, { "loading": true });
+      marketDataService.getRates(userInputs.cryptocurrency)
+        .then(function(list) {
+          $rootScope.$broadcast(broadcastChannel, { value: 0, list: list });
+        })
+        .catch(function(error) {
+          $rootScope.$broadcast(broadcastChannel, { value: 0, list: [] });
+        });
+    }
+
+
 
     /**
      * Get this item and broadcast it to components
@@ -100,6 +138,7 @@ angular.module('ethMiningCalc')
 
       if (type === 'difficultyType' && userInputs['difficultyType'] === 'none') { broadcastDifficultyValue(); };
       if (type === 'difficultyValue') { broadcastBlockTime(); }
+      if (type === 'costPrediction' && value === "enable") { broadcastFiatCurrencyRates(); }
 
       $rootScope.$broadcast('userInputs-updated');
     }
@@ -112,9 +151,10 @@ angular.module('ethMiningCalc')
     factory.getUserInputs = function() {
       return userInputs;
     }
-    
-    factory.getStaticList = function(list) {
-      return staticLists[list];
+
+    factory.getList = function(list) {
+      if (lists[list] === undefined) return {};
+      return lists[list];
     };
 
     /**

@@ -75,10 +75,11 @@ angular.module('ethMiningCalc')
           });
       };
     }
-    
-    factory.getDifficulty = function(cryptoCode){
+
+
+    factory.getDifficulty = function(cryptoCode) {
       return new Promise(function(resolve, reject) {
-        if(cryptoCode === "eth") {
+        if (cryptoCode === "eth") {
           etherchainDataService.getBasicStats()
             .then(function(data) {
               resolve((Number(data.stats.difficulty / 1e12)));
@@ -88,10 +89,10 @@ angular.module('ethMiningCalc')
         }
       });
     }
-    
-    factory.blockTime = function(cryptoCode){
+
+    factory.blockTime = function(cryptoCode) {
       return new Promise(function(resolve, reject) {
-        if(cryptoCode === "eth") {
+        if (cryptoCode === "eth") {
           etherchainDataService.getBasicStats()
             .then(function(data) {
               resolve(Number(data.stats.blockTime));
@@ -100,6 +101,38 @@ angular.module('ethMiningCalc')
           reject()
         }
       });
+    }
+
+    factory.getRates = function(cryptoCode) {
+      var btcRates = undefined;
+      var formatForOutput = function(item) {
+        item.title = item.name;
+        item.value = item.rate;
+      }
+      // If we are using BTC as our crypto 
+      if (cryptoCode.toLowerCase() === "btc") {
+        return bitpayDataService.getRates()
+          .then(function(data) {
+            _.forEach(data, formatForOutput);
+            return data;
+          })
+      }
+      // If we are using another crypto than BTC
+      return poloniexDataService.getTicker()
+        .then(function(data) {
+          btcRates = _.find(data, function(value, key) {
+            return key === "BTC_" + cryptoCode.toUpperCase();
+          })
+          if (btcRates === undefined) { throw 'No Poloniex data for selected crypto'; }
+          return bitpayDataService.getRates();
+        })
+        .then(function(data) {
+          _.forEach(data, function(value) {
+            value.rate = value.rate * btcRates.last;
+            formatForOutput(value);
+          });
+          return data;
+        });
     }
 
     return factory;
