@@ -12,7 +12,7 @@ angular.module('ethMiningCalc')
       state.minimised = true;
       state.accepted = true;
       state.value = value;
-      forecasterService.registerUserInput($scope.componentId, value);
+      forecasterService.registerUserInput($scope.componentId, state.value);
     };
 
     $scope.$on($scope.componentId, function(event, data) {

@@ -5,8 +5,22 @@
 </div>
 <div class="container">
   <a ng-click="logInputs()" role="button">Log inputs obj</a>
-  <forecaster-cryptocurrency-type ng-show="isVisible.cryptocurrency"></forecaster-cryptocurrency-type>
-  <forecaster-difficulty-type ng-show="isVisible.difficultyType"></forecaster-difficulty-type>
+  
+  <!-- Cryptocurrency -->
+  <forecaster-input-list
+    component-id="cryptocurrency"
+    component-name="Cryptocurrency"
+    info-text="Difficulty prediction is only supported for Ethereum. Cost analysis is only available for Ethereum and Bitcoin."
+    ng-show="isVisible.cryptocurrency">
+  </forecaster-input-list>
+  
+  <!-- Difficulty Prediction Type -->
+  <forecaster-input-list
+    component-id="difficultyType"
+    component-name="Difficulty Prediction Method"
+    info-text="Difficulty prediction looks at the history of network difficulty and attempts to continue the current trend into the future."
+    ng-show="isVisible.difficultyType">
+  </forecaster-input-list>
   
   <!-- Difficulty Value -->
   <forecaster-input-single-value 

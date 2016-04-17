@@ -1,0 +1,19 @@
+<div>
+  <div ng-hide="state.accepted">
+    <h3>{{componentName}}</h3>
+  </div>
+  <div ng-show="state.accepted">
+    <a ng-click="state.minimised = !state.minimised" href=""><h3>{{componentName}}: <strong>{{state.value.title}}</strong></h3></a>
+  </div>
+  <div ng-hide="state.minimised || state.loading">
+    <hr>
+    <p><em>{{infoText}}</em></p>
+    <div class="list-group">
+      <button ng-repeat="item in items" type="button" class="list-group-item" ng-click="accept(item)" ng-class="{active: state.itemIsAccepted(item)}">{{item.title}}</button>
+    </div>
+  </div>
+  <div ng-show="state.loading">
+    <hr>
+    <h4>Loading...</h4>
+  </div>
+</div>

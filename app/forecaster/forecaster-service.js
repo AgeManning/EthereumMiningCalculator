@@ -2,50 +2,51 @@ angular.module('ethMiningCalc')
   .factory('ForecasterService', ['$rootScope', 'MarketDataService', 'ForecasterCalcAdapterService', function($rootScope, marketDataService, forecasterCalcAdapterService) {
     var factory = {};
     var userInputs = {};
-    
-    factory.cryptocurrencies = {
-      eth: {
-        title: "Ethereum (ETH)",
-        code: 'eth',
-        crypto_Block: 5
+
+    var staticLists = {
+      "cryptocurrency": {
+        eth: {
+          title: "Ethereum (ETH)",
+          code: 'eth',
+          crypto_Block: 5
+        },
+        btc: {
+          title: "Bitcoin (BTC)",
+          code: 'btc',
+          crypto_Block: 25 //May need to pull this data. It changes in July 2016
+        },
+        other: {
+          title: "Other",
+          code: 'other',
+          crypto_Block: 0
+        }
       },
-      btc: {
-        title: "Bitcoin (BTC)",
-        code: 'btc',
-        crypto_Block: 25 //May need to pull this data. It changes in July 2016
-      },
-      other: {
-        title: "Other",
-        code: 'other',
-        crypto_Block: 0
-      }
-    };
-    
-    factory.difficultyTypes = {
-      fixed: {
-        title: "None",
-        code: 'none',
-        form: ""
-      },
-      automatic: {
-        title: "Automatic (Find Best Fit)",
-        code: 'auto',
-        form: ""
-      },
-      linear: {
-        title: "Linear",
-        code: 'linear',
-        form: "D = a*B + b"
-      },
-      quadratic: {
-        title: "Quadratic",
-        code: 'quadratic',
-        form: "D= a*B^2 + b*B + c"
-      },
-      exponential: {
-        title: "Exponential",
-        code: 'exponential',
-        form: "D = Aexp(bx)"
+      "difficultyType": {
+        fixed: {
+          title: "None",
+          code: 'none',
+          form: ""
+        },
+        automatic: {
+          title: "Automatic (Find Best Fit)",
+          code: 'auto',
+          form: ""
+        },
+        linear: {
+          title: "Linear",
+          code: 'linear',
+          form: "D = a*B + b"
+        },
+        quadratic: {
+          title: "Quadratic",
+          code: 'quadratic',
+          form: "D= a*B^2 + b*B + c"
+        },
+        exponential: {
+          title: "Exponential",
+          code: 'exponential',
+          form: "D = Aexp(bx)"
+        }
       }
     };
 
@@ -58,12 +59,12 @@ angular.module('ethMiningCalc')
       marketDataService.getDifficulty(userInputs.cryptocurrency)
         .then(function(result) {
           $rootScope.$apply(function() {
-            $rootScope.$broadcast(broadcastChannel, { "value": result });  
+            $rootScope.$broadcast(broadcastChannel, { "value": result });
           });
         })
         .catch(function() {
           $rootScope.$apply(function() {
-            $rootScope.$broadcast(broadcastChannel, { empty: true });  
+            $rootScope.$broadcast(broadcastChannel, { empty: true });
           });
         });
     }
@@ -77,14 +78,14 @@ angular.module('ethMiningCalc')
       marketDataService.blockTime(userInputs.cryptocurrency)
         .then(function(result) {
           $rootScope.$apply(function() {
-            $rootScope.$broadcast(broadcastChannel, { "value": result });  
+            $rootScope.$broadcast(broadcastChannel, { "value": result });
           });
         })
         .catch(function() {
           $rootScope.$apply(function() {
-            $rootScope.$broadcast(broadcastChannel, { empty: true });  
+            $rootScope.$broadcast(broadcastChannel, { empty: true });
           });
-          
+
         });
     }
 
@@ -112,6 +113,10 @@ angular.module('ethMiningCalc')
       return userInputs;
     }
     
+    factory.getStaticList = function(list) {
+      return staticLists[list];
+    };
+
     /**
      * Generate plots & results
      */
