@@ -92,7 +92,9 @@ angular.module('ethMiningCalc')
         var variables = linearPredict(data);
         predictionVariables.a = 0;
         predictionVariables.b = variables.a;
-        predictionVaraibles.c = variables.b;
+        predictionVariables.c = variables.b;
+        predictionVariables.type = variables.type;
+        console.log(variables);
         return predictionVariables;
       };
 
