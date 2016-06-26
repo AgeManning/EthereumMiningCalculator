@@ -2,12 +2,41 @@ angular.module('ethMiningCalc')
   .factory('CalcService', ['StatisticsService', function(statisticsService) {
     var factory = {};
 
-    factory.calculate = function(inputs, plotOptions,predictionData, isPredictive) {
+    factory.calculate = function(userInputs, isPredictive) {
+
+        // Updated UI Logic. Adapting it here. 
+        var inputs = {};
+        var plotOptions = {};
+        var predictionData = userInputs.predictionData;  
+         
+        inputs.hashRate = userInputs.hashRate;
+        if (userInputs.difficultyType === 'none' ) {inputs.difficultyType = 'fixed'}
+        else {inputs.difficultyType = userInputs.difficultyType};
+        inputs.networkHashRate = userInputs.currentDifficulty/userInputs.blockTime;
+        inputs.difficulty = userInputs.currentDifficulty;
+        inputs.currencyRate = userInputs.cryptoPrice;
+        inputs.crypto_Block = userInputs.blockReward;
+        inputs.blockTime = userInputs.blockTime;
+
+        plotOptions.days = userInputs.plotDays;
+        plotOptions.points = userInputs.plotResolution;
+        
+        inputs.costs = {};
+        if (userInputs.electricityUsage === undefined) {userInputs.electricityUsage = 0};
+        if (userInputs.electricityRate === undefined) {userInputs.electricityRate = 0};
+        inputs.costs.powerConsumption = userInputs.electricityUsage;
+        inputs.costs.cur_kwh = userInputs.electricityRate;
+        
+        inputs.predictionVariables = userInputs.predictionVariables;
+        console.log(inputs);       
+        console.log(predictionData);
+        console.log(plotOptions);
+        // End Adaptation
 
         //Want to define probability per blocks. If we use difficulty, we must multiply by block time to get an estimate for probability per block. The hashrate just gives us the probability per block.
         var probability = {};
         //Network Difficulty for Network Difficulty Graphs
-        probability.network = inputs.hashRate / (inputs.networkHashRate * 1e3); //GH/s	
+        // probability.network = inputs.hashRate / (inputs.networkHashRate * 1e3); //GH/s	
         probability.difficulty = inputs.hashRate /(inputs.difficulty * 1e6)*inputs.blockTime; //TH	
  
         //Cost per day
@@ -44,6 +73,7 @@ angular.module('ethMiningCalc')
        // Predictive Data
        if (isPredictive){
           data.predictionData = [];
+          data.actualDiffData = [];
          // Set up the forms for each prediction type
          switch(inputs.difficultyType){
            case("linear"):
@@ -65,7 +95,7 @@ angular.module('ethMiningCalc')
 
          // Still have to fill past data, the following for loop only fills future data
          // Also build a chart compatible array from predictionData
-         data.actualDiffData = [];
+      
          for(var day in predictionData){
            //Need to order the 0 at the end for highcharts.
            if (Number(day) != 0){

@@ -25,6 +25,9 @@ angular.module('ethMiningCalc')
       if (data.value) {
         state.value = parseFloat(data.value);
         state.loading = false;
+        if (data.autoAccept){
+          forecasterService.registerUserInput($scope.componentId, state.value);
+        }
         return;
       }
     });

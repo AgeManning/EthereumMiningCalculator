@@ -12,7 +12,24 @@
     info-text="Difficulty prediction is only supported for Ethereum. Cost analysis is only available for Ethereum and Bitcoin."
     ng-show="isVisible.cryptocurrency">
   </forecaster-input-list>
-  
+
+  <!-- Option Complexity -->
+  <forecaster-input-list
+    component-id="complexityType"
+    component-name="Option Complexity"
+    info-text="Choose the complexity of configuration options for this calculator. <br> Default Options - Automatically chooses basic settings, disables predictive difficulty and miner expenses <br> Custom - Manually accept each setting, enables predictive difficulty. <br> Advanced - Enables the user to customize all features, including predictive difficulty functional forms and sampling sizes for graphs and predictions."
+    ng-show="isVisible.complexityType">
+  </forecaster-input-list>
+
+  <!-- Hash Rate of the Miner -->
+  <forecaster-input-single-value
+    component-id="hashRate"
+    component-name="Miner's HashRate (MH/s)"
+    info-text="Input the hash rate of the miner you wish to forcast. " 
+    default-value="100"
+    ng-show="isVisible.hashRate">
+  </forecaster-input-single-value>
+
   <!-- Difficulty Prediction Type -->
   <forecaster-input-list
     component-id="difficultyType"
@@ -21,57 +38,40 @@
     ng-show="isVisible.difficultyType">
   </forecaster-input-list>
   
-  <!-- Predictive Difficulty Point Count -->
-  <forecaster-input-single-value
-    component-id="predictiveDifficultyPointCount"
-    component-name="Difficulty Prediction Resolution (points)"
-    info-text="The granularity of the difficulty prediction."
-    default-value="15"
-    ng-show="isVisible.predictiveDifficultyPointCount">
-  </forecaster-input-single-value>
-  
   <!-- Predictive Difficulty Past Days -->
   <forecaster-input-single-value
     component-id="predictiveDifficultyPastDays"
     component-name="Predictive Difficulty Look-Back (days)"
-    info-text="How far to look back in the past to gather data used to predict the future. Keep this low, because something takes a long time or something.. Need to check with Age."
+    info-text="How far to look back in the past to gather data used to predict the future." 
     default-value="100"
     ng-show="isVisible.predictiveDifficultyPastDays">
   </forecaster-input-single-value>
-  
-  <!-- Predictive Difficulty a -->
+
+  <!-- Predictive Difficulty Point Count -->
   <forecaster-input-single-value
-    component-id="predictiveDifficultyAValue"
-    component-name="Predictive Difficulty a"
-    info-text="Some math thing Age understands"
-    default-value="0"
-    ng-show="isVisible.predictiveDifficultyAValue">
+    component-id="predictiveDifficultyPointCount"
+    component-name="Difficulty Prediction Resolution (points)"
+    info-text="The number of points to sample to build a prediction. (5 Points per second for Ethereum - So dont go make this too large)"
+    default-value="15"
+    ng-show="isVisible.predictiveDifficultyPointCount">
   </forecaster-input-single-value>
   
-  <!-- Predictive Difficulty b -->
-  <forecaster-input-single-value
-    component-id="predictiveDifficultyBValue"
-    component-name="Predictive Difficulty b"
-    info-text="Another math thing Age understands"
-    default-value="0"
-    ng-show="isVisible.predictiveDifficultyBValue">
-  </forecaster-input-single-value>
+  <!-- Crypto Price -->
+  <forecaster-input-list-and-value
+    component-id="cryptoPrice"
+    component-name="Current Price"
+    list-title="Currency"
+
+    info-text="The currency and current price you would like to use to for the analysis."
+    ng-show="isVisible.cryptoPrice">
+  </forecaster-input-list-and-value>
   
-  <!-- Predictive Difficulty c -->
-  <forecaster-input-single-value
-    component-id="predictiveDifficultyCValue"
-    component-name="Predictive Difficulty c"
-    info-text="Yet another math thing Age understands."
-    default-value="0"
-    ng-show="isVisible.predictiveDifficultyCValue">
-  </forecaster-input-single-value>
-  
-  <!-- Difficulty Value -->
+  <!-- Current Difficulty  -->
   <forecaster-input-single-value 
-    component-id="difficultyValue"
-    component-name="Network Hashrate (TH)"
+    component-id="currentDifficulty"
+    component-name="Current Block Difficulty (TH)"
     info-text="The default value is pulled from the etherchain.org public api. Feel free to replace it with your own."
-    ng-show="isVisible.difficultyValue">
+    ng-show="isVisible.currentDifficulty">
   </forecaster-input-single-value>
   
   <!-- Block Time -->
@@ -82,23 +82,6 @@
     ng-show="isVisible.blockTime">
   </forecaster-input-single-value>
   
-  <!-- Cost Analysis? -->
-  <forecaster-input-list
-    component-id="costAnalysis"
-    component-name="Cost Analysis"
-    info-text="Cost analysis is cool"
-    ng-show="isVisible.costAnalysis">
-  </forecaster-input-list>
-  
-  <!-- Cost Analysis rate -->
-  <forecaster-input-list-and-value
-    component-id="costAnalysisRate"
-    component-name="Cost Analysis Rate"
-    list-title="Currency"
-    info-text="The currency rate you would like to use to analyse your costs."
-    ng-show="isVisible.costAnalysisRate">
-  </forecaster-input-list-and-value>
-  
   <!-- Reward per block -->
   <forecaster-input-single-value 
     component-id="blockReward"
@@ -107,6 +90,43 @@
     default-value="5"
     ng-show="isVisible.blockReward">
   </forecaster-input-single-value>
+
+  <!-- Its annoying I have to split this logic up. Best of the worst options -->
+  <!-- Predictive Difficulty a -->
+  <forecaster-input-single-value
+    component-id="predictiveDifficultyAValue"
+    component-name="Predictive Difficulty a"
+    info-text="Would like to change this text depending on predictive difficulty selection. Some UI thing Paul understands."
+    default-value="0"
+    ng-show="isVisible.predictiveDifficultyAValue">
+  </forecaster-input-single-value>
+  
+  <!-- Predictive Difficulty b -->
+  <forecaster-input-single-value
+    component-id="predictiveDifficultyBValue"
+    component-name="Predictive Difficulty b"
+    info-text="Another UI thing Paul understands"
+    default-value="0"
+    ng-show="isVisible.predictiveDifficultyBValue">
+  </forecaster-input-single-value>
+  
+  <!-- Predictive Difficulty c -->
+  <forecaster-input-single-value
+    component-id="predictiveDifficultyCValue"
+    component-name="Predictive Difficulty c"
+    info-text="Yet another UI thing Paul understands."
+    default-value="0"
+    ng-show="isVisible.predictiveDifficultyCValue">
+  </forecaster-input-single-value>
+
+  <!-- Miner Expense Inclusion -->
+  <forecaster-input-list
+    component-id="minerExpenseInclusion"
+    component-name="Miner Expense Inclusion"
+    info-text="This options allows you to include mining expenses in the calculation"
+    ng-show="isVisible.minerExpenseInclusion">
+  </forecaster-input-list>
+  
   
   <!-- Initial Investment -->
   <forecaster-input-single-value 
@@ -139,18 +159,18 @@
   <forecaster-input-single-value 
     component-id="plotDays"
     component-name="Plot Length (days)"
-    info-text="The amount of days the graph should run into the future."
+    info-text="The amount of days the graph should run into the future. Paul, if predictive difficulty, can we give an estimate for this value or warning... dont want kiddies predicting too far into the future."
     default-value="30"
     ng-show="isVisible.plotDays">
   </forecaster-input-single-value>
   
   <!-- Plot Points -->
   <forecaster-input-single-value 
-    component-id="plotLength"
+    component-id="plotResolution"
     component-name="Plot Resolution (total number of points)"
-    info-text="The granuality of the plot."
+    info-text="The number of data points to sample when build the graph."
     default-value="100"
-    ng-show="isVisible.plotLength">
+    ng-show="isVisible.plotResolution">
   </forecaster-input-single-value>
     
     
@@ -158,4 +178,121 @@
   <div ng-show="isVisible.calculate">
     <a class="btn btn-success" ng-click="calculate()" role="button">Calculate</a>
   </div>
+
+<!-- Copied from Calc --> 
+
+  <!-- Two Tables -->
+  <div class="row" ng-class="{hidden: !userHasCalculated}" >
+    <div class="col-md-6">
+      <div class="panel panel-default calculator-inputs">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-table"></i> Projected Returns</h3>
+        </div>
+        <div class="panel-body">
+          <table class="table table-hover">
+            <thread>
+              <tr>
+                <th> Duration </th>
+                <th> Expected {{inputs.cryptoCurrencyCode | uppercase}} </th>
+                <th> Value ({{inputs.currencyCode | uppercase}}) </th>
+              </tr>
+            </thread>
+            <tr>
+              <td> Per Hour </td>
+              <td>
+                <p id='eth_hour'>{{table.eth_hour | number:2}}</p>
+              </td>
+              <td>
+                <p id='cur_hour'>${{table.cur_hour | number:2}}</p>
+              </td>
+            </tr>
+            <td> Per Day</td>
+            <td>
+              <p id='eth_day'>{{table.eth_day | number:2}}</p>
+            </td>
+            <td>
+              <p id='cur_day'>${{table.cur_day | number:2}}</p>
+            </td>
+            </tr>
+            <td> Per Week </td>
+            <td>
+              <p id='eth_week'>{{table.eth_week | number:2}}</p>
+            </td>
+            <td>
+              <p id='cur_week'>${{table.cur_week | number:2}}</p>
+            </td>
+            </tr>
+            <td> Per Month </td>
+            <td>
+              <p id='eth_month'>{{table.eth_month | number:2}}</p>
+            </td>
+            <td>
+              <p id='cur_month'>${{table.cur_month | number:2}}</p>
+            </td>
+            </tr>
+            <td> Per Year </td>
+            <td>
+              <p id='eth_year'>{{table.eth_year | number:2}}</p>
+            </td>
+            <td>
+              <p id='cur_year'>${{table.cur_year | number:2}}</p>
+            </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="panel panel-default calculator-inputs">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-table"></i> Projected Block Solution Statistics</h3>
+        </div>
+        <div class="panel-body">
+          <table class="table table-hover">
+            <tr>
+              <td> Average Time to Solve a Block </td>
+              <td>
+                <p id='exp_day'>{{table.exp_day | legibleDaysMins}}</p>
+              </td>
+            </tr>
+            <tr>
+              <td> Probability to Solve At Least 1 Block in a Day </td>
+              <td>
+                <p id='prob_day'>{{table.probability_day | number: 2}}%</p>
+              </td>
+              <tr>
+                <td> 95% Confidence Interval </td>
+                <td>
+                  <p id='eth_week'>{{table.ci.lower | legibleDaysMins}} - {{table.ci.upper | legibleDaysMins}}</p>
+                </td>
+              </tr>
+              <tr>
+                <td> Check Miner No Block Has Been Solved (2% Chance) </td>
+                <td>
+                  <p id='95_days'>{{table.check| legibleDaysMins}}</p>
+                </td>
+              </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Graphs  -->
+  <div class="row" ng-class="{hidden: !userHasCalculated}"  ng-repeat="i in plotOptions.plots | plotFilter">
+    <div class="col-lg-12">
+      <div class="panel panel-default calculator-inputs">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-line-chart"></i> {{i.title }}</h3>
+        </div>
+        <div class="panel-body">
+          <div id={{i.id}}></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+
+
+
+

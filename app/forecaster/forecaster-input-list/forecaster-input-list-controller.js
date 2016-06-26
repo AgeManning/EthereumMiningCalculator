@@ -34,6 +34,9 @@ angular.module('ethMiningCalc')
       }
       if (data.value) {
         state.value = data.value;
+        if (data.autoAccept){
+          forecasterService.registerUserInput($scope.componentId, state.value);
+        };
       }
       if (data.list) {
         items = data.list;

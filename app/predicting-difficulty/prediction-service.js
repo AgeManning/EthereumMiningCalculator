@@ -2,6 +2,15 @@ angular.module('ethMiningCalc')
   .factory('PredictionService', [function() {
     var factory = {};
 
+    /**
+     * Finds coefficients of the mathematical form specified by type. The automatic type calculates the R^2 for all types and returns the best fit. 
+     *  
+     * @param - Type - One of linear, quadratic, exponential or automatic
+     * @param - predictData - Data required to perform the prediction. Obtained in data-prediction-service.
+     *
+     */
+
+
     factory.predict = function(type,predictData){
       switch(type){
         case "linear":
@@ -13,7 +22,7 @@ angular.module('ethMiningCalc')
         case "exponential":
           return exponentialPredict(predictData);
           break;
-        case "automatic":
+        case "auto":
           return automaticPredict(predictData);
           break;
 

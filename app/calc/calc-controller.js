@@ -1,5 +1,5 @@
 angular.module('ethMiningCalc')
-  .controller('CalcController', ['$http','$scope', '$timeout', 'MarketDataService', 'CalcService', 'GethDataService', 'ProbabilityChartService', 'VarianceChartService','PredictiveDifficultyChartService','MinerPerformanceChartService','PredictionService','dataPredictionService','minerPerformanceService', function($http,$scope, $timeout, marketDataService, CalcService, gethDataService, probabilityChartService, varianceChartService,predictiveDifficultyChartService,minerPerformanceChartService,PredictionService,dataPredictionService,minerPerformanceService) {
+  .controller('CalcController', ['$http','$scope', '$timeout', 'MarketDataService', 'CalcService', 'GethDataService', 'ProbabilityChartService', 'VarianceChartService','PredictiveDifficultyChartService','MinerPerformanceChartService','PredictionService','dataPredictionService','minerPerformanceService', 'VarianceChartService', function($http,$scope, $timeout, marketDataService, CalcService, gethDataService, probabilityChartService, varianceChartService,predictiveDifficultyChartService,minerPerformanceChartService,PredictionService,dataPredictionService,minerPerformanceService, varianceChartService) {
     //
     // Define controller functionality
     //

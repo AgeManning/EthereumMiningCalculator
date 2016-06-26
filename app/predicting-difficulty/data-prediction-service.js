@@ -1,5 +1,5 @@
 angular.module('ethMiningCalc')
-  .factory('dataPredictionService', ['EtherchainDataService', "EtherscanDataService", function(EtherchainDataService, EtherscanDataService) {
+  .factory('DataPredictionService', ['EtherchainDataService', "EtherscanDataService", function(EtherchainDataService, EtherscanDataService) {
     var factory = {};
 
     /*
@@ -10,9 +10,19 @@ angular.module('ethMiningCalc')
      * Limit of 20 data points to not flood the API
      * TODO: Make quadratic sampling - recency weight
      * @ Returns a Promise for the data set [blockNos: difficulty] 
+     *
+     *
+     * Required Parameters to obtain predictive data
+     * predictData Consists of
+     * @param pastDays - Number of days to search back
+     * @param blockTime - Block Time
+     * @param currentBlock - currentBlock
+     * @param curDifficulty - Current Difficulty
+     * @param noPoints - Number of data points to return
+     *
      */
     factory.getPredictionData = function(predictData){
-      var maxPoints = 20; //Etherscan is using a geth proxy, so its not too bad for 20 data points.
+      var maxPoints = 30; //Etherscan is using a geth proxy, so its not too bad for 30 data points.
       var ratio = 2; //Ratio of Etherscan to Etherchain api usage. Try 1:1
       // Turns out etherchain won't read more than 1 a min... so lets not use him.
 
@@ -21,7 +31,8 @@ angular.module('ethMiningCalc')
       var blockTime = predictData.blockTime;
       var curBlockNo = predictData.curBlock;
       var curDifficulty = predictData.curDifficulty;
-      var NoPoints = predictData.NoPoints;
+      var NoPoints = predictData.noPoints;
+      console.log(curBlockNo);
 
       if (NoPoints > maxPoints){
         NoPoints = 20;

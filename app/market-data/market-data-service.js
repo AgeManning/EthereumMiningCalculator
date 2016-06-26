@@ -102,6 +102,19 @@ angular.module('ethMiningCalc')
         }
       });
     }
+   
+    factory.getCurrentBlock = function(cryptoCode) {
+      return new Promise(function(resolve, reject) {
+        if (cryptoCode === "eth") {
+          etherchainDataService.getBasicStats()
+            .then(function(data) {
+              resolve((Number(data.blockCount.number)));
+            })
+        } else {
+          reject()
+        }
+      });
+    }
 
     factory.getRates = function(cryptoCode) {
       var btcRates = undefined;
