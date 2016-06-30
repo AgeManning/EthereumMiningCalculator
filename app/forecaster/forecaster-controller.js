@@ -211,6 +211,8 @@ angular.module('ethMiningCalc')
     //$scope.inputs = forecasterService.inputs;
     $scope.isVisible = isVisible;
 
+    $scope.reset = forecasterService.resetInputs;
+
     $scope.calculate = function() {
       if (inputs.difficultyType != 'none'){ plotOptions.plots.predictiveDifficulty.enabled = true;};
       forecasterService.calculate()

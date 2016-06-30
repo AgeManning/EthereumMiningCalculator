@@ -1,7 +1,16 @@
 angular.module('ethMiningCalc')
-  .factory('ForecasterService', ['$rootScope', '$location', '$timeout', 'MarketDataService', 'DataPredictionService','PredictionService', 'ForecasterCalcAdapterService', 'CalcService', function($rootScope, $location, $timeout, marketDataService, dataPredictionService, predictionService,forecasterCalcAdapterService,calcService) {
+  .factory('ForecasterService', ['$rootScope', '$location', '$window', '$timeout', 'MarketDataService', 'DataPredictionService','PredictionService', 'ForecasterCalcAdapterService', 'CalcService', function($rootScope, $location, $window, $timeout, marketDataService, dataPredictionService, predictionService,forecasterCalcAdapterService,calcService) {
     var factory = {};
     var userInputs = $location.search();
+
+    
+    /**
+     * Reset all user inputs and start again with a fresh calc
+     */
+    factory.resetInputs = function() {
+      $location.url($location.path());
+      $window.location.reload();
+    }
 
     // Going to put defaults here
     var defaultCurrency = "AUD";
