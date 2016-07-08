@@ -3,7 +3,7 @@
     <h3>{{componentName}}</h3>
   </div>
   <div ng-show="state.accepted">
-    <a ng-click="state.minimised = !state.minimised" href=""><h3>{{componentName}}: <strong>{{state.value}}</strong></h3></a>
+    <a ng-click="state.minimised = !state.minimised" href=""><h3>{{componentName}}: <strong>{{state.valueTitle}} {{state.value}}</strong></h3></a>
   </div>
   <div ng-hide="state.minimised || state.loading">
     <hr>
