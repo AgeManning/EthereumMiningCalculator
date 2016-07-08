@@ -30,9 +30,13 @@ body {
 
 .expand-chevron-active {
   transform: rotate(90deg);
-  
+
 }
 
 .expand-chevron {
   transition-duration: .2s;
+}
+
+.forecaster-list-items {
+  font-size: 1em;
 }
