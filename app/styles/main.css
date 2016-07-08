@@ -37,10 +37,18 @@ body {
   transition-duration: .2s;
 }
 
+.forecaster-input-title {
+  font-size: 1.5em;
+}
+
 .forecaster-list-items {
   font-size: 1em;
 }
 
 .forecaster-inputs {
+  margin-bottom: 5em;
+}
+
+.forecaster-results {
   margin-bottom: 5em;
 }
