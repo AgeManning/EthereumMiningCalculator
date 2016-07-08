@@ -13,6 +13,10 @@ angular.module('ethMiningCalc')
           text: "Predicted Difficulty",
           x: -20
         },
+        subtitle: {
+          text: 'Click and drag to zoom',
+          x: -20
+        },
         xAxis: {title: { text:  "Days"} },
         yAxis: {
           title: { text: "Difficulty"},

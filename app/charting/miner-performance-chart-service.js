@@ -3,14 +3,18 @@ angular.module('ethMiningCalc')
     var factory = {};
 
     // Functions for Drawing Plots
-    factory.generate = function(Name,Data) 
+    factory.generate = function(Name,Data)
     {
       var HighChartsData = {
         chart: {
           zoomType: 'xy',
         },
 				title: {
-          text: "Miner Performance", 
+          text: "Miner Performance",
+          x: -20
+        },
+        subtitle: {
+          text: 'Click and drag to zoom',
           x: -20
         },
         xAxis: {title: { text:  "Date"},
@@ -79,7 +83,7 @@ angular.module('ethMiningCalc')
             pointFormat: "<b>Day:</b> {point.x:%e. %b} <b>Range:</b> {point.low:0.2f} - {point.high:0.2f}"
           },
           lineWidth: 0
-        },{ 
+        },{
           name: "> 2\u03C3",
           type: "arearange",
           data: Data.expected.maximumPlotValue,
@@ -93,7 +97,7 @@ angular.module('ethMiningCalc')
             pointFormat: "<b>Day:</b> {point.x:%e. %b} <b>Range:</b> {point.low:0.2f} -  \u221E"
           },
           lineWidth: 0
-        },{ 
+        },{
           name: "Min Plot Value",
           type: "arearange",
           data: Data.expected.minimumPlotValue,
@@ -107,7 +111,7 @@ angular.module('ethMiningCalc')
             pointFormat: "<b>Day:</b> {point.x:%e. %b} <b>Range:</b> {point.low:0.2f} - {point.high:0.2f}"
           },
           lineWidth: 0
-        },{ 
+        },{
           name: "Average",
           type: 'spline',
           lineWidth: 2,
@@ -119,7 +123,7 @@ angular.module('ethMiningCalc')
             pointFormat: "<b>Day:</b> {point.x:%e. %b} <b>Expected:</b> {point.y:0.2f}"
           },
           color: "green"
-        },{ 
+        },{
           name: "Actual Solved Blocks",
           type: "spline",
           lineWidth: 4,

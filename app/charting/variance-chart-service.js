@@ -3,14 +3,18 @@ angular.module('ethMiningCalc')
     var factory = {};
 
     // Functions for Drawing Plots
-    factory.generate = function(Name,Title,yTitle,Data,Draw1BlockLine) 
+    factory.generate = function(Name,Title,yTitle,Data,Draw1BlockLine)
     {
       var HighChartsData = {
         chart: {
           zoomType: 'xy',
         },
 				title: {
-          text: Title, 
+          text: Title,
+          x: -20
+        },
+        subtitle: {
+          text: 'Click and drag to zoom',
           x: -20
         },
         xAxis: {title: { text:  "Days"},
@@ -92,7 +96,7 @@ angular.module('ethMiningCalc')
             pointFormat: "Day: {point.x:,0.2f} Range: {point.low:0.2f} - {point.high:0.2f}"
           },
           lineWidth: 0
-        },{ 
+        },{
           name: "> 2\u03C3",
           type: "arearange",
           data: Data.maximumPlotValue,
@@ -106,7 +110,7 @@ angular.module('ethMiningCalc')
             pointFormat: "Day: {point.x:,0.2f} Range: {point.low:0.2f} -  \u221E"
           },
           lineWidth: 0
-        },{ 
+        },{
           name: "Min Plot Value",
           type: "arearange",
           data: Data.minimumPlotValue,
@@ -120,7 +124,7 @@ angular.module('ethMiningCalc')
             pointFormat: "Day: {point.x:0.2f} Range: {point.low:0.2f} - {point.high:0.2f}"
           },
           lineWidth: 0
-        },{ 
+        },{
           name: "Average",
           type: 'spline',
           lineWidth: 2,
@@ -161,7 +165,7 @@ angular.module('ethMiningCalc')
         }];
       };
 
-     
+
 			$(Name).highcharts(HighChartsData);
     }
 

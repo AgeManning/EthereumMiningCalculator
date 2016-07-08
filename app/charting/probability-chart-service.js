@@ -12,6 +12,10 @@ angular.module('ethMiningCalc')
           text: "Probability of Solving at Least One Block",
           x: -20
         },
+        subtitle: {
+          text: 'Click and drag to zoom',
+          x: -20
+        },
         xAxis: {title: { text:  "Days"} },
         yAxis: {
           title: { text: "Probability (%)" },
@@ -36,7 +40,7 @@ angular.module('ethMiningCalc')
         series: [{
           name: "Probability (%)",
           marker: { enabled: false },
-          data: data 
+          data: data
         }],
         func: function (chart) {
           $timeout(function () {
