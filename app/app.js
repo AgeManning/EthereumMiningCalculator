@@ -1,5 +1,7 @@
 angular.module('ethMiningCalc', [
-  'ui.router', 'angular-json-rpc'
+  'ui.router',
+  'angular-json-rpc'
+
 ]).config(function($stateProvider, $urlRouterProvider) {
   //
   // For any unmatched url, redirect to /state1

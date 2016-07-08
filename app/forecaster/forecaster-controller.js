@@ -1,5 +1,5 @@
 angular.module('ethMiningCalc')
-  .controller('ForecasterController', ['$scope', '$timeout', '$anchorScroll', 'ForecasterService', 'ProbabilityChartService', 'PredictiveDifficultyChartService','VarianceChartService', function($scope, $timeout, $anchorScroll, forecasterService,probabilityChartService, predictiveDifficultyChartService, varianceChartService) {
+  .controller('ForecasterController', ['$scope', '$timeout', '$anchorScroll', '$location', 'ForecasterService', 'ProbabilityChartService', 'PredictiveDifficultyChartService','VarianceChartService', function($scope, $timeout, $anchorScroll, $location, forecasterService,probabilityChartService, predictiveDifficultyChartService, varianceChartService) {
 
     var isVisible = {
       cryptocurrency: true
@@ -223,8 +223,9 @@ angular.module('ethMiningCalc')
           console.log(results);
           buildTable(results.table);
           $timeout(function() {
+            $location.hash('forecaster-top');
+            $anchorScroll();
             buildCharts(results.charting);
-            $anchorScroll('forecaster-results');
           })   // $timeout is used here so we draw the charts after we have removed the hidden class from the chart containers
         });
     };
