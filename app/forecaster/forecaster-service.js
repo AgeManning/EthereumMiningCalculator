@@ -303,7 +303,7 @@ angular.module('ethMiningCalc')
             var predictionVariables = predictionService.predict(userInputs.difficultyType, predictionData) //Return our variables
             $rootScope.$apply(function() {
                 if( userInputs.difficultyType == 'auto'){ // We need to change this once it has found the best type
-                $rootScope.$broadcast('difficultyType', { value: predictionVariables.type, autoAccept: truea});
+                $rootScope.$broadcast('difficultyType', { value: predictionVariables.type, autoAccept: true});
                 autoAcceptFlag = true;
                 };
               $rootScope.$broadcast('predictiveDifficultyAValue', { value: predictionVariables.a, autoAccept: autoAcceptFlag});

@@ -1,5 +1,5 @@
 angular.module('ethMiningCalc')
-  .factory('PredictiveDifficultyChartService', [function() {
+  .factory('PredictiveDifficultyChartService', ['$timeout', function($timeout) {
     var factory = {};
 
     // Functions for Drawing Plots
