@@ -192,8 +192,8 @@
             <thread>
               <tr>
                 <th> Duration </th>
-                <th> Expected {{inputs.cryptoCurrencyCode | uppercase}} </th>
-                <th> Value ({{inputs.currencyCode | uppercase}}) </th>
+                <th> Expected {{inputs.cryptocurrency | uppercase}} </th>
+                <th> Value ({{inputs.cryptoPriceCode | uppercase}}) </th>
               </tr>
             </thread>
             <tr>
@@ -202,7 +202,7 @@
                 <p id='eth_hour'>{{table.eth_hour | number:2}}</p>
               </td>
               <td>
-                <p id='cur_hour'>${{table.cur_hour | number:2}}</p>
+                <p id='cur_hour'>{{ inputs.cryptoPriceCode }} {{table.cur_hour | number:2}}</p>
               </td>
             </tr>
             <td> Per Day</td>
@@ -210,7 +210,7 @@
               <p id='eth_day'>{{table.eth_day | number:2}}</p>
             </td>
             <td>
-              <p id='cur_day'>${{table.cur_day | number:2}}</p>
+              <p id='cur_day'>{{ inputs.cryptoPriceCode }} {{table.cur_day | number:2}}</p>
             </td>
             </tr>
             <td> Per Week </td>
@@ -218,7 +218,7 @@
               <p id='eth_week'>{{table.eth_week | number:2}}</p>
             </td>
             <td>
-              <p id='cur_week'>${{table.cur_week | number:2}}</p>
+              <p id='cur_week'>{{ inputs.cryptoPriceCode }} {{table.cur_week | number:2}}</p>
             </td>
             </tr>
             <td> Per Month </td>
@@ -226,7 +226,7 @@
               <p id='eth_month'>{{table.eth_month | number:2}}</p>
             </td>
             <td>
-              <p id='cur_month'>${{table.cur_month | number:2}}</p>
+              <p id='cur_month'>{{ inputs.cryptoPriceCode }} {{table.cur_month | number:2}}</p>
             </td>
             </tr>
             <td> Per Year </td>
@@ -234,7 +234,7 @@
               <p id='eth_year'>{{table.eth_year | number:2}}</p>
             </td>
             <td>
-              <p id='cur_year'>${{table.cur_year | number:2}}</p>
+              <p id='cur_year'>{{ inputs.cryptoPriceCode }} {{table.cur_year | number:2}}</p>
             </td>
             </tr>
           </table>

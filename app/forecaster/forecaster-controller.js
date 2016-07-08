@@ -46,7 +46,7 @@ angular.module('ethMiningCalc')
         if (inputs.predictiveDifficultyPastDays !== undefined) { return true; }
         return false;
       })();
-      
+
       isVisible.cryptoPrice = (function() {
         if (inputs.cryptocurrency === undefined) { return false; }
         if (inputs.hashRate === undefined) { return false; }
@@ -146,6 +146,7 @@ angular.module('ethMiningCalc')
 
     isVisible.ProbabilityGraph = true;
     var inputs = forecasterService.getUserInputs();
+    $scope.inputs = inputs;
     updateVisibilities();
 
     $scope.$on('userInputs-updated', updateVisibilities);
