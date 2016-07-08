@@ -158,7 +158,7 @@ angular.module('ethMiningCalc')
       var loadingParam = {"loading": true}; // Send this to put into loading state
       // If we auto accept, bypass loading state and just leave "Loading..." as value
       if (autoAcceptFlag){
-        loadingParam = {value: "Loading...", autoAccept: true};
+        loadingParam = {value: "Loading...", loading: true};
       }
       $rootScope.$broadcast(broadcastChannel, loadingParam);
       marketDataService.getRates(userInputs.cryptocurrency)
@@ -171,7 +171,8 @@ angular.module('ethMiningCalc')
             cryptoRate = ourDefaultCurrency.rate;
             rateCode = ourDefaultCurrency.code;
           }
-          $rootScope.$broadcast(broadcastChannel, { value: cryptoRate, valueTitle: rateCode, list: list ,"autoAccept": autoAcceptFlag });
+          $rootScope.$broadcast(broadcastChannel, { value: cryptoRate, list: list ,"autoAccept": autoAcceptFlag });
+          $rootScope.$broadcast(broadcastChannel + 'Code', { value: rateCode, "autoAccept": autoAcceptFlag });
         })
         .catch(function(error) {
           $rootScope.$broadcast(broadcastChannel, { value: 0, list: [] ,"autoAccept": autoAcceptFlag });
@@ -339,14 +340,10 @@ angular.module('ethMiningCalc')
       userInputs[type] = value;
       $location.search(type, value);
 
-
-      if (type === 'complexityType' ) { broadcastComplexityType(value); };
-      //if (type === 'currentHashRate') { broadcastBlockTime(false); }
-      //if (type === 'costAnalysis' && value === "enable") { broadcastCurrencyRates(false); }
+      if (type === 'complexityType' ) { broadcastComplexityType(value); }
 
       // If we are in the advanced mode, we need to estimate the predictive difficulty values for the user to accept.
       if (userInputs['complexityType'] === 'advanced' && userInputs['difficultyType'] !== 'none' && userInputs['difficultyType'] !== 'auto' && type === "blockReward") { broadcastPredictiveDifficulty(false);}
-
 
       $rootScope.$broadcast('userInputs-updated');
     }
