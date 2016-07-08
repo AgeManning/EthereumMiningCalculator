@@ -1,0 +1,57 @@
+<div class="panel panel-default calculator-inputs">
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-table"></i> Projected Returns</h3>
+  </div>
+  <div class="panel-body">
+    <table class="table table-hover">
+      <thread>
+        <tr>
+          <th> Duration </th>
+          <th> Expected {{inputs.cryptocurrency | uppercase}} </th>
+          <th> Value ({{inputs.cryptoPriceCode | uppercase}}) </th>
+        </tr>
+      </thread>
+      <tr>
+        <td> Per Hour </td>
+        <td>
+          <p id='eth_hour'>{{table.eth_hour | number:2}}</p>
+        </td>
+        <td>
+          <p id='cur_hour'>{{ inputs.cryptoPriceCode }} {{table.cur_hour | number:2}}</p>
+        </td>
+      </tr>
+      <td> Per Day</td>
+      <td>
+        <p id='eth_day'>{{table.eth_day | number:2}}</p>
+      </td>
+      <td>
+        <p id='cur_day'>{{ inputs.cryptoPriceCode }} {{table.cur_day | number:2}}</p>
+      </td>
+      </tr>
+      <td> Per Week </td>
+      <td>
+        <p id='eth_week'>{{table.eth_week | number:2}}</p>
+      </td>
+      <td>
+        <p id='cur_week'>{{ inputs.cryptoPriceCode }} {{table.cur_week | number:2}}</p>
+      </td>
+      </tr>
+      <td> Per Month </td>
+      <td>
+        <p id='eth_month'>{{table.eth_month | number:2}}</p>
+      </td>
+      <td>
+        <p id='cur_month'>{{ inputs.cryptoPriceCode }} {{table.cur_month | number:2}}</p>
+      </td>
+      </tr>
+      <td> Per Year </td>
+      <td>
+        <p id='eth_year'>{{table.eth_year | number:2}}</p>
+      </td>
+      <td>
+        <p id='cur_year'>{{ inputs.cryptoPriceCode }} {{table.cur_year | number:2}}</p>
+      </td>
+      </tr>
+    </table>
+  </div>
+</div>
