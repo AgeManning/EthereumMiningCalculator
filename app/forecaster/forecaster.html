@@ -3,7 +3,44 @@
     <h1>Statistical Forecaster</h1>
   </div>
 </div>
+
+<!-- Results -->
+<div class="container"  ng-show="userHasCalculated" id="forecaster-results">
+  <h2>Results</h2>
+  <hr>
+  <!-- Two Tables when not using predictive difficulty -->
+  <div class="row" ng-show="inputs.difficultyType === 'none'">
+    <div class="col-md-6">
+      <forecaster-table-returns></forecaster-table-returns>
+    </div>
+    <div class="col-md-6">
+      <forecaster-table-solution-stats></forecaster-table-solution-stats>
+    </div>
+  </div>
+  <!--  Single Table when using predictive difficulty -->
+  <div class="row" ng-show="inputs.difficultyType !== 'none'">
+    <div class="col-md-12">
+      <forecaster-table-returns></forecaster-table-returns>
+    </div>
+  </div>
+  <!-- Graphs  -->
+  <div class="row" ng-repeat="i in plotOptions.plots | plotFilter">
+    <div class="col-lg-12">
+      <div class="panel panel-default calculator-inputs">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-line-chart"></i> {{i.title }}</h3>
+        </div>
+        <div class="panel-body">
+          <div id={{i.id}}></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="container">
+  <h2>Inputs</h2>
+  <hr>
 
   <!-- Cryptocurrency -->
   <forecaster-input-list
@@ -178,35 +215,4 @@
     <a class="btn btn-warning" ng-click="reset()" role="button">Reset & Start Over</a>
   </div>
 
-  <!-- Results -->
-  <div ng-show="userHasCalculated">
-    <!-- Two Tables when not using predictive difficulty -->
-    <div class="row" ng-show="inputs.difficultyType === 'none'">
-      <div class="col-md-6">
-        <forecaster-table-returns></forecaster-table-returns>
-      </div>
-      <div class="col-md-6">
-        <forecaster-table-solution-stats></forecaster-table-solution-stats>
-      </div>
-    </div>
-    <!--  Single Table when using predictive difficulty -->
-    <div class="row" ng-show="inputs.difficultyType !== 'none'">
-      <div class="col-md-12">
-        <forecaster-table-returns></forecaster-table-returns>
-      </div>
-    </div>
-    <!-- Graphs  -->
-    <div class="row" ng-repeat="i in plotOptions.plots | plotFilter">
-      <div class="col-lg-12">
-        <div class="panel panel-default calculator-inputs">
-          <div class="panel-heading">
-            <h3 class="panel-title"><i class="fa fa-line-chart"></i> {{i.title }}</h3>
-          </div>
-          <div class="panel-body">
-            <div id={{i.id}}></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
