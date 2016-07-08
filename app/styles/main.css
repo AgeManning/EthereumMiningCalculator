@@ -51,4 +51,6 @@ body {
 
 .forecaster-results {
   margin-bottom: 5em;
+  margin: 0 auto;
+  width: 94%;
 }
