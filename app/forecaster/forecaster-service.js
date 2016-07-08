@@ -163,13 +163,15 @@ angular.module('ethMiningCalc')
       $rootScope.$broadcast(broadcastChannel, loadingParam);
       marketDataService.getRates(userInputs.cryptocurrency)
         .then(function(list) {
-          //If we are auto accepting the currency, use a default currency. 
           var cryptoRate = 0;
-          if (autoAcceptFlag) {
-            // Its a list so need to search for a currency. Set to AUD by default (Hard coded)
-            cryptoRate = list[6].rate;
+          var rateCode = '';
+          // find our default currency
+          var ourDefaultCurrency = _.find(list, ['code', defaultCurrency]);
+          if(ourDefaultCurrency) {
+            cryptoRate = ourDefaultCurrency.rate;
+            rateCode = ourDefaultCurrency.code;
           }
-          $rootScope.$broadcast(broadcastChannel, { value: cryptoRate, list: list ,"autoAccept": autoAcceptFlag });
+          $rootScope.$broadcast(broadcastChannel, { value: cryptoRate, valueTitle: rateCode, list: list ,"autoAccept": autoAcceptFlag });
         })
         .catch(function(error) {
           $rootScope.$broadcast(broadcastChannel, { value: 0, list: [] ,"autoAccept": autoAcceptFlag });
