@@ -222,15 +222,18 @@ angular.module('ethMiningCalc')
       if (inputs.difficultyType != 'none'){ plotOptions.plots.predictiveDifficulty.enabled = true;};
       forecasterService.calculate()
         .then(function(results){
-          $scope.userHasCalculated = true; // Show tables and plots.
-          console.log(inputs);
-          console.log(results);
-          buildTable(results.table);
-          $timeout(function() {
+          // $scope.$apply is needed as we are doing some async stuff in the background
+          $scope.$apply(function() {
+            $scope.userHasCalculated = true; // Show tables and plots.
+            buildTable(results.table);
             $location.hash('forecaster-top');
             $anchorScroll();
+          });
+          // $timeout is used here so we draw the charts after we have removed the hidden class from the chart containers// $timeout is used here so we draw the charts after we have removed the hidden class from the chart containers
+          $timeout(function() {
             buildCharts(results.charting);
-          })   // $timeout is used here so we draw the charts after we have removed the hidden class from the chart containers
+            $(window).trigger('resize');
+          })
         });
     };
 
