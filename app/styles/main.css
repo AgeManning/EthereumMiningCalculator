@@ -40,3 +40,7 @@ body {
 .forecaster-list-items {
   font-size: 1em;
 }
+
+.forecaster-inputs {
+  margin-bottom: 5em;
+}

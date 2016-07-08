@@ -149,7 +149,11 @@ angular.module('ethMiningCalc')
     $scope.inputs = inputs;
     updateVisibilities();
 
-    $scope.$on('userInputs-updated', updateVisibilities);
+    $scope.$on('userInputs-updated', function() {
+        updateVisibilities();
+        $location.hash('forecaster-inputs');
+        $anchorScroll();
+    });
     $scope.logInputs = function() {
       console.log(forecasterService.getUserInputs());
     }
