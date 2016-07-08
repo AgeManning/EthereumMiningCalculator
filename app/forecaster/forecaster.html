@@ -175,10 +175,10 @@
     
     
   <hr>
-  <div ng-show="isVisible.calculate">
-    <a class="btn btn-success" ng-click="calculate()" role="button">Calculate</a>
+  <div>
+    <a ng-show="isVisible.calculate" class="btn btn-success" ng-click="calculate()" role="button">Calculate</a>
+    <a class="btn btn-warning" ng-click="reset()" role="button">Reset & Start Over</a>
   </div>
-  <a class="btn btn-warning" ng-click="reset()" role="button">Reset & Start Over</a>
 
 <!-- Copied from Calc --> 
 
