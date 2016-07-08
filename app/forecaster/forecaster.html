@@ -25,7 +25,7 @@
   <forecaster-input-single-value
     component-id="hashRate"
     component-name="Miner's HashRate (MH/s)"
-    info-text="Input the hash rate of the miner you wish to forcast. " 
+    info-text="Input the hash rate of the miner you wish to forcast. "
     default-value="100"
     ng-show="isVisible.hashRate">
   </forecaster-input-single-value>
@@ -37,12 +37,12 @@
     info-text="Difficulty prediction looks at the history of network difficulty and attempts to continue the current trend into the future."
     ng-show="isVisible.difficultyType">
   </forecaster-input-list>
-  
+
   <!-- Predictive Difficulty Past Days -->
   <forecaster-input-single-value
     component-id="predictiveDifficultyPastDays"
     component-name="Predictive Difficulty Look-Back (days)"
-    info-text="How far to look back in the past to gather data used to predict the future." 
+    info-text="How far to look back in the past to gather data used to predict the future."
     default-value="100"
     ng-show="isVisible.predictiveDifficultyPastDays">
   </forecaster-input-single-value>
@@ -55,35 +55,33 @@
     default-value="15"
     ng-show="isVisible.predictiveDifficultyPointCount">
   </forecaster-input-single-value>
-  
+
   <!-- Crypto Price -->
-  <forecaster-input-list-and-value
+  <forecaster-input-currency
     component-id="cryptoPrice"
     component-name="Current Price"
-    list-title="Currency"
-
     info-text="The currency and current price you would like to use to for the analysis."
     ng-show="isVisible.cryptoPrice">
-  </forecaster-input-list-and-value>
-  
+  </forecaster-input-currency>
+
   <!-- Current Difficulty  -->
-  <forecaster-input-single-value 
+  <forecaster-input-single-value
     component-id="currentDifficulty"
     component-name="Current Block Difficulty (TH)"
     info-text="The default value is pulled from the etherchain.org public api. Feel free to replace it with your own."
     ng-show="isVisible.currentDifficulty">
   </forecaster-input-single-value>
-  
+
   <!-- Block Time -->
-  <forecaster-input-single-value 
+  <forecaster-input-single-value
     component-id="blockTime"
     component-name="Average Block Time (seconds)"
     info-text="The default value is pulled from the etherchain.org public api. Feel free to replace it with your own."
     ng-show="isVisible.blockTime">
   </forecaster-input-single-value>
-  
+
   <!-- Reward per block -->
-  <forecaster-input-single-value 
+  <forecaster-input-single-value
     component-id="blockReward"
     component-name="Reward for Solving a Block"
     info-text="How many units of currency you are awarded for solving a block"
@@ -100,7 +98,7 @@
     default-value="0"
     ng-show="isVisible.predictiveDifficultyAValue">
   </forecaster-input-single-value>
-  
+
   <!-- Predictive Difficulty b -->
   <forecaster-input-single-value
     component-id="predictiveDifficultyBValue"
@@ -109,7 +107,7 @@
     default-value="0"
     ng-show="isVisible.predictiveDifficultyBValue">
   </forecaster-input-single-value>
-  
+
   <!-- Predictive Difficulty c -->
   <forecaster-input-single-value
     component-id="predictiveDifficultyCValue"
@@ -126,61 +124,61 @@
     info-text="This options allows you to include mining expenses in the calculation"
     ng-show="isVisible.minerExpenseInclusion">
   </forecaster-input-list>
-  
-  
+
+
   <!-- Initial Investment -->
-  <forecaster-input-single-value 
+  <forecaster-input-single-value
     component-id="initialInvestment"
     component-name="Initial Miner Investment"
     info-text="How much have you spent to obtain your miner?"
     default-value="1000"
     ng-show="isVisible.initialInvestment">
   </forecaster-input-single-value>
-  
+
   <!--Miner Electricitiy Usage -->
-  <forecaster-input-single-value 
+  <forecaster-input-single-value
     component-id="electricityUsage"
     component-name="Miner Power Consumption (W)"
     info-text="How many Watts(W) of electricity does your miner consume?"
     default-value="150"
     ng-show="isVisible.electricityUsage">
   </forecaster-input-single-value>
-  
+
   <!-- Electricitiy Rate -->
-  <forecaster-input-single-value 
+  <forecaster-input-single-value
     component-id="electricityRate"
     component-name="Electricity Cost per kWh"
     info-text="How much do you pay per kWh for electricity?"
     default-value="0.25"
     ng-show="isVisible.electricityRate">
   </forecaster-input-single-value>
-  
+
   <!-- Plot Length -->
-  <forecaster-input-single-value 
+  <forecaster-input-single-value
     component-id="plotDays"
     component-name="Plot Length (days)"
     info-text="The amount of days the graph should run into the future. Paul, if predictive difficulty, can we give an estimate for this value or warning... dont want kiddies predicting too far into the future."
     default-value="30"
     ng-show="isVisible.plotDays">
   </forecaster-input-single-value>
-  
+
   <!-- Plot Points -->
-  <forecaster-input-single-value 
+  <forecaster-input-single-value
     component-id="plotResolution"
     component-name="Plot Resolution (total number of points)"
     info-text="The number of data points to sample when build the graph."
     default-value="100"
     ng-show="isVisible.plotResolution">
   </forecaster-input-single-value>
-    
-    
+
+
   <hr>
   <div>
     <a ng-show="isVisible.calculate" class="btn btn-success" ng-click="calculate()" role="button">Calculate</a>
     <a class="btn btn-warning" ng-click="reset()" role="button">Reset & Start Over</a>
   </div>
 
-<!-- Copied from Calc --> 
+<!-- Copied from Calc -->
 
   <!-- Two Tables -->
   <div class="row" ng-class="{hidden: !userHasCalculated}" >
@@ -292,8 +290,3 @@
     </div>
   </div>
 </div>
-
-
-
-
-
