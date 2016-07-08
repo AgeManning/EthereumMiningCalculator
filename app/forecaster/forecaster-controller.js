@@ -185,13 +185,13 @@ angular.module('ethMiningCalc')
       minerPerformance: {
         title: "Miner Performance",
         id: "MinerPerformance",
-        enabled: false 
+        enabled: false
       }
     };
 
     /**
      * Draw the highcharts charts
-     * 
+     *
      * @param {object} chartData The charting object returned from the calculation function
      */
     var buildCharts = function(chartData) {
@@ -207,7 +207,7 @@ angular.module('ethMiningCalc')
       if (inputs.difficultyType != 'none') {
         predictiveDifficultyChartService.generate("#" +plotOptions.plots.predictiveDifficulty.id, chartData.predictiveDifficulty);
       }
-    }   
+    }
 
     //$scope.inputs = forecasterService.inputs;
     $scope.isVisible = isVisible;
@@ -218,7 +218,7 @@ angular.module('ethMiningCalc')
       if (inputs.difficultyType != 'none'){ plotOptions.plots.predictiveDifficulty.enabled = true;};
       forecasterService.calculate()
         .then(function(results){
-          $scope.userHasCalculated = true; // Show tables and plots. 
+          $scope.userHasCalculated = true; // Show tables and plots.
           console.log(inputs);
           console.log(results);
           buildTable(results.table);
