@@ -28,9 +28,6 @@ angular.module('ethMiningCalc')
         inputs.costs.cur_kwh = userInputs.electricityRate;
         
         inputs.predictionVariables = userInputs.predictionVariables;
-        console.log(inputs);       
-        console.log(predictionData);
-        console.log(plotOptions);
         // End Adaptation
 
         //Want to define probability per blocks. If we use difficulty, we must multiply by block time to get an estimate for probability per block. The hashrate just gives us the probability per block.

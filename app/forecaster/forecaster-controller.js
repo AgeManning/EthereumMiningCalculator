@@ -206,19 +206,19 @@ angular.module('ethMiningCalc')
       varianceChartService.generate("#ExpectedBlocksGraph", "Expected Solved Blocks", "Solved Blocks", chartData.expectedBlocks, true);
       }
       if (plotOptions.plots.expectedCurrency.enabled) {
-      varianceChartService.generate("#ExpectedReturnGraph", "Expected Return (" + inputs.cryptocurrency.toUpperCase() + ")", inputs.cryptocurrency.toUpperCase(), chartData.currencyData, false);
+      varianceChartService.generate("#ExpectedReturnGraph", "Expected Return (" + inputs.cryptoPriceCode.toUpperCase() + ")", inputs.cryptoPriceCode.toUpperCase(), chartData.currencyData, false);
       }
       if (inputs.difficultyType != 'none') {
         predictiveDifficultyChartService.generate("#" +plotOptions.plots.predictiveDifficulty.id, chartData.predictiveDifficulty);
       }
     }
 
-    //$scope.inputs = forecasterService.inputs;
-    $scope.isVisible = isVisible;
-
-    $scope.reset = forecasterService.resetInputs;
-
-    $scope.calculate = function() {
+    
+    /**
+     * Perform all the calulations.
+     *
+     */
+    var calculate = function() {
       if (inputs.difficultyType != 'none'){ plotOptions.plots.predictiveDifficulty.enabled = true;};
       forecasterService.calculate()
         .then(function(results){
@@ -229,13 +229,17 @@ angular.module('ethMiningCalc')
             $location.hash('forecaster-top');
             $anchorScroll();
           });
-          // $timeout is used here so we draw the charts after we have removed the hidden class from the chart containers// $timeout is used here so we draw the charts after we have removed the hidden class from the chart containers
           $timeout(function() {
             buildCharts(results.charting);
             $(window).trigger('resize');
           })
         });
     };
+
+    //$scope.inputs = forecasterService.inputs;
+    $scope.isVisible = isVisible;
+    $scope.reset = forecasterService.resetInputs;
+    $scope.calculate = calculate;
 
   var buildTable = function(tableData) {
     $scope.table = tableData;

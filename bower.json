@@ -32,7 +32,8 @@
     "angular-ui-router": "^0.2.18",
     "lodash": "^4.6.1",
     "components-font-awesome": "^4.5.0",
-    "complex-js": "^3.1.2"
+    "complex-js": "^3.1.2",
+    "isoCurrency": "iso-currency#^0.2.4"
   },
   "overrides": {
     "bootstrap": {

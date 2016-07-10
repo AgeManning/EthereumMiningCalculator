@@ -1,6 +1,7 @@
 angular.module('ethMiningCalc', [
   'ui.router',
-  'angular-json-rpc'
+  'angular-json-rpc',
+  'isoCurrency'
 
 ]).config(function($stateProvider, $urlRouterProvider) {
   //
