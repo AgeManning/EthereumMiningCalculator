@@ -112,11 +112,8 @@ angular.module('ethMiningCalc')
           inputObj.performance.address = userInputs.minerAddress;
           inputObj.performance.pastBlocks = userInputs.pastBlocks;
           inputObj.hashRate = userInputs.hashRate;
-          console.log(inputObj);
 
-          var thing = minerPerformanceAnalysisService.checkMinerPerformance(inputObj);
-          console.log(thing);
-          return thing;
+          return minerPerformanceAnalysisService.checkMinerPerformance(inputObj);
     }
 
 

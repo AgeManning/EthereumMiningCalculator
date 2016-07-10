@@ -1,0 +1,63 @@
+<div class="container full-width-container">
+  <div class="jumbotron">
+    <h1>Miner Performance Analysis</h1>
+    <h3> Here you can enter your hashrate and address of your miner and see how it performs compared to its statistical expectation </h3>
+  </div>
+</div>
+
+<div class="container miner-performance-inputs">
+  <h2>Inputs</h2>
+  <hr>
+
+  <!-- Hash Rate of the Miner -->
+  <forecaster-input-single-value
+    component-id="hashRate"
+    component-name="Miner's HashRate (MH/s)"
+    info-text="Input the hash rate of the miner you wish to forcast. "
+    default-value="100"
+    ng-show="isVisible.hashRate">
+  </forecaster-input-single-value>
+
+  <!-- Miner Address -->
+  <miner-performance-input-address
+    component-id="minerAddress"
+    component-name="Miner's Address"
+    info-text="Enter the address of the miner you want to analyse. (ETH only at the moment) Example:0xc9d3bBa734FAe99FdB12C0190E63b0Bac7551784"
+    default-value=""
+    ng-show="isVisible.minerAddress">
+  </miner-performance-input-address>
+
+  <!-- Past Blocks -->
+  <forecaster-input-single-value
+    component-id="pastBlocks"
+    component-name="Past Blocks"
+    info-text="Choose the number of past blocks the miner has solved to analyse. A value of 0 will look over all past blocks the miner has solved."
+    default-value="0"
+    ng-show="isVisible.pastBlocks">
+  </forecaster-input-single-value>
+
+  <hr>
+  <div>
+    <a ng-show="isVisible.analyse" class="btn btn-success" ng-click="analyse()" role="button">Analyse</a>
+    <a class="btn btn-warning" ng-click="reset()" role="button">Reset & Start Over</a>
+  </div>
+  <div id="miner-performance-inputs"></div>
+</div>
+
+
+<!-- Performance Graph  -->
+<div class="container miner-performances" ng-show="userHasCalculated"  id="miner-performance-top">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="panel panel-default calculator-inputs">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-line-chart"></i>Miner's Performance</h3>
+        </div>
+        <div class="panel-body">
+          <div id="miner-performance"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
