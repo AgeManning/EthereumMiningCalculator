@@ -16,7 +16,7 @@ angular.module('ethMiningCalc')
      * predictData Consists of
      * @param pastDays - Number of days to search back
      * @param blockTime - Block Time
-     * @param currentBlock - currentBlock
+     * @param curBlock - currentBlock
      * @param curDifficulty - Current Difficulty
      * @param noPoints - Number of data points to return
      *
@@ -32,10 +32,9 @@ angular.module('ethMiningCalc')
       var curBlockNo = predictData.curBlock;
       var curDifficulty = predictData.curDifficulty;
       var NoPoints = predictData.noPoints;
-      console.log(curBlockNo);
 
       if (NoPoints > maxPoints){
-        NoPoints = 20;
+        NoPoints = maxPoints;
       };
       if (NoPoints < 2){
         NoPoints=2;
@@ -61,6 +60,7 @@ angular.module('ethMiningCalc')
            //if (i % (ratio+1) == 0){
            //   return EtherchainDataService.getDifficultyData(blocks);
            //}else{
+           
               return EtherscanDataService.getDifficultyData(blocks);
            //  };
            })

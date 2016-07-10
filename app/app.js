@@ -19,6 +19,11 @@ angular.module('ethMiningCalc', [
       controller: 'ForecasterController as vm',
       templateUrl: "app/forecaster/forecaster.html"
     })
+    .state('miner-performance', {
+      url: "/miner-performance",
+      controller: 'MinerPerformanceController as vm',
+      templateUrl: "app/miner-performance/miner-performance.html"
+    })
     .state('calc', {
       url: "/calc",
       controller: 'CalcController as vm',

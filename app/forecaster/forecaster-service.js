@@ -386,7 +386,6 @@ angular.module('ethMiningCalc')
             userInputs.predictionVariables = {}
             userInputs.predictionVariables.a = userInputs.predictiveDifficultyAValue;
             userInputs.predictionVariables.b = userInputs.predictiveDifficultyBValue;
-            console.log(userInputs);
             if (userInputs.difficultyType == 'quadratic'){
             userInputs.predictionVariables.c = userInputs.predictiveDifficultyCValue;
             };
