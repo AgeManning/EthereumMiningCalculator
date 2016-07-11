@@ -1,5 +1,5 @@
 angular.module('ethMiningCalc')
-  .factory('ForecasterService', ['$rootScope', '$location', '$window', '$timeout', 'MarketDataService', 'DataPredictionService','PredictionService', 'ForecasterCalcAdapterService', 'CalcService', function($rootScope, $location, $window, $timeout, marketDataService, dataPredictionService, predictionService,forecasterCalcAdapterService,calcService) {
+  .factory('ForecasterService', ['$rootScope', '$location', '$window', '$timeout', 'MarketDataService', 'DataPredictionService','PredictionService', 'ForecasterCalcAdapterService', 'CalcService','ErrorHandlingService', function($rootScope, $location, $window, $timeout, marketDataService, dataPredictionService, predictionService,forecasterCalcAdapterService,calcService,errorHandlingService) {
     var factory = {};
     var userInputs = $location.search();
 
@@ -255,7 +255,6 @@ angular.module('ethMiningCalc')
 
       // Make a promise that fills the required data. Return the promise
       return new Promise(function(resolve){
-
         if (userInputs.currentBlock === undefined) {
         marketDataService.getCurrentBlock(userInputs.cryptocurrency)
           .then(function(result) {
@@ -282,19 +281,16 @@ angular.module('ethMiningCalc')
 
               });
             })
-          .catch(function(thing) {
-            console.log(thing);
+          .catch(function(err) {
+           errorHandlingService.handleError(err); 
           });
           })
-          .catch(function(thing) {
-            $rootScope.$apply(function() {
-              console.log("SomethingFailed).");
-              console.log(thing);
+          .catch(function(err) {
+           errorHandlingService.handleError(err); 
               $rootScope.$broadcast('predictiveDifficultyAValue', { empty: true});
               $rootScope.$broadcast('predictiveDifficultyBValue', { empty: true});
               $rootScope.$broadcast('predictiveDifficultyCValue', { empty: true});
               reject();
-            });
           });
         }
         else { // We already know the current block Number
@@ -319,12 +315,11 @@ angular.module('ethMiningCalc')
             });
           })
           .catch(function() {
-            $rootScope.$apply(function() {
+           errorHandlingService.handleError(err); 
               $rootScope.$broadcast('predictiveDifficultyAValue', { empty: true});
               $rootScope.$broadcast('predictiveDifficultyBValue', { empty: true});
               $rootScope.$broadcast('predictiveDifficultyCValue', { empty: true});
               reject();
-            });
           });
         }
       });
@@ -392,7 +387,11 @@ angular.module('ethMiningCalc')
 
             results = calcService.calculate(userInputs, true) //Predictive
             resolve(results);
-      });
+      })
+        .catch(function(err){ //Handle Errors
+           errorHandlingService.handleError(err); 
+        });
+
       } else { // We don't need to find prediction variables
             userInputs.predictionVariables = {}
             userInputs.predictionVariables.a = userInputs.predictiveDifficultyAValue;

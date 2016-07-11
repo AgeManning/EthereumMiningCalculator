@@ -39,7 +39,7 @@ angular.module('ethMiningCalc')
       if (NoPoints < 2){
         NoPoints=2;
       }
-      return new Promise(function(resolve){
+      return new Promise(function(resolve,reject){
         var pastBlockNo = curBlockNo - Math.round(pastDays*24*3600/blockTime);
         var interval = (curBlockNo - pastBlockNo)/(NoPoints-1);
 
@@ -73,6 +73,9 @@ angular.module('ethMiningCalc')
                  resolve(dataSet);
                };
              })
+             .catch(function(){
+                reject("PDATAERR");
+             });
          });
       }); 
     } 
