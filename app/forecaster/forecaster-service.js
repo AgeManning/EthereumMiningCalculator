@@ -1,8 +1,7 @@
 angular.module('ethMiningCalc')
-  .factory('ForecasterService', ['$rootScope', '$location', '$window', '$timeout', 'MarketDataService', 'DataPredictionService','PredictionService', 'ForecasterCalcAdapterService', 'CalcService','ErrorHandlingService', function($rootScope, $location, $window, $timeout, marketDataService, dataPredictionService, predictionService,forecasterCalcAdapterService,calcService,errorHandlingService) {
+  .factory('ForecasterService', ['$rootScope', '$location', '$window', '$timeout', 'MarketDataService', 'DataPredictionService','PredictionService', 'CalcService','ErrorHandlingService', function($rootScope, $location, $window, $timeout, marketDataService, dataPredictionService, predictionService,calcService,errorHandlingService) {
     var factory = {};
     var userInputs = $location.search();
-
 
     /**
      * Reset all user inputs and start again with a fresh calc
@@ -14,8 +13,6 @@ angular.module('ethMiningCalc')
 
     // Going to put defaults here
     var defaultCurrency = "AUD";
-
-    //var userInputs = {};
 
     // I had to put this in a timeout cause sometimes the directives wouldn't be loaded.
     // Need to get a better fix - this is dodgy and probably will cause bugs if someone uses it
@@ -121,7 +118,7 @@ angular.module('ethMiningCalc')
           break;
 
 
-         case "custom":
+         case "custom": // Allow users to pick values. Auto-accept only some values
           $rootScope.$broadcast("difficultyType", { value: "auto", "autoAccept": true});
           if (userInputs.cryptoPrice === undefined){ //Only run these broadcasts if we need to
             broadcastCurrencyRates(false);
@@ -133,9 +130,9 @@ angular.module('ethMiningCalc')
             broadcastBlockTime(false);
           };
           $rootScope.$broadcast("plotResolution", { value: 100, "autoAccept": true});
-
-          return true;
           break;
+
+
          case "advanced":
           if (userInputs.cryptoPrice === undefined){ //Only run these broadcasts if we need to
             broadcastCurrencyRates(false);
@@ -161,6 +158,7 @@ angular.module('ethMiningCalc')
         loadingParam = {value: "Loading...", loading: true};
       }
       $rootScope.$broadcast(broadcastChannel, loadingParam);
+
       marketDataService.getRates(userInputs.cryptocurrency)
         .then(function(list) {
           var cryptoRate = 0;
@@ -174,7 +172,8 @@ angular.module('ethMiningCalc')
           $rootScope.$broadcast(broadcastChannel, { value: cryptoRate, list: list ,"autoAccept": autoAcceptFlag });
           $rootScope.$broadcast(broadcastChannel + 'Code', { value: rateCode, "autoAccept": autoAcceptFlag });
         })
-        .catch(function(error) {
+        .catch(function(err) {
+          errorHandlingService.handleError(err); 
           $rootScope.$broadcast(broadcastChannel, { value: 0, list: [] ,"autoAccept": autoAcceptFlag });
         });
     }
@@ -196,7 +195,8 @@ angular.module('ethMiningCalc')
             $rootScope.$broadcast(broadcastChannel, { "value": result ,"autoAccept": autoAcceptFlag });
           });
         })
-        .catch(function() {
+        .catch(function(err) {
+          errorHandlingService.handleError(err); 
           $rootScope.$apply(function() {
             $rootScope.$broadcast(broadcastChannel, { empty: true,"autoAccept": autoAcceptFlag  });
           });
@@ -220,7 +220,8 @@ angular.module('ethMiningCalc')
             $rootScope.$broadcast(broadcastChannel, { "value": result, "autoAccept": autoAcceptFlag });
           });
         })
-        .catch(function() {
+        .catch(function(err) {
+          errorHandlingService.handleError(err); 
           $rootScope.$apply(function() {
             $rootScope.$broadcast(broadcastChannel, { empty: true, "autoAccept": autoAcceptFlag });
           });
@@ -228,9 +229,54 @@ angular.module('ethMiningCalc')
         });
     }
 
+
+    
+    /**
+     * Gets Prediction Variables - Called by broadcastPredictiveDifficulty
+     *
+     * Returns a promise once all data is loaded.
+     */
+    var getPredictionVariables = function(autoAcceptFlag) {
+      return new Promise(function(resolve,reject){
+        // Build a prediction data set
+        var inputPredictionData = {};
+        inputPredictionData.pastDays = userInputs.predictiveDifficultyPastDays;
+        inputPredictionData.blockTime = userInputs.blockTime;
+        inputPredictionData.curDifficulty = userInputs.currentDifficulty; //This takes difficulty and is measured in TH/s
+        inputPredictionData.curBlock = userInputs.currentBlock
+        inputPredictionData.noPoints = userInputs.predictiveDifficultyPastDays;
+        // Get the Raw data for prediction
+        dataPredictionService.getPredictionData(inputPredictionData) 
+          .then(function(predictionData){
+            var predictionVariables = predictionService.predict(userInputs.difficultyType, predictionData) //Return our variables
+            userInputs.predictionData = predictionData; // We need this data in the calc.
+            $rootScope.$apply(function() {
+              if(userInputs.difficultyType == 'auto'){ // We need to change this once it has found the best type
+              autoAcceptFlag = true;
+              $rootScope.$broadcast('difficultyType', { value: predictionVariables.type, autoAccept: true});
+
+              };
+              $rootScope.$broadcast('predictiveDifficultyAValue', { value: predictionVariables.a, autoAccept: autoAcceptFlag});
+              $rootScope.$broadcast('predictiveDifficultyBValue', { value: predictionVariables.b, autoAccept: autoAcceptFlag});
+              // Only fill C if we are using a quadratic prediction
+              if (userInputs.difficultyType === "quadratic"){
+                $rootScope.$broadcast('predictiveDifficultyCValue', { value: predictionVariables.c, autoAccept: autoAcceptFlag});
+              }
+              resolve();
+
+            });
+          })
+        .catch(function(err){
+          errorHandlingService.handleError(err); 
+        });
+      });
+    }
+
+
     /**
      * This only gets called in advanced mode in order to fill the fancy math options for specific fitting forms.
      *
+     * Returns a promise once all data is loaded.
      */
     var broadcastPredictiveDifficulty = function(autoAcceptFlag) {
       // We get the data first, then broadcast to each of the required channels listed below.
@@ -242,49 +288,16 @@ angular.module('ethMiningCalc')
       if (userInputs.difficultyType === "quadratic"){
         $rootScope.$broadcast('predictiveDifficultyCValue', { loading: true});
       }
-      // Build a prediction data set
-      var inputPredictionData = {};
-      inputPredictionData.pastDays = userInputs.predictiveDifficultyPastDays;
-      inputPredictionData.blockTime = userInputs.blockTime;
-      // predictionData.curBlock =  // Need to get
-      inputPredictionData.curDifficulty = userInputs.currentDifficulty; //This takes difficulty and is measured in TH/s
-      inputPredictionData.noPoints = userInputs.predictiveDifficultyPastDays;
-
       // For the prediction data we need the current block.
-      //TODO: Find better logic to solve this problem
-
       // Make a promise that fills the required data. Return the promise
       return new Promise(function(resolve){
         if (userInputs.currentBlock === undefined) {
         marketDataService.getCurrentBlock(userInputs.cryptocurrency)
           .then(function(result) {
             userInputs.currentBlock = result;
-            inputPredictionData.curBlock = userInputs.currentBlock
             // Get the prediction Data and calculate the variables
-            dataPredictionService.getPredictionData(inputPredictionData) // Get the Raw data
-            .then(function(predictionData){
-              var predictionVariables = predictionService.predict(userInputs.difficultyType, predictionData) //Return our variables
-              userInputs.predictionData = predictionData; // We need this data in the calc.
-              $rootScope.$apply(function() {
-                if(userInputs.difficultyType == 'auto'){ // We need to change this once it has found the best type
-                autoAcceptFlag = true;
-                $rootScope.$broadcast('difficultyType', { value: predictionVariables.type, autoAccept: true});
-
-                };
-                $rootScope.$broadcast('predictiveDifficultyAValue', { value: predictionVariables.a, autoAccept: autoAcceptFlag});
-                $rootScope.$broadcast('predictiveDifficultyBValue', { value: predictionVariables.b, autoAccept: autoAcceptFlag});
-                // Only fill C if we are using a quadratic prediction
-                if (userInputs.difficultyType === "quadratic"){
-                  $rootScope.$broadcast('predictiveDifficultyCValue', { value: predictionVariables.c, autoAccept: autoAcceptFlag});
-                }
-                resolve();
-
-              });
-            })
-          .catch(function(err) {
-           errorHandlingService.handleError(err); 
-          });
-          })
+            getPredictionVariables(autoAcceptFlag).then(function(){resolve();});  
+        })
           .catch(function(err) {
            errorHandlingService.handleError(err); 
               $rootScope.$broadcast('predictiveDifficultyAValue', { empty: true});
@@ -294,26 +307,8 @@ angular.module('ethMiningCalc')
           });
         }
         else { // We already know the current block Number
-          inputPredictionData.curBlock = userInputs.currentBlock;
           // Get the prediction Data and calculate the variables
-          dataPredictionService.getPredictionData(inputPredictionData) // Get the Raw data
-          .then(function(predictionData){
-            userInputs.predictionData = predictionData // We need this data in the cal.
-            var predictionVariables = predictionService.predict(userInputs.difficultyType, predictionData) //Return our variables
-            $rootScope.$apply(function() {
-                if( userInputs.difficultyType == 'auto'){ // We need to change this once it has found the best type
-                $rootScope.$broadcast('difficultyType', { value: predictionVariables.type, autoAccept: true});
-                autoAcceptFlag = true;
-                };
-              $rootScope.$broadcast('predictiveDifficultyAValue', { value: predictionVariables.a, autoAccept: autoAcceptFlag});
-              $rootScope.$broadcast('predictiveDifficultyBValue', { value: predictionVariables.b, autoAccept: autoAcceptFlag});
-              // Only fill C if we are using a quadratic prediction
-              if (userInputs.difficultyType === "quadratic"){
-                $rootScope.$broadcast('predictiveDifficultyCValue', { value: predictionVariables.c, autoAccept: autoAcceptFlag});
-              }
-              resolve();
-            });
-          })
+          getPredictionVariables(autoAcceptFlag).then(function(){resolve();})
           .catch(function() {
            errorHandlingService.handleError(err); 
               $rootScope.$broadcast('predictiveDifficultyAValue', { empty: true});
@@ -338,7 +333,7 @@ angular.module('ethMiningCalc')
       if (type === 'complexityType' ) { broadcastComplexityType(value); }
 
       // If we are in the advanced mode, we need to estimate the predictive difficulty values for the user to accept.
-      if (userInputs['complexityType'] === 'advanced' && userInputs['difficultyType'] !== 'none' && userInputs['difficultyType'] !== 'auto' && type === "blockReward") { broadcastPredictiveDifficulty(false);}
+      if (userInputs['complexityType'] === 'advanced' && userInputs['difficultyType'] !== 'none' && userInputs['difficultyType'] !== 'auto' && type === "blockTime") { broadcastPredictiveDifficulty(false);}
 
       $rootScope.$broadcast('userInputs-updated');
     }
