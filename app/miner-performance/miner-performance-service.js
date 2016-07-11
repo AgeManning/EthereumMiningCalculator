@@ -90,8 +90,9 @@ angular.module('ethMiningCalc')
         });
 
      }
-
-
+     
+     // Make loadBlockTime accessible to controller
+     factory.loadBlockTime = loadBlockTime;
 
     /**
      * Function to generate all graphs given we have the required data.

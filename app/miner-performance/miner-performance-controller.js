@@ -70,4 +70,10 @@ angular.module('ethMiningCalc')
     $scope.analyse = analyse;
     $scope.userHasCalculated = false;
 
+    var init = function () { // Load the block time on page load
+      minerPerformanceService.loadBlockTime();
+    }
+    init(); //Load the block time
+
+
   }]);

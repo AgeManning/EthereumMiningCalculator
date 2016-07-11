@@ -215,7 +215,7 @@ angular.module('ethMiningCalc')
 
     
     /**
-     * Perform all the calulations.
+     * Perform all the calculations.
      *
      */
     var calculate = function() {
