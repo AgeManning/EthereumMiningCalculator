@@ -10,10 +10,16 @@ angular.module('ethMiningCalc')
         var predictionData = userInputs.predictionData;  
          
         inputs.hashRate = userInputs.hashRate;
+        //Bitcoin we measure hashrate in GH/s, convert to MH/s
+        if (userInputs.cryptocurrency === "btc") {inputs.hashRate = inputs.hashRate*1e3};
+        // Convert type none to fixed - match to legacy
         if (userInputs.difficultyType === 'none' ) {inputs.difficultyType = 'fixed'}
         else {inputs.difficultyType = userInputs.difficultyType};
-        inputs.networkHashRate = userInputs.currentDifficulty/userInputs.blockTime;
+        //inputs.networkHashRate = userInputs.currentDifficulty/userInputs.blockTime;
         inputs.difficulty = userInputs.currentDifficulty;
+       
+        // Bitcoin Difficulty is defined differently to ETH. We can convert the BTC Difficulty to units of THs which represent the hash rate required to solve a block in 1 second by the following
+        if (userInputs.cryptocurrency === "btc") {inputs.difficulty = userInputs.currentDifficulty*Math.pow(2,32)/1e12};
         inputs.currencyRate = userInputs.cryptoPrice;
         inputs.crypto_Block = userInputs.blockReward;
         inputs.blockTime = userInputs.blockTime;
@@ -29,6 +35,7 @@ angular.module('ethMiningCalc')
         
         inputs.predictionVariables = userInputs.predictionVariables;
         // End Adaptation
+
 
         //Want to define probability per blocks. If we use difficulty, we must multiply by block time to get an estimate for probability per block. The hashrate just gives us the probability per block.
         var probability = {};

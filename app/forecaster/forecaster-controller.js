@@ -6,13 +6,18 @@ angular.module('ethMiningCalc')
     }
 
     var userHasCalculated = false;
+
+
+    /* Logic for displaying options. 
+     * TODO: Turn this into a decision tree for simplicity
+     *
+     */
     var updateVisibilities = function() {
       inputs = forecasterService.getUserInputs();
-
       isVisible.cryptocurrency = true;
 
       isVisible.complexityType = (function(){
-      if(inputs.cryptocurrency == undefined) { return false;}
+      if(inputs.cryptocurrency == undefined || inputs.cryptocurrency === 'other') { return false;}
       return true;
       })();
 
@@ -58,10 +63,8 @@ angular.module('ethMiningCalc')
 
       isVisible.currentDifficulty = (function() {
         if (inputs.hashRate === undefined) { return false; }
-        if (inputs.cryptocurrency === undefined) { return false; }
-        if (inputs.cryptocurrency !== 'eth') { return true; }
-        if (inputs.cryptoPrice !== 0 && inputs.cryptoPrice !== undefined) {return true;}
-        return false;
+        if (inputs.cryptoPrice === undefined) { return false; }
+        return true;
       })();
 
       isVisible.blockTime = (function() {
@@ -102,8 +105,10 @@ angular.module('ethMiningCalc')
 
       isVisible.minerExpenseInclusion = (function() {
         if (inputs.hashRate === undefined) { return false; }
-        if (inputs.blockReward !== undefined && inputs.complexityType !== "advanced") { return true; }
-        if (inputs.difficultyType === "auto" && inputs.blockReward !== undefined) {return true;}
+        if (inputs.blockReward === undefined) { return false; }
+        if (inputs.cryptocurrency !== "eth") {return true;}
+        if (inputs.complexityType !== "advanced") { return true; }
+        if (inputs.difficultyType === "auto") {return true;}
         if (inputs.difficultyType !== "quadratic" && inputs.predictiveDifficultyBValue !== undefined) { return true; }
         if (inputs.predictiveDifficultyCValue !== undefined) { return true; }
         return false;

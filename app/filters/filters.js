@@ -20,17 +20,25 @@ angular.module('ethMiningCalc')
  *
  **/
 angular.module('ethMiningCalc')
-  .filter('legibleDaysMins', function() {
+  .filter('legibleYearsDaysMins', function() {
     return function(decimal) {
-      var days = Math.floor(decimal);
-      var mins = Math.round((decimal - Math.floor(decimal))*60);
+      var years = Math.floor(decimal/365);
+      var days = Math.floor(decimal - years*365);
+      var mins = Math.round((decimal - years*365 - days)*60);
       var output = "";
       // Build the text output. Be fancy and write Day(s) and Min(s)
+      if (years !=0){
+        if (years == 1){
+          output = "1 Year ";
+        } else{
+          output = years + " Years ";
+        };
+      };
       if (days != 0){
         if (days ==1) {
-          output = "1 Day ";
+          output += "1 Day ";
         } else {
-          output = days + " Days ";
+          output += days + " Days ";
         };
       };
       if (mins != 0){
@@ -40,7 +48,7 @@ angular.module('ethMiningCalc')
           output = output + mins + " Mins";
         };
       };
-      if (days == 0 && mins == 0){
+      if (years == 0 && days == 0 && mins == 0){
         output = "0 Days 0 Mins";
       };
     

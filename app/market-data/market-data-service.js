@@ -1,5 +1,5 @@
 angular.module('ethMiningCalc')
-  .factory('MarketDataService', ['$http', 'EtherchainDataService', 'PoloniexDataService', 'BitpayDataService', function($http, etherchainDataService, poloniexDataService, bitpayDataService) {
+  .factory('MarketDataService', ['$http', 'EtherchainDataService', 'PoloniexDataService', 'BitpayDataService',"BlockchainDataService", function($http, etherchainDataService, poloniexDataService, bitpayDataService, blockchainDataService) {
     var factory = {};
 
     /**
@@ -76,42 +76,118 @@ angular.module('ethMiningCalc')
       };
     }
 
-
+    // Returns difficulty in THs. 
     factory.getDifficulty = function(cryptoCode) {
       return new Promise(function(resolve, reject) {
-        if (cryptoCode === "eth") {
-          etherchainDataService.getBasicStats()
-            .then(function(data) {
-              resolve((Number(data.stats.difficulty / 1e12)));
-            })
-        } else {
-          reject()
+        switch (cryptoCode){
+          case "eth":
+            etherchainDataService.getBasicStats()
+              .then(function(data) {
+                resolve((Number(data.stats.difficulty / 1e12)));
+              })
+            .catch(function(){
+              reject("ETHDIFF");
+            });
+            break;
+          // Important Note: To compare BTC Diff to Eth, i.e Hashes required to solve a block in one second, must multiply difficulty by 2**32. Measure in 1e20 H's. 
+          case "btc":
+            blockchainDataService.getDifficulty()
+              .then(function(data) {
+                resolve(Number(data)); // We wont measure in THs. Will convert in calc-service.
+              })
+            .catch(function(){
+              reject("BTCDIFF");
+            });
+            break;
+
+          case "other":
+                resolve(0);
+            break;
         }
       });
     }
 
-    factory.blockTime = function(cryptoCode) {
+    factory.getBlockReward = function(cryptoCode) {
       return new Promise(function(resolve, reject) {
-        if (cryptoCode === "eth") {
-          etherchainDataService.getBasicStats()
-            .then(function(data) {
-              resolve(Number(data.stats.blockTime));
-            })
-        } else {
-          reject()
+        switch (cryptoCode){
+          case "eth":
+                resolve(5);
+            break;
+          case "btc":
+            blockchainDataService.getBlockReward()
+              .then(function(data) {
+                resolve(Number(data)/1e8); // Convert satoshi to BTC
+              })
+            .catch(function(){
+              reject("BTCBR");
+            });
+            break;
+
+          case "other":
+                resolve(0);
+            break;
         }
       });
     }
-   
+
+    // Returns average block time in seconds. 
+    factory.blockTime = function(cryptoCode) {
+      return new Promise(function(resolve, reject) {
+        switch (cryptoCode){
+          case "eth":
+            etherchainDataService.getBasicStats()
+              .then(function(data) {
+                resolve(Number(data.stats.blockTime));
+              })
+            .catch(function(){
+              reject("ETHBT");
+            });
+            break;
+
+          case "btc":
+            blockchainDataService.getBlockTime()
+              .then(function(data) {
+                resolve((Number(data)));
+              })
+            .catch(function(){
+              reject("BTCBT");
+            });
+            break;
+
+          case "other":
+                resolve(0);
+            break;
+        }
+      });
+    }
+  
+    // Returns current block 
     factory.getCurrentBlock = function(cryptoCode) {
       return new Promise(function(resolve, reject) {
-        if (cryptoCode === "eth") {
-          etherchainDataService.getBasicStats()
-            .then(function(data) {
-              resolve((Number(data.blockCount.number)));
-            })
-        } else {
-          reject()
+        switch (cryptoCode){
+          case "eth":
+            etherchainDataService.getBasicStats()
+              .then(function(data) {
+                resolve(Number(data.blockCount.number));
+              })
+            .catch(function(){
+              reject("ETHCB");
+            });
+            break;
+
+          case "btc":
+            blockchainDataService.getCurrentBlock()
+              .then(function(data) {
+                resolve(Number(data));
+              })
+            .catch(function(){
+              reject("BTCCB");
+            });
+            break;
+
+          case "other":
+                resolve(0);
+            break;
         }
       });
     }
@@ -122,6 +198,10 @@ angular.module('ethMiningCalc')
         item.title = item.name;
         item.value = item.rate;
       }
+      // If random currency
+      if (cryptoCode.toLowerCase() === "other")
+        return 0;
+
       // If we are using BTC as our crypto 
       if (cryptoCode.toLowerCase() === "btc") {
         return bitpayDataService.getRates()

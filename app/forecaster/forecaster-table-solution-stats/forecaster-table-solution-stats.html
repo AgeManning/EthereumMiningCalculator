@@ -7,7 +7,7 @@
       <tr>
         <td> Average Time to Solve a Block </td>
         <td>
-          <p id='exp_day'>{{table.exp_day | legibleDaysMins}}</p>
+          <p id='exp_day'>{{table.exp_day | legibleYearsDaysMins}}</p>
         </td>
       </tr>
       <tr>
@@ -18,13 +18,13 @@
         <tr>
           <td> 95% Confidence Interval </td>
           <td>
-            <p id='eth_week'>{{table.ci.lower | legibleDaysMins}} - {{table.ci.upper | legibleDaysMins}}</p>
+            <p id='eth_week'>{{table.ci.lower | legibleYearsDaysMins}} - {{table.ci.upper | legibleYearsDaysMins}}</p>
           </td>
         </tr>
         <tr>
           <td> Check Miner No Block Has Been Solved (2% Chance) </td>
           <td>
-            <p id='95_days'>{{table.check| legibleDaysMins}}</p>
+            <p id='95_days'>{{table.check| legibleYearsDaysMins}}</p>
           </td>
         </tr>
     </table>

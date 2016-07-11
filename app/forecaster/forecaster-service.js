@@ -28,18 +28,15 @@ angular.module('ethMiningCalc')
       "cryptocurrency": {
         eth: {
           title: "Ethereum (ETH)",
-          code: 'eth',
-          crypto_Block: 5
+          code: 'eth'
         },
         btc: {
           title: "Bitcoin (BTC)",
-          code: 'btc',
-          crypto_Block: 25 //May need to pull this data. It changes in July 2016
+          code: 'btc'
         },
         other: {
           title: "Other",
-          code: 'other',
-          crypto_Block: 0
+          code: 'other'
         }
       },
       "complexityType": {
@@ -101,8 +98,9 @@ angular.module('ethMiningCalc')
      */
     var broadcastComplexityType = function(complexityType) {
       switch(complexityType){
+
         case "default": // Chosen default settings. Lets broadcast them
-          $rootScope.$broadcast("difficultyType", { value: "none", "autoAccept": true});
+          $rootScope.$broadcast("difficultyType", {value: "none", "autoAccept": true});
           if (userInputs.cryptoPrice === undefined){ //Only run these broadcasts if we need to
             broadcastCurrencyRates(true);
           }
@@ -112,14 +110,20 @@ angular.module('ethMiningCalc')
           if (userInputs.blockTime === undefined){
             broadcastBlockTime(true);
           }
-          $rootScope.$broadcast("blockReward", { value: lists.cryptocurrency[userInputs.cryptocurrency].crypto_Block, "autoAccept": true});
+          if (userInputs.blockReward === undefined){
+            broadcastBlockReward(true);
+          }
           $rootScope.$broadcast("minerExpenseInclusion", { value: "disable", "autoAccept": true});
           $rootScope.$broadcast("plotResolution", { value: 100, "autoAccept": true});
           break;
 
 
          case "custom": // Allow users to pick values. Auto-accept only some values
-          $rootScope.$broadcast("difficultyType", { value: "auto", "autoAccept": true});
+          if (userInputs.cryptocurrency === "eth")
+            $rootScope.$broadcast("difficultyType", { value: "auto", "autoAccept": true});
+          else
+            $rootScope.$broadcast("difficultyType", { value: "none", "autoAccept": true});
+
           if (userInputs.cryptoPrice === undefined){ //Only run these broadcasts if we need to
             broadcastCurrencyRates(false);
           };
@@ -129,11 +133,16 @@ angular.module('ethMiningCalc')
           if (userInputs.blockTime === undefined){
             broadcastBlockTime(false);
           };
+          if (userInputs.blockReward === undefined){
+            broadcastBlockReward(false);
+          }
           $rootScope.$broadcast("plotResolution", { value: 100, "autoAccept": true});
           break;
 
-
          case "advanced":
+          if (userInputs.cryptocurrency !== 'eth') // No Difficulty prediction
+            $rootScope.$broadcast("difficultyType", { value: "none", "autoAccept": true});
+
           if (userInputs.cryptoPrice === undefined){ //Only run these broadcasts if we need to
             broadcastCurrencyRates(false);
           }
@@ -142,6 +151,9 @@ angular.module('ethMiningCalc')
           };
           if (userInputs.blockTime === undefined){
             broadcastBlockTime(false);
+          }
+          if (userInputs.blockReward === undefined){
+            broadcastBlockReward(false);
           }
           return true;
           break;
@@ -149,7 +161,31 @@ angular.module('ethMiningCalc')
       };
     }
 
+    /**
+     * Get current block reward and broadcast it to components
+     */
+    var broadcastBlockReward = function(autoAcceptFlag) {
+      var broadcastChannel = 'blockReward';
+      var loadingParam = {"loading": true}; // Send this to put into loading state
+      // If we auto accept, bypass loading state and just leave "Loading..." as value
+      if (autoAcceptFlag){
+        loadingParam = {value: "Loading...", loading: true};
+      }
+      $rootScope.$broadcast(broadcastChannel, loadingParam);
 
+      marketDataService.getBlockReward(userInputs.cryptocurrency)
+        .then(function(blockReward) {
+          $rootScope.$broadcast(broadcastChannel, { value: blockReward, "autoAccept": autoAcceptFlag });
+        })
+        .catch(function(err) {
+          errorHandlingService.handleError(err); 
+          $rootScope.$broadcast(broadcastChannel, { value: 0, list: [] ,"autoAccept": autoAcceptFlag });
+        });
+    }
+
+    /**
+     * Get currency rate and broadcast it to components
+     */
     var broadcastCurrencyRates = function(autoAcceptFlag) {
       var broadcastChannel = 'cryptoPrice';
       var loadingParam = {"loading": true}; // Send this to put into loading state
@@ -179,7 +215,7 @@ angular.module('ethMiningCalc')
     }
 
     /**
-     * Get this item and broadcast it to components
+     * Get difficulty and broadcast it to components
      */
     var broadcastDifficultyValue = function(autoAcceptFlag) {
       var broadcastChannel = 'currentDifficulty'
@@ -195,12 +231,13 @@ angular.module('ethMiningCalc')
             $rootScope.$broadcast(broadcastChannel, { "value": result ,"autoAccept": autoAcceptFlag });
           });
         })
-        .catch(function(err) {
+       /* .catch(function(err) {
+          console.log(err);
           errorHandlingService.handleError(err); 
           $rootScope.$apply(function() {
             $rootScope.$broadcast(broadcastChannel, { empty: true,"autoAccept": autoAcceptFlag  });
           });
-        });
+        });*/
     }
 
     /**
@@ -330,6 +367,12 @@ angular.module('ethMiningCalc')
       userInputs[type] = value;
       $location.search(type, value);
 
+      // If we are using a random crypto currency. Set advanced settings and turn off difficulty prediction.
+      if (type === 'cryptocurrency' && value === 'other') {
+        userInputs.complexityType='advanced';
+        $rootScope.$broadcast("difficultyType", { value: "none", "autoAccept": true});
+      }
+
       if (type === 'complexityType' ) { broadcastComplexityType(value); }
 
       // If we are in the advanced mode, we need to estimate the predictive difficulty values for the user to accept.
@@ -370,7 +413,7 @@ angular.module('ethMiningCalc')
       return new Promise(function(resolve){
 
       // Get Prediction Variables if we need to;
-      if (userInputs.difficultyType != 'none' && (userInputs.complexityType != 'advanced' || userInputs.difficultyType == 'auto')){ // Then we need to find prediction variables
+      if (userInputs.cryptocurrency === "eth" && userInputs.difficultyType != 'none' && (userInputs.complexityType != 'advanced' || userInputs.difficultyType == 'auto')){ // Then we need to find prediction variables
         broadcastPredictiveDifficulty(true)
           .then(function(){
             userInputs.predictionVariables = {}
@@ -379,7 +422,6 @@ angular.module('ethMiningCalc')
             if (userInputs.difficultyType == 'quadratic'){
             userInputs.predictionVariables.c = userInputs.predictiveDifficultyCValue;
             };
-
             results = calcService.calculate(userInputs, true) //Predictive
             resolve(results);
       })
