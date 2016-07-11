@@ -57,7 +57,7 @@ angular.module('ethMiningCalc')
         },
         series: [
        {
-          name: "1 Sigma",
+          name: "1 \u03C3",
           type: "arearange",
           data: Data.oneSigmaRange,
           color: 'green',
