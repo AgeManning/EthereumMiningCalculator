@@ -3,7 +3,7 @@ angular.module('ethMiningCalc')
     var factory = {};
 
     var gethConfig = {};
-    gethConfig.address="http://localhost";
+    gethConfig.address="https://localhost";
     gethConfig.port="8545";
     gethConfig.url=gethConfig.address + ":" + gethConfig.port;
     /**

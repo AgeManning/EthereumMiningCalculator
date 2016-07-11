@@ -49,7 +49,6 @@ angular.module('ethMiningCalc')
           var counter =Math.min(pastBlocks,blockData.length-1)-i;
           dataSet.minedBlocks.push([Number(blockData[counter].timeStamp*1000),i]);
         };
-        console.log(dataSet);
         // Sample difficulty over the date range and build a predictive model.
         // Required prediction data
         var predictionData = {};

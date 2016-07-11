@@ -56,7 +56,6 @@ angular.module('ethMiningCalc')
             $anchorScroll();
           });
           $timeout(function() {
-            console.log(dataSet);
             minerPerformanceChartService.generate("#miner-performance", dataSet); // Build the graph;
             $(window).trigger('resize');
           })
