@@ -1,5 +1,5 @@
 angular.module('ethMiningCalc')
-  .factory('MinerPerformanceService', ['$rootScope', '$location', '$window', '$timeout', 'MarketDataService', 'MinerPerformanceAnalysisService', function($rootScope, $location, $window, $timeout, marketDataService, minerPerformanceAnalysisService) {
+  .factory('MinerPerformanceService', ['$rootScope', '$location', '$window', '$timeout', 'MarketDataService', 'MinerPerformanceAnalysisService', 'ErrorHandlingService', function($rootScope, $location, $window, $timeout, marketDataService, minerPerformanceAnalysisService, errorHandlingService) {
     var factory = {};
     var userInputs = $location.search();
 
@@ -49,28 +49,13 @@ angular.module('ethMiningCalc')
       return userInputs;
     }
 
-    factory.getList = function(list) {
-      if (lists[list] === undefined) return {};
-      return lists[list];
-    };
-
-    factory.getListItemTitle = function(list, code) {
-      if (lists[list] === undefined) { return ''; }
-      var found = _.find(lists[list], function(item) {
-        return item.code === code;
-      });
-      if (found === undefined) { return ''; }
-      return found.title;
-    }
-
     /**
-     * TODO: Generalise to other Crypto's
-     * Load Necessary Data - Block Time - ETH Only ATM
+     * Loads blocktime of the current cryptocurrency.
      *
      * @returns Promise
      */
      var loadBlockTime = function() {
-        return new Promise(function(resolve,reject){ 
+      return new Promise(function(resolve,reject){ 
       // Loads Current Block Time 
       marketDataService.blockTime(userInputs.cryptocurrency)
         .then(function(result) {
@@ -79,16 +64,12 @@ angular.module('ethMiningCalc')
             resolve(result);
           });
         })
-        .catch(function() {
-          $rootScope.$apply(function() {
-            userInputs.blockTime = result;
-            console.log("Couldn't retrieve block time");
+        .catch(function(err) {
+            userInputs.blockTime = 0;
+            errorHandlingService.handleError(err);
             reject();
-          });
-
         });
-        });
-
+      });
      }
      
      // Make loadBlockTime accessible to controller
@@ -129,8 +110,9 @@ angular.module('ethMiningCalc')
               .then(function(blockTime){
                 resolve(analysePerformance(blockTime)); //Resolve a promise with the data we need
                 })
-          .catch(function() {
-            console.log("Couldn't get the blockTime"); //TODO: Deal with this in the UI
+          .catch(function(err) {
+            errorHandlingService.handleError(err);
+            console.log("error not handled" + err);
             reject();
           });
         } else { // We don't need to get the blockTime (already generated)
@@ -138,7 +120,7 @@ angular.module('ethMiningCalc')
 
        };
 
-    });
+      });
     }
 
 

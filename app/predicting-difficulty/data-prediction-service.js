@@ -43,6 +43,11 @@ angular.module('ethMiningCalc')
         var pastBlockNo = curBlockNo - Math.round(pastDays*24*3600/blockTime);
         var interval = (curBlockNo - pastBlockNo)/(NoPoints-1);
 
+        // Note: After homestead a fix lead to the block time going from 17s to 14s. 
+        //      For early miners, the above calculations assume a fixed block time and can lead to negative pastBlockNo. This is used for predictive difficulty estimates. Instead of modelling the block time over all history, we estimate predictive difficulty from the beginning of time.         
+        if (pastBlockNo < 0)
+          pastBlockNo = 1;
+
         var prevPromise = Promise.resolve(); // Looping through promises sequentially
         // Add Today's difficulty, no need to call an API for it. (We already have it :))
         var dataSet = {'0': curDifficulty}; //
@@ -60,7 +65,6 @@ angular.module('ethMiningCalc')
            //if (i % (ratio+1) == 0){
            //   return EtherchainDataService.getDifficultyData(blocks);
            //}else{
-           
               return EtherscanDataService.getDifficultyData(blocks);
            //  };
            })

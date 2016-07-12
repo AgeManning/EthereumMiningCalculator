@@ -20,6 +20,10 @@ angular.module('ethMiningCalc')
         xAxis: {title: { text:  "Date"},
             min: Data.minedBlocks[0][0],
             type: 'datetime',
+            dateTimeLabelFormats: { 
+              week: '%e. %b %y'
+
+            },
             //Make the graph the width of the data
             max: Data.minedBlocks[Data.minedBlocks.length-1][0]
         },
