@@ -38,9 +38,12 @@
   </forecaster-input-single-value>
 
   <hr>
-  <div>
+  <div ng-hide="loading">
     <a ng-show="isVisible.analyse" class="btn btn-success" ng-click="analyse()" role="button">Analyse</a>
     <a class="btn btn-warning" ng-click="reset()" role="button">Reset & Start Over</a>
+  </div>
+  <div ng-show="loading">
+    <h4 class="text-info">Loading...</h4>
   </div>
   <div id="miner-performance-inputs"></div>
 </div>
