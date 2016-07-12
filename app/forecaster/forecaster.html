@@ -89,12 +89,12 @@
     ng-show="isVisible.hashRate">
   </forecaster-input-single-value>
 
-  <!-- Difficulty Prediction Type --> 
+  <!-- Difficulty Prediction Type -->
   <!-- Note: BTC Difficulty is defined differently. To convert to H's need to multiply by 2**32. This is done in the calc service. Should make a tooltip indicating this for the user. Currently unitless -->
   <forecaster-input-list
     component-id="difficultyType"
     component-name="Difficulty Prediction Method"
-    info-text="Difficulty prediction looks at the history of network difficulty and attempts to continue the current trend into the future." 
+    info-text="Difficulty prediction looks at the history of network difficulty and attempts to continue the current trend into the future."
     ng-show="isVisible.difficultyType">
   </forecaster-input-list>
 

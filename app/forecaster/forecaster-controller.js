@@ -10,7 +10,7 @@ angular.module('ethMiningCalc')
     var userHasCalculated = false;
 
 
-    /* Logic for displaying options. 
+    /* Logic for displaying options.
      * TODO: Turn this into a decision tree for simplicity
      *
      */
@@ -222,12 +222,13 @@ angular.module('ethMiningCalc')
       }
     }
 
-    
+
     /**
      * Perform all the calculations.
      *
      */
     var calculate = function() {
+      console.log('calculate started');
       if (inputs.difficultyType != 'none'){ plotOptions.plots.predictiveDifficulty.enabled = true;};
       forecasterService.calculate()
         .then(function(results){
