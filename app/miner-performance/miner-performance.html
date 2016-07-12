@@ -6,7 +6,26 @@
   <div id="loading-bar-container"></div>
 </div>
 
-<div class="container miner-performance-inputs">
+<!-- Performance Graph  -->
+<div class="container calculator-results" ng-show="userHasCalculated"  id="miner-performance-top">
+  <h2>Results</h2>
+  <hr>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="panel panel-default calculator-inputs">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-line-chart"></i>Miner's Performance</h3>
+        </div>
+        <div class="panel-body">
+          <div id="miner-performance"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- User Inputs -->
+<div class="container calculator-inputs">
   <h2>Inputs</h2>
   <hr>
 
@@ -46,21 +65,4 @@
     <h4 class="text-info">Loading...</h4>
   </div>
   <div id="miner-performance-inputs"></div>
-</div>
-
-
-<!-- Performance Graph  -->
-<div class="container miner-performances" ng-show="userHasCalculated"  id="miner-performance-top">
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="panel panel-default calculator-inputs">
-        <div class="panel-heading">
-          <h3 class="panel-title"><i class="fa fa-line-chart"></i>Miner's Performance</h3>
-        </div>
-        <div class="panel-body">
-          <div id="miner-performance"></div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>

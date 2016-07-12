@@ -209,7 +209,7 @@ angular.module('ethMiningCalc')
           // find our default currency
           var ourDefaultCurrency = _.find(list, ['code', defaultCurrency]);
           if(ourDefaultCurrency) {
-            cryptoRate = ourDefaultCurrency.rate;
+            cryptoRate = ourDefaultCurrency.value;
             rateCode = ourDefaultCurrency.code;
           }
           $rootScope.$broadcast(broadcastChannel, { value: cryptoRate, list: list ,"autoAccept": autoAcceptFlag });
