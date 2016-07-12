@@ -198,11 +198,19 @@ angular.module('ethMiningCalc')
         item.title = item.name;
         item.value = item.rate;
       }
+      var zeroOutValues = function(item) {
+        item.value = 0;
+      }
       // If random currency
       if (cryptoCode.toLowerCase() === "other")
-        return 0;
+        return bitpayDataService.getRates()
+          .then(function(data) {
+            _.forEach(data, formatForOutput);
+            _.forEach(data, zeroOutValues);
+            return data;
+          })
 
-      // If we are using BTC as our crypto 
+      // If we are using BTC as our crypto
       if (cryptoCode.toLowerCase() === "btc") {
         return bitpayDataService.getRates()
           .then(function(data) {
