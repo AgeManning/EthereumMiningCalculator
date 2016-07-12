@@ -55,6 +55,7 @@ angular.module('ethMiningCalc')
       isVisible.cryptoPrice = (function() {
         if (inputs.cryptocurrency === undefined) { return false; }
         if (inputs.hashRate === undefined) { return false; }
+        if (inputs.difficultyType === 'none') {return true; }
         if (inputs.cryptocurrency !== 'eth') { return true; }
         if (inputs.complexityType !== undefined && inputs.complexityType === "default") { return true; }
         if (inputs.complexityType !== "default" && inputs.predictiveDifficultyPointCount !== undefined) {return true;}
@@ -107,6 +108,7 @@ angular.module('ethMiningCalc')
         if (inputs.hashRate === undefined) { return false; }
         if (inputs.blockReward === undefined) { return false; }
         if (inputs.cryptocurrency !== "eth") {return true;}
+        if (inputs.difficultyType === 'none') {return true;}
         if (inputs.complexityType !== "advanced") { return true; }
         if (inputs.difficultyType === "auto") {return true;}
         if (inputs.difficultyType !== "quadratic" && inputs.predictiveDifficultyBValue !== undefined) { return true; }

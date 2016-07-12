@@ -22,6 +22,8 @@ angular.module('ethMiningCalc')
 angular.module('ethMiningCalc')
   .filter('legibleYearsDaysMins', function() {
     return function(decimal) {
+      if (decimal === undefined)
+        return "Not Applicable";
       var years = Math.floor(decimal/365);
       var days = Math.floor(decimal - years*365);
       var mins = Math.round((decimal - years*365 - days)*60);

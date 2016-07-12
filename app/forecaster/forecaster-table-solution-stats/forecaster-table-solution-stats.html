@@ -5,24 +5,24 @@
   <div class="panel-body">
     <table class="table table-hover">
       <tr>
-        <td> Average Time to Solve a Block </td>
+        <td> Average time to solve a block </td>
         <td>
           <p id='exp_day'>{{table.exp_day | legibleYearsDaysMins}}</p>
         </td>
       </tr>
       <tr>
-        <td> Probability to Solve At Least 1 Block in a Day </td>
+        <td> Probability to solve at least 1 block in a day </td>
         <td>
           <p id='prob_day'>{{table.probability_day | number: 2}}%</p>
         </td>
         <tr>
-          <td> 95% Confidence Interval </td>
+          <td> 95% Confidence Interval to solve a block </td>
           <td>
             <p id='eth_week'>{{table.ci.lower | legibleYearsDaysMins}} - {{table.ci.upper | legibleYearsDaysMins}}</p>
           </td>
         </tr>
         <tr>
-          <td> Check Miner No Block Has Been Solved (2% Chance) </td>
+          <td> Check miner if no block has been solved (<a href="" data-toggle="tooltip" title="2% Chance of this happening. Likely miner issues">?</a>) </td>
           <td>
             <p id='95_days'>{{table.check| legibleYearsDaysMins}}</p>
           </td>

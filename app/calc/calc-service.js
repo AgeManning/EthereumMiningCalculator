@@ -32,6 +32,7 @@ angular.module('ethMiningCalc')
         if (userInputs.electricityRate === undefined) {userInputs.electricityRate = 0};
         inputs.costs.powerConsumption = userInputs.electricityUsage;
         inputs.costs.cur_kwh = userInputs.electricityRate;
+        inputs.costs.initialInvestment = userInputs.initialInvestment;
         
         inputs.predictionVariables = userInputs.predictionVariables;
         // End Adaptation
@@ -45,6 +46,7 @@ angular.module('ethMiningCalc')
  
         //Cost per day
         var costPerDay = inputs.costs.powerConsumption*24/1000*inputs.costs.cur_kwh;
+        var totalCost = costPerDay*plotOptions.days;
         
         //Set up the arrays
         var data = {};
@@ -152,12 +154,13 @@ angular.module('ethMiningCalc')
               data.currencyData.oneSigmaRange[i][1]= - costPerDay*dependent;
               data.currencyData.twoSigmaLower[i][2]= - costPerDay*dependent;
               data.currencyData.twoSigmaLower[i][1]= - costPerDay*dependent;
-              data.currencyData.minimumPlotValue.splice(i,1);
+              data.currencyData.minimumPlotValue[i][2]= -costPerDay*dependent;
             }else{
-              data.currencyData.twoSigmaLower[i][1]= - costPerDay*dependent;
-              data.currencyData.minimumPlotValue.splice(i,1);
+              data.currencyData.twoSigmaLower[i][1]= -costPerDay*dependent;
+              data.currencyData.minimumPlotValue[i][2]= -costPerDay*dependent;
             };
           };
+
           // ********* This section we need to find max and min values of the currency graph which can go negative
           // then we retroactively correct the data to reflect this.
           if (costPerDay != 0 ){ //Then we can have mins and max's that differ from initialisation 
@@ -167,9 +170,14 @@ angular.module('ethMiningCalc')
             if (data.currencyData.twoSigmaLower[i][1] < data.currencyData.minimumValue){
               data.currencyData.minimumValue = data.currencyData.twoSigmaLower[i][1];
             };
+            // Max profit 
             if (expectedWithCosts > data.currencyData.maxProfit){
               data.currencyData.maxProfit = expectedWithCosts;
               data.currencyData.profitabilityTurningPoint = dependent;// Find turning point
+            };
+            // ROI
+            if (expectedWithCosts >= inputs.costs.initialInvestment && data.currencyData.ROI === undefined){
+              data.currencyData.ROI = dependent;// Find ROI
             };
           };
           data.probData.push([dependent, statisticsService.probabilityAtLeastOneBlock(inputs, dependent)]);
@@ -177,7 +185,7 @@ angular.module('ethMiningCalc')
         }
         // If we need to find new max/min limits on the currency graph.
         if (costPerDay != 0){
-          RescaleCurrencyGraph(data.currencyData);
+          RescaleCurrencyGraph(data.currencyData,costPerDay);
 
           // Remove the minimum plot value at 0 - Makes no sense here
           data.currencyData.minimumPlotValue.splice(0,1);
@@ -217,6 +225,23 @@ angular.module('ethMiningCalc')
           results.table.ci.lower = statisticsService.daysGivenProbability(inputs.blockTime, 0.05, probability.difficulty);
           results.table.check= statisticsService.daysGivenProbability(inputs.blockTime, 0.98, probability.difficulty);
         } 
+        
+        // Costs Table -- Only if we have costs
+        if (costPerDay != 0){
+          // If difficulty is not predictive, we can easily estimate ROI
+          if(!isPredictive){
+            // Use cur_day. 
+            results.table.ROI = inputs.costs.initialInvestment/results.table.cur_day;
+          }
+          else {
+            results.table.ROI = data.currencyData.ROI; // Returns undefined if not applicable
+          };
+          results.table.totalCost = results.table.cost_day*plotOptions.days;
+          results.table.unprofitable = data.currencyData.profitabilityTurningPoint;
+          if (results.table.unprofitable == 0){ results.table.unprofitable = undefined;} // Set to N/A
+          results.table.maxProfit =  data.currencyData.maxProfit;
+        }
+
         // Generate charting stats
         results.charting = {};
         results.charting.probData = data.probData;
@@ -249,13 +274,11 @@ angular.module('ethMiningCalc')
     /** 
      * Rescale a data set with new maxima/minima
      */
-    function RescaleCurrencyGraph(data){
+    function RescaleCurrencyGraph(data,costPerDay){
       for (var x =0;x<data.expected.length;x++){
         data.maximumPlotValue[x][2] = data.maximumValue*1.1;
-        if (x < data.minimumPlotValue.length){ //Have removed some indicies so make sure we dont over stretch
-        data.minimumPlotValue[x][1] = data.minimumValue*1.1;
-        };
-      };
+        data.minimumPlotValue[x][1] = Math.max(-data.minimumPlotValue[x][0]*costPerDay,data.minimumValue*1.1);
+        }
     };
       
     return factory;

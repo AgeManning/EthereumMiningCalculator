@@ -8,8 +8,20 @@
 <div class="container forecaster-results" ng-show="userHasCalculated"  id="forecaster-top">
   <h2>Results</h2>
   <hr>
-  <!-- Two Tables when not using predictive difficulty -->
-  <div class="row" ng-show="inputs.difficultyType === 'none'">
+  <!-- Three Tables when using costs and not predictive difficulty -->
+  <div class="row" ng-show="inputs.difficultyType === 'none' && inputs.minerExpenseInclusion === 'enable'">
+    <div class="col-md-4">
+      <forecaster-table-returns></forecaster-table-returns>
+    </div>
+    <div class="col-md-4">
+      <forecaster-table-solution-stats></forecaster-table-solution-stats>
+    </div>
+    <div class="col-md-4">
+      <forecaster-table-costs></forecaster-table-costs>
+    </div>
+  </div>
+  <!-- Two Tables when not using predictive difficulty or costs -->
+  <div class="row" ng-show="inputs.difficultyType === 'none' && inputs.minerExpenseInclusion === 'disable'">
     <div class="col-md-6">
       <forecaster-table-returns></forecaster-table-returns>
     </div>
@@ -17,8 +29,17 @@
       <forecaster-table-solution-stats></forecaster-table-solution-stats>
     </div>
   </div>
-  <!--  Single Table when using predictive difficulty -->
-  <div class="row" ng-show="inputs.difficultyType !== 'none'">
+  <!--  Two Tables when using predictive difficulty and costs -->
+  <div class="row" ng-show="inputs.difficultyType !== 'none' && inputs.minerExpenseInclusion === 'enable'" >
+    <div class="col-md-6">
+      <forecaster-table-returns></forecaster-table-returns>
+    </div>
+    <div class="col-md-6">
+      <forecaster-table-costs></forecaster-table-costs>
+    </div>
+  </div>
+  <!--  Single Table when using predictive difficulty without costs -->
+  <div class="row" ng-show="inputs.difficultyType !== 'none' && inputs.minerExpenseInclusion === 'disable'">
     <div class="col-md-12">
       <forecaster-table-returns></forecaster-table-returns>
     </div>
