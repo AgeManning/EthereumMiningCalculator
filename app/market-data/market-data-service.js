@@ -4,7 +4,7 @@ angular.module('ethMiningCalc')
 
     /**
      * Grab some specific market data from a bunch of sources
-     * 
+     *
      * @returns Promise containing an object full of juicy market data
      */
     // Currency just using cryptoCode as a placeholder and currencyCode
@@ -76,7 +76,7 @@ angular.module('ethMiningCalc')
       };
     }
 
-    // Returns difficulty in THs. 
+    // Returns difficulty in THs.
     factory.getDifficulty = function(cryptoCode) {
       return new Promise(function(resolve, reject) {
         switch (cryptoCode){
@@ -89,7 +89,7 @@ angular.module('ethMiningCalc')
               reject("ETHDIFF");
             });
             break;
-          // Important Note: To compare BTC Diff to Eth, i.e Hashes required to solve a block in one second, must multiply difficulty by 2**32. Measure in 1e20 H's. 
+          // Important Note: To compare BTC Diff to Eth, i.e Hashes required to solve a block in one second, must multiply difficulty by 2**32. Measure in 1e20 H's.
           case "btc":
             blockchainDataService.getDifficulty()
               .then(function(data) {
@@ -130,7 +130,7 @@ angular.module('ethMiningCalc')
       });
     }
 
-    // Returns average block time in seconds. 
+    // Returns average block time in seconds.
     factory.blockTime = function(cryptoCode) {
       return new Promise(function(resolve, reject) {
         switch (cryptoCode){
@@ -160,8 +160,8 @@ angular.module('ethMiningCalc')
         }
       });
     }
-  
-    // Returns current block 
+
+    // Returns current block
     factory.getCurrentBlock = function(cryptoCode) {
       return new Promise(function(resolve, reject) {
         switch (cryptoCode){

@@ -71,15 +71,16 @@ angular.module('ethMiningCalc')
     $scope.reset = minerPerformanceService.resetInputs;
     $scope.analyse = analyse;
     $scope.userHasCalculated = false;
+    $scope.loading = false;
 
     // Need a function to show graphs
     $scope.runExample = function() {
       minerPerformanceService.runExample(); //This broadcasts everything.
-      // We wait a second for the broadcast then run analyse. 
+      // We wait a second for the broadcast then run analyse.
       $timeout(function() {
         analyse();
       },1);
-      
+
     }
 
     var init = function () { // Load the block time on page load

@@ -20,14 +20,6 @@ body {
   margin-top: 2em;
 }
 
-.calculator-inputs {
-  margin: 1em;
-}
-
-.calculator-inputs form .input-group {
-  margin-bottom: 1em;
-}
-
 .expand-chevron-active {
   transform: rotate(90deg);
 
@@ -45,11 +37,13 @@ body {
   font-size: 1em;
 }
 
-.forecaster-inputs {
+.calculator-inputs {
   margin-bottom: 5em;
+  margin: 0 auto;
+  width: 94%;
 }
 
-.forecaster-results {
+.calculator-results {
   margin-bottom: 5em;
   margin: 0 auto;
   width: 94%;
