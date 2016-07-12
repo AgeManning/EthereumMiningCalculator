@@ -47,6 +47,7 @@ angular.module('ethMiningCalc')
      *
      */
     var analyse = function() {
+      $scope.loading = true;
       minerPerformanceService.analyse()
         .then(function(dataSet){
           // $scope.$apply is needed as we are doing some async stuff in the background
@@ -58,6 +59,7 @@ angular.module('ethMiningCalc')
           $timeout(function() {
             minerPerformanceChartService.generate("#miner-performance", dataSet); // Build the graph;
             $(window).trigger('resize');
+            $scope.loading = false;
           })
         })
           .catch(function() {

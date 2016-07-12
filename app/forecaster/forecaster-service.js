@@ -185,7 +185,7 @@ angular.module('ethMiningCalc')
           $rootScope.$broadcast(broadcastChannel, { value: blockReward, "autoAccept": autoAcceptFlag });
         })
         .catch(function(err) {
-          errorHandlingService.handleError(err); 
+          errorHandlingService.handleError(err);
           $rootScope.$broadcast(broadcastChannel, { value: 0, list: [] ,"autoAccept": autoAcceptFlag });
         });
     }
@@ -216,7 +216,7 @@ angular.module('ethMiningCalc')
           $rootScope.$broadcast(broadcastChannel + 'Code', { value: rateCode, "autoAccept": autoAcceptFlag });
         })
         .catch(function(err) {
-          errorHandlingService.handleError(err); 
+          errorHandlingService.handleError(err);
           $rootScope.$broadcast(broadcastChannel, { value: 0, list: [] ,"autoAccept": autoAcceptFlag });
         });
     }
@@ -240,7 +240,7 @@ angular.module('ethMiningCalc')
         })
        /* .catch(function(err) {
           console.log(err);
-          errorHandlingService.handleError(err); 
+          errorHandlingService.handleError(err);
           $rootScope.$apply(function() {
             $rootScope.$broadcast(broadcastChannel, { empty: true,"autoAccept": autoAcceptFlag  });
           });
@@ -265,7 +265,7 @@ angular.module('ethMiningCalc')
           });
         })
         .catch(function(err) {
-          errorHandlingService.handleError(err); 
+          errorHandlingService.handleError(err);
           $rootScope.$apply(function() {
             $rootScope.$broadcast(broadcastChannel, { empty: true, "autoAccept": autoAcceptFlag });
           });
@@ -274,7 +274,7 @@ angular.module('ethMiningCalc')
     }
 
 
-    
+
     /**
      * Gets Prediction Variables - Called by broadcastPredictiveDifficulty
      *
@@ -290,7 +290,7 @@ angular.module('ethMiningCalc')
         inputPredictionData.curBlock = userInputs.currentBlock
         inputPredictionData.noPoints = userInputs.predictiveDifficultyPastDays;
         // Get the Raw data for prediction
-        dataPredictionService.getPredictionData(inputPredictionData) 
+        dataPredictionService.getPredictionData(inputPredictionData)
           .then(function(predictionData){
             var predictionVariables = predictionService.predict(userInputs.difficultyType, predictionData) //Return our variables
             userInputs.predictionData = predictionData; // We need this data in the calc.
@@ -311,7 +311,7 @@ angular.module('ethMiningCalc')
             });
           })
         .catch(function(err){
-          errorHandlingService.handleError(err); 
+          errorHandlingService.handleError(err);
         });
       });
     }
@@ -340,10 +340,10 @@ angular.module('ethMiningCalc')
           .then(function(result) {
             userInputs.currentBlock = result;
             // Get the prediction Data and calculate the variables
-            getPredictionVariables(autoAcceptFlag).then(function(){resolve();});  
+            getPredictionVariables(autoAcceptFlag).then(function(){resolve();});
         })
           .catch(function(err) {
-           errorHandlingService.handleError(err); 
+           errorHandlingService.handleError(err);
               $rootScope.$broadcast('predictiveDifficultyAValue', { empty: true});
               $rootScope.$broadcast('predictiveDifficultyBValue', { empty: true});
               $rootScope.$broadcast('predictiveDifficultyCValue', { empty: true});
@@ -354,7 +354,7 @@ angular.module('ethMiningCalc')
           // Get the prediction Data and calculate the variables
           getPredictionVariables(autoAcceptFlag).then(function(){resolve();})
           .catch(function() {
-           errorHandlingService.handleError(err); 
+           errorHandlingService.handleError(err);
               $rootScope.$broadcast('predictiveDifficultyAValue', { empty: true});
               $rootScope.$broadcast('predictiveDifficultyBValue', { empty: true});
               $rootScope.$broadcast('predictiveDifficultyCValue', { empty: true});
@@ -433,7 +433,7 @@ angular.module('ethMiningCalc')
             resolve(results);
       })
         .catch(function(err){ //Handle Errors
-           errorHandlingService.handleError(err); 
+           errorHandlingService.handleError(err);
         });
 
       } else { // We don't need to find prediction variables
