@@ -54,3 +54,12 @@ body {
   margin: 0 auto;
   width: 94%;
 }
+
+#loading-bar-container {
+  margin-top: -30px;
+  padding-bottom: 30px;
+}
+
+#loading-bar .bar {
+  position: relative;
+}

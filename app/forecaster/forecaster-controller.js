@@ -233,10 +233,11 @@ angular.module('ethMiningCalc')
           $scope.$apply(function() {
             $scope.userHasCalculated = true; // Show tables and plots.
             buildTable(results.table);
-            $location.hash('forecaster-top');
+            $location.hash('loading-bar-container');
             $anchorScroll();
           });
           $timeout(function() {
+            console.log('calculate finished');
             buildCharts(results.charting);
             $(window).trigger('resize');
           })
