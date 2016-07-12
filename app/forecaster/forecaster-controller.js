@@ -228,7 +228,7 @@ angular.module('ethMiningCalc')
      *
      */
     var calculate = function() {
-      console.log('calculate started');
+      $scope.loading = true;
       if (inputs.difficultyType != 'none'){ plotOptions.plots.predictiveDifficulty.enabled = true;};
       forecasterService.calculate()
         .then(function(results){
@@ -243,6 +243,7 @@ angular.module('ethMiningCalc')
             console.log('calculate finished');
             buildCharts(results.charting);
             $(window).trigger('resize');
+            $scope.loading = false;
           })
         });
     };
@@ -251,6 +252,7 @@ angular.module('ethMiningCalc')
     $scope.isVisible = isVisible;
     $scope.reset = forecasterService.resetInputs;
     $scope.calculate = calculate;
+    $scope.loading = false;
 
   var buildTable = function(tableData) {
     $scope.table = tableData;

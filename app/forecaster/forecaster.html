@@ -233,9 +233,12 @@
 
 
   <hr>
-  <div>
+  <div ng-hide="loading">
     <a ng-show="isVisible.calculate" class="btn btn-success" ng-click="calculate()" role="button">Calculate</a>
     <a class="btn btn-warning" ng-click="reset()" role="button">Reset & Start Over</a>
+  </div>
+  <div ng-show="loading">
+    <h4 class="text-info">Loading...</h4>
   </div>
   <div id="forecaster-inputs"></div>
 
