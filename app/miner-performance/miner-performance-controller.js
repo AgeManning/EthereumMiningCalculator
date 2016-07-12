@@ -51,7 +51,7 @@ angular.module('ethMiningCalc')
         .then(function(dataSet){
           // $scope.$apply is needed as we are doing some async stuff in the background
           $scope.$apply(function() {
-            $scope.userHasCalculated = true; // Show tables and plots.
+            $scope.userHasCalculated = true; // Show plot.
             $location.hash('miner-performance-top');
             $anchorScroll();
           });
@@ -69,6 +69,16 @@ angular.module('ethMiningCalc')
     $scope.reset = minerPerformanceService.resetInputs;
     $scope.analyse = analyse;
     $scope.userHasCalculated = false;
+
+    // Need a function to show graphs
+    $scope.runExample = function() {
+      minerPerformanceService.runExample(); //This broadcasts everything.
+      // We wait a second for the broadcast then run analyse. 
+      $timeout(function() {
+        analyse();
+      },1);
+      
+    }
 
     var init = function () { // Load the block time on page load
       minerPerformanceService.loadBlockTime();

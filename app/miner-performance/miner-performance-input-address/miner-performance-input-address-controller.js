@@ -2,7 +2,7 @@ angular.module('ethMiningCalc')
   .controller('MinerPerformanceInputAddressController', ['$scope', 'MinerPerformanceService', function($scope, minerPerformanceService) {
 
     var state = {
-      value: parseFloat($scope.defaultValue),
+      value: $scope.defaultValue,
       minimised: false,
       loading: false,
       accepted: false
@@ -23,7 +23,7 @@ angular.module('ethMiningCalc')
         state.minimised = true;
       }
       if (data.value) {
-        state.value = parseFloat(data.value);
+        state.value = data.value;
         state.loading = false;
         if (data.autoAccept){
           minerPerformanceService.registerUserInput($scope.componentId, state.value);

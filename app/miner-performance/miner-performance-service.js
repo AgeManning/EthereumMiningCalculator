@@ -49,6 +49,20 @@ angular.module('ethMiningCalc')
       return userInputs;
     }
 
+
+    /**
+     * Runs an example
+     *
+     * @returns Promise when graphs are complete.
+     */
+    factory.runExample = function() {
+      $rootScope.$broadcast('hashRate', {value: 41, "autoAccept": true});
+      $rootScope.$broadcast('minerAddress', {value: "0x8e68c0c9B5275fa684291304af9cafe6ceAf2772", "autoAccept": true});
+      $rootScope.$broadcast('pastBlocks', {value: 40, "autoAccept": true});
+    }
+
+
+
     /**
      * Loads blocktime of the current cryptocurrency.
      *
@@ -112,7 +126,6 @@ angular.module('ethMiningCalc')
                 })
           .catch(function(err) {
             errorHandlingService.handleError(err);
-            console.log("error not handled" + err);
             reject();
           });
         } else { // We don't need to get the blockTime (already generated)
