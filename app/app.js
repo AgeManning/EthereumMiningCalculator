@@ -1,10 +1,15 @@
 angular.module('ethMiningCalc', [
   'ui.router',
   'angular-json-rpc',
-  'isoCurrency'
+  'isoCurrency',
+  'angular-loading-bar'
 
-]).config(function($stateProvider, $urlRouterProvider) {
+]).config(function($stateProvider, $urlRouterProvider, cfpLoadingBarProvider) {
   //
+
+  cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
+  console.log(cfpLoadingBarProvider);
+
   // For any unmatched url, redirect to /state1
   $urlRouterProvider.otherwise("/");
   //
