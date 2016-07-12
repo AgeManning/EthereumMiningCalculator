@@ -1,6 +1,8 @@
 angular.module('ethMiningCalc')
   .controller('ForecasterController', ['$scope', '$timeout', '$anchorScroll', '$location', 'ForecasterService', 'ProbabilityChartService', 'PredictiveDifficultyChartService','VarianceChartService', function($scope, $timeout, $anchorScroll, $location, forecasterService,probabilityChartService, predictiveDifficultyChartService, varianceChartService) {
 
+    forecasterService.intitialiseUserInputs();
+
     var isVisible = {
       cryptocurrency: true
     }

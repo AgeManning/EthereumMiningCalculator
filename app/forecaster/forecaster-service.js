@@ -11,6 +11,13 @@ angular.module('ethMiningCalc')
       $window.location.reload();
     }
 
+    /**
+     * Refresh the userInputs
+     */
+    factory.intitialiseUserInputs = function() {
+      userInputs = $location.search();
+    }
+
     // Going to put defaults here
     var defaultCurrency = "AUD";
 

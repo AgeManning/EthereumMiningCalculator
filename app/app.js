@@ -8,7 +8,6 @@ angular.module('ethMiningCalc', [
   //
 
   cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
-  console.log(cfpLoadingBarProvider);
 
   // For any unmatched url, redirect to /state1
   $urlRouterProvider.otherwise("/");
