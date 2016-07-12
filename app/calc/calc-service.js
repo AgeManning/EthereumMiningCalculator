@@ -236,6 +236,8 @@ angular.module('ethMiningCalc')
           else {
             results.table.ROI = data.currencyData.ROI; // Returns undefined if not applicable
           };
+          if (results.table.ROI < 0) //Making no money
+            results.table.ROI = undefined;
           results.table.totalCost = results.table.cost_day*plotOptions.days;
           results.table.unprofitable = data.currencyData.profitabilityTurningPoint;
           if (results.table.unprofitable == 0){ results.table.unprofitable = undefined;} // Set to N/A
