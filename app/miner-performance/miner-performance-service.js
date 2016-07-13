@@ -18,6 +18,10 @@ angular.module('ethMiningCalc')
       $location.url($location.path());
       $window.location.reload();
     }
+  
+    factory.initialiseUserInputs = function() {
+      userInputs = $location.search();
+    }
 
     // I had to put this in a timeout cause sometimes the directives wouldn't be loaded.
     // Need to get a better fix - this is dodgy and probably will cause bugs if someone uses it
@@ -69,8 +73,8 @@ angular.module('ethMiningCalc')
      * @returns Promise
      */
      var loadBlockTime = function() {
-      return new Promise(function(resolve,reject){ 
-      // Loads Current Block Time 
+      return new Promise(function(resolve,reject){
+      // Loads Current Block Time
       marketDataService.blockTime(userInputs.cryptocurrency)
         .then(function(result) {
           $rootScope.$apply(function() {
@@ -85,7 +89,7 @@ angular.module('ethMiningCalc')
         });
       });
      }
-     
+
      // Make loadBlockTime accessible to controller
      factory.loadBlockTime = loadBlockTime;
 
@@ -94,7 +98,7 @@ angular.module('ethMiningCalc')
      *
      *  Called from factory.analyse
      *
-     *  Input - Block Time 
+     *  Input - Block Time
      *
      *  @Returns a Promise with data for the performance graph
      */
