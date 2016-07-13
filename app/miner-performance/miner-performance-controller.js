@@ -1,6 +1,8 @@
 angular.module('ethMiningCalc')
   .controller('MinerPerformanceController', ['$scope', '$timeout', '$anchorScroll', '$location', 'MinerPerformanceService', "MinerPerformanceChartService", function($scope, $timeout, $anchorScroll, $location, minerPerformanceService, minerPerformanceChartService) {
 
+    minerPerformanceService.initialiseUserInputs();
+
     var isVisible = {
       hashRate: true
     }
