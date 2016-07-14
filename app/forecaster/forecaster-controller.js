@@ -236,7 +236,7 @@ angular.module('ethMiningCalc')
           $scope.$apply(function() {
             $scope.userHasCalculated = true; // Show tables and plots.
             buildTable(results.table);
-            $location.hash('loading-bar-container');
+            $location.hash('finished-calculation-position');
             $anchorScroll();
           });
           $timeout(function() {
