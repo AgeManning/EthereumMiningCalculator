@@ -17,10 +17,6 @@ body {
   background: #E3F2FD;
 }
 
-.landing-page-info div:not(:first-child) {
-  margin-top: 2em;
-}
-
 .expand-chevron-active {
   transform: rotate(90deg);
 
