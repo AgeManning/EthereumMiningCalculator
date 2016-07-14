@@ -1,5 +1,6 @@
 body {
   background: #FFF;
+  padding-bottom: 5em;
 }
 
 .navbar-default {
@@ -37,13 +38,11 @@ body {
   font-size: 1em;
 }
 
-.calculator-inputs {
-  margin-bottom: 5em;
+.calculator-inputs-section {
   width: 94%;
 }
 
-.calculator-results {
-  margin-bottom: 5em;
+.calculator-results-section {
   margin: 0 auto;
   width: 94%;
 }
@@ -55,4 +54,8 @@ body {
 
 #loading-bar .bar {
   position: relative;
+}
+
+.btn-wide {
+  min-width: 200px;
 }

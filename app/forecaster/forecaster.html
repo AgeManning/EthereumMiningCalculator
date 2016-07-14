@@ -2,11 +2,10 @@
   <div class="jumbotron">
     <h1>Statistical Forecaster</h1>
   </div>
-  <div id="loading-bar-container"></div>
 </div>
 
 <!-- Inputs -->
-<div class="container calculator-inputs">
+<div class="container calculator-inputs-section">
   <h2>Inputs</h2>
   <div class="well well-lg">
     <!-- Cryptocurrency -->
@@ -180,8 +179,8 @@
 
   <div class="pull-right">
     <div ng-hide="loading">
-      <a class="btn btn-warning" ng-click="reset()" role="button">Reset & Start Over</a>
-      <a ng-show="isVisible.calculate" class="btn btn-success" ng-click="calculate()" role="button">Calculate</a>
+      <a class="btn btn-warning" ng-click="reset()" role="button">Reset Inputs & Start Over</a>
+      <a ng-show="isVisible.calculate" class="btn btn-success btn-wide" ng-click="calculate()" role="button">Calculate</a>
     </div>
     <div ng-show="loading">
       <h4 class="text-info">Loading...</h4>
@@ -193,7 +192,8 @@
 </div>
 
 <!-- Results -->
-<div class="container calculator-results" ng-show="userHasCalculated">
+<div class="container calculator-results-section" ng-show="userHasCalculated">
+  <div id="loading-bar-container"></div>
   <h2>Results</h2>
   <div class="well well-lg">
     <!-- Three Tables when using costs and not predictive difficulty -->
