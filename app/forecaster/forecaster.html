@@ -51,6 +51,7 @@
       component-name="Predictive Difficulty Look-Back (days)"
       info-text="How far to look back in the past to gather data used to predict the future."
       default-value="100"
+      min-value="1"
       ng-show="isVisible.predictiveDifficultyPastDays">
     </forecaster-input-single-value>
 
@@ -60,6 +61,7 @@
       component-name="Difficulty Prediction Resolution (points)"
       info-text="The number of points to sample to build a prediction. (5 Points per second for Ethereum - So dont go make this too large)"
       default-value="15"
+      min-value="2"
       ng-show="isVisible.predictiveDifficultyPointCount">
     </forecaster-input-single-value>
 
@@ -68,6 +70,7 @@
       component-id="cryptoPrice"
       component-name="Current Price"
       info-text="The currency and current price you would like to use to for the analysis."
+      min-value="0"
       ng-show="isVisible.cryptoPrice">
     </forecaster-input-currency>
 
@@ -76,6 +79,7 @@
       component-id="currentDifficulty"
       component-name="Current Block Difficulty (TH)"
       info-text="The default value is pulled from the etherchain.org public api. Feel free to replace it with your own."
+      min-value="0"
       ng-show="isVisible.currentDifficulty">
     </forecaster-input-single-value>
 
@@ -84,6 +88,7 @@
       component-id="blockTime"
       component-name="Average Block Time (seconds)"
       info-text="The default value is pulled from the etherchain.org public api. Feel free to replace it with your own."
+      min-value="0"
       ng-show="isVisible.blockTime">
     </forecaster-input-single-value>
 
@@ -92,7 +97,8 @@
       component-id="blockReward"
       component-name="Reward for Solving a Block"
       info-text="How many units of currency you are awarded for solving a block"
-      default-value="0"
+      default-value=""
+      min-value="0"
       ng-show="isVisible.blockReward">
     </forecaster-input-single-value>
 
@@ -139,6 +145,7 @@
       component-name="Initial Miner Investment"
       info-text="How much have you spent to obtain your miner?"
       default-value="1000"
+      min-value="0"
       ng-show="isVisible.initialInvestment">
     </forecaster-input-single-value>
 
@@ -148,6 +155,7 @@
       component-name="Miner Power Consumption (W)"
       info-text="How many Watts(W) of electricity does your miner consume?"
       default-value="150"
+      min-value="0"
       ng-show="isVisible.electricityUsage">
     </forecaster-input-single-value>
 
@@ -157,6 +165,7 @@
       component-name="Electricity Cost per kWh"
       info-text="How much do you pay per kWh for electricity?"
       default-value="0.25"
+      min-value="0"
       ng-show="isVisible.electricityRate">
     </forecaster-input-single-value>
 
@@ -166,6 +175,7 @@
       component-name="Plot Length (days)"
       info-text="The amount of days the graph should run into the future. Paul, if predictive difficulty, can we give an estimate for this value or warning... dont want kiddies predicting too far into the future."
       default-value="30"
+      min-value="1"
       ng-show="isVisible.plotDays">
     </forecaster-input-single-value>
 
@@ -175,6 +185,7 @@
       component-name="Plot Resolution (total number of points)"
       info-text="The number of data points to sample when build the graph."
       default-value="100"
+      min-value="2"
       ng-show="isVisible.plotResolution">
     </forecaster-input-single-value>
   </div> <!-- end of well -->

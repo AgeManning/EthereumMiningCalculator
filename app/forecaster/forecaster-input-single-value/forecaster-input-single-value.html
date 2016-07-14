@@ -8,7 +8,8 @@
   <div ng-hide="state.minimised || state.loading">
     <hr>
     <p><em>{{infoText}}</em></p>
-    <div class="text-danger" ng-show="inputForm.input.$error.min"><p>Please enter a positive number.</p></div>
+    <div class="text-danger" ng-show="inputForm.input.$error.min"><p>Please enter a number greater than {{ minValue}}.</p></div>
+    <div class="text-danger" ng-show="isZero"><p>This number cannot be 0.</p></div>
     <div class="input-group">
       <form name="inputForm" ng-submit="accept(state.value)">
         <input name='input' type="number" step="any" min="{{ minValue }}" class="form-control" placeholder="{{componentName}}" ng-model="state.value">

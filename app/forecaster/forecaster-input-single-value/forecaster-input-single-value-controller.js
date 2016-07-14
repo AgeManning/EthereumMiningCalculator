@@ -1,6 +1,9 @@
 angular.module('ethMiningCalc')
   .controller('ForecasterInputSingleValueController', ['$scope', 'ForecasterService', function($scope, forecasterService) {
 
+    //Display an error if 0 is entered
+    var isZero = false;
+
     var state = {
       value: parseFloat($scope.defaultValue),
       minimised: false,
@@ -9,8 +12,10 @@ angular.module('ethMiningCalc')
     };
 
     var acceptValue = function(value) {
-      if($scope.inputForm.$invalid) {
-        return;
+      if (validateZeros(value))
+        isZero = true;
+      if($scope.inputForm.$invalid || validateZeros(value)) {
+      return;
       }
       state.minimised = true;
       state.accepted = true;
@@ -27,6 +32,12 @@ angular.module('ethMiningCalc')
       }
       if (data.value) {
         state.value = parseFloat(data.value);
+        if (validateZeros(data.value))
+          isZero = true; //Display error
+        if($scope.inputForm.$invalid || validateZeros(data.value)) {
+
+          return;
+        }
         state.loading = false;
         if (data.autoAccept){
           forecasterService.registerUserInput($scope.componentId, state.value);
@@ -38,4 +49,20 @@ angular.module('ethMiningCalc')
     // Expose to $scope
     $scope.state = state;
     $scope.accept = acceptValue;
+    $scope.isZero = isZero;
+
+    // Some components are allowed 0's others are not
+    // Returns true if invalid
+    var validateZeros = function(value) {
+      var allowedZeros = ['initialInvestment', 'electricityUsage', 'electricityRate'];
+      if (allowedZeros.indexOf($scope.componentId) <= -1) { //Not the allowed zero's
+        if (value == 0)
+          return true;
+      }
+      return false;
+    };
+
+
+
+
   }]);

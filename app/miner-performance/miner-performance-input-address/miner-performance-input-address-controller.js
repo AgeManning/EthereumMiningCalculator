@@ -1,6 +1,9 @@
 angular.module('ethMiningCalc')
   .controller('MinerPerformanceInputAddressController', ['$scope', 'MinerPerformanceService', function($scope, minerPerformanceService) {
 
+    // Flag for incorrect addresses.
+    var addressError = false;
+
     var state = {
       value: $scope.defaultValue,
       minimised: false,
@@ -52,9 +55,9 @@ angular.module('ethMiningCalc')
         };
       };
 
-      //TODO: Paul
       //Do UI things. Message: "This isn't an ethereum address. Try again :)"
-      console.log("Incorrect Miner Address - Not accepting it bitchez!");
+      //TODO: Paul Fix me
+      addressError = true;
       return false;
     };
 
@@ -69,4 +72,5 @@ angular.module('ethMiningCalc')
     // Expose to $scope
     $scope.state = state;
     $scope.accept = acceptValue;
+    $scope.addressError = addressError;
   }]);

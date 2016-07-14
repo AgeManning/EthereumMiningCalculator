@@ -8,6 +8,7 @@
   <div ng-hide="state.minimised || state.loading">
     <hr>
     <p><em>{{infoText}}</em></p>
+    <div class="text-danger" ng-show="addressError"><p>Incorrect Miner Address. Must be a 40 character hex number.</p></div>
     <div class="input-group">
       <form ng-submit="accept(state.value)">
         <input type="text" maxlength="42" class="form-control" placeholder="{{componentName}}" ng-model="state.value">
