@@ -5,13 +5,13 @@
   <div class="panel-body">
     <table class="table table-hover">
       <tr>
-        <td>Estimated Time for ROI (<a href="" data-toggle="tooltip" title="Return of Investment">?</a>)</td>
+        <td>Estimated Time for ROI (<a href="" data-toggle="tooltip" title="Return of Investment - Not applicable if difficulty is predictive and ROI hasn't been reached in modelling time">?</a>)</td>
         <td>
           <p id='ROI'>{{table.ROI | legibleYearsDaysMins}}</p>
         </td>
       </tr>
       <tr>
-        <td>Cost per day {{table.cost_day | isoCurrency:inputs.cryptoPriceCode }} </td>
+        <td>Cost per day</td>
         <td>
           <p id='cost_day'>{{table.cost_day | isoCurrency:inputs.cryptoPriceCode }}</p>
         </td>
@@ -29,7 +29,7 @@
           </td>
         </tr>
         <tr ng-show="inputs.difficultyType !== 'none'">
-          <td> Max profit (<a href="" data-toggle="tooltip" title="Given time frame modeled and assuming miner is turned off at time of unprofitiabilty (if there is one)">?</a>)</td>
+          <td> Max profit in {{inputs.plotDays | legibleYearsDaysMins}}(<a href="" data-toggle="tooltip" title="Assuming miner is turned off at time of unprofitiabilty (if there is one)">?</a>)</td>
           <td>
             <p id='totalprofit'>{{table.maxProfit | isoCurrency:inputs.cryptoPriceCode }}</p>
           </td>

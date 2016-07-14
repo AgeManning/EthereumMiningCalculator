@@ -1,5 +1,5 @@
 angular.module('ethMiningCalc')
-  .factory('MinerPerformanceService', ['$rootScope', '$location', '$window', '$timeout', 'MarketDataService', 'MinerPerformanceAnalysisService', 'ErrorHandlingService', function($rootScope, $location, $window, $timeout, marketDataService, minerPerformanceAnalysisService, errorHandlingService) {
+  .factory('MinerPerformanceService', ['$rootScope', '$location', '$window', '$timeout', 'MarketDataService', 'MinerPerformanceAnalysisService','ValidationService', 'ErrorHandlingService', function($rootScope, $location, $window, $timeout, marketDataService, minerPerformanceAnalysisService,validationService, errorHandlingService) {
     var factory = {};
     var userInputs = $location.search();
 
@@ -126,6 +126,10 @@ angular.module('ethMiningCalc')
         if (userInputs.blockTime == undefined){
             loadBlockTime() // Get Block Time Promise
               .then(function(blockTime){
+                //TODO: Paul UI Repsonse
+                var invalidObjects = validationService.validateAnalyse(userInputs);
+                console.log(invalidObjects);
+                  
                 resolve(analysePerformance(blockTime)); //Resolve a promise with the data we need
                 })
           .catch(function(err) {
@@ -133,8 +137,12 @@ angular.module('ethMiningCalc')
             reject();
           });
         } else { // We don't need to get the blockTime (already generated)
-          resolve(analysePerformance(userInputs.blockTime));
 
+          //TODO: Paul UI Repsonse
+          var invalidObjects = validationService.validateAnalyse(userInputs);
+          console.log(invalidObjects);
+
+          resolve(analysePerformance(userInputs.blockTime));
        };
 
       });

@@ -1,5 +1,5 @@
 angular.module('ethMiningCalc')
-  .factory('ForecasterService', ['$rootScope', '$location', '$window', '$timeout', 'MarketDataService', 'DataPredictionService','PredictionService', 'CalcService','ErrorHandlingService', function($rootScope, $location, $window, $timeout, marketDataService, dataPredictionService, predictionService,calcService,errorHandlingService) {
+  .factory('ForecasterService', ['$rootScope', '$location', '$window', '$timeout', 'MarketDataService', 'DataPredictionService','PredictionService', 'CalcService','ErrorHandlingService','ValidationService', function($rootScope, $location, $window, $timeout, marketDataService, dataPredictionService, predictionService,calcService,errorHandlingService, validationService) {
     var factory = {};
     var userInputs = $location.search();
 
@@ -416,6 +416,11 @@ angular.module('ethMiningCalc')
      */
     factory.calculate = function() {
       var results = {};
+     
+      //TODO: Paul to implement results of validation
+      var invalidObjects = validationService.validateCalculate(userInputs);
+      console.log(invalidObjects);
+
 
       return new Promise(function(resolve){
 

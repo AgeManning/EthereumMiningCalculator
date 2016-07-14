@@ -1,5 +1,5 @@
 angular.module('ethMiningCalc')
-  .controller('MinerPerformanceController', ['$scope', '$timeout', '$anchorScroll', '$location', 'MinerPerformanceService', "MinerPerformanceChartService", function($scope, $timeout, $anchorScroll, $location, minerPerformanceService, minerPerformanceChartService) {
+  .controller('MinerPerformanceController', ['$scope', '$timeout', '$anchorScroll', '$location', 'MinerPerformanceService', "MinerPerformanceChartService",'ValidationService', 'ErrorHandlingService', function($scope, $timeout, $anchorScroll, $location, minerPerformanceService, minerPerformanceChartService,validationService,errorHandlingService) {
 
     minerPerformanceService.initialiseUserInputs();
 
@@ -64,7 +64,8 @@ angular.module('ethMiningCalc')
             $scope.loading = false;
           })
         })
-          .catch(function() {
+          .catch(function(err) {
+            errorHandlingService.handleError(err);
             console.log("Couldn't perform the analysis"); //TODO: Deal with this in the UI
           });
     };
