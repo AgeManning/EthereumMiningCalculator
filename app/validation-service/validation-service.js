@@ -106,12 +106,18 @@ angular.module('ethMiningCalc')
     };
 
     // Cost Validation
-    var CostPosNumberComponents = ['initialInvestment','electricityUsage','electricityRate'];
-      for (var i =0; i < CostPosNumberComponents.length; i++){
-        // Check these components are defined and are positive numbers
-        if (!validatePosNumber(userInputs[CostPosNumberComponents[i]]))
-          invalidObjects.push(CostPosNumberComponents[i]);
+    if (userInputs.minerExpenseInclusion === undefined)
+      invalidObjects.push('minerExpenseInclusion');
+    else{
+      if (userInputs.minerExpenseInclusion === 'enable'){
+        var CostPosNumberComponents = ['initialInvestment','electricityUsage','electricityRate'];
+          for (var i =0; i < CostPosNumberComponents.length; i++){
+            // Check these components are defined and are positive numbers
+            if (!validatePosNumber(userInputs[CostPosNumberComponents[i]]))
+              invalidObjects.push(CostPosNumberComponents[i]);
+          };
       };
+    };
 
     return invalidObjects;
 
