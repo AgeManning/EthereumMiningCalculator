@@ -138,7 +138,7 @@ angular.module('ethMiningCalc')
             var probability = hashRate/(a*Math.pow(s*j,2) + b*j*s + c);
             quadraticVariance += probability*(1-probability); 
            }
-          if(isNaN(Variance))
+          if(isNaN(quadraticVariance))
             throw "VINF";
           return Math.sqrt(quadraticVariance); 
           break;

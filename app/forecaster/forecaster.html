@@ -13,7 +13,7 @@
     <forecaster-input-list
       component-id="cryptocurrency"
       component-name="Cryptocurrency"
-      info-text="Difficulty prediction is only supported for Ethereum. Cost analysis is only available for Ethereum and Bitcoin."
+      info-text="Choose your cryptocurrency of choice. Advanced features are currently only available for Ethereum."
       ng-show="isVisible.cryptocurrency">
     </forecaster-input-list>
 
@@ -21,7 +21,7 @@
     <forecaster-input-list
       component-id="complexityType"
       component-name="Option Complexity"
-      info-text="Choose the complexity of configuration options for this calculator. <br> Default Options - Automatically chooses basic settings, disables predictive difficulty and miner expenses <br> Custom - Manually accept each setting, enables predictive difficulty. <br> Advanced - Enables the user to customize all features, including predictive difficulty functional forms and sampling sizes for graphs and predictions."
+      info-text="Choose the complexity of configuration options for this calculator. <br><b>Basic -<b>Automatically chooses basic settings, disables predictive difficulty and miner expenses<br><b>Custom -<b>Manually accept each setting, enables predictive difficulty.<br><b>Advanced -<b>Enables the user to customize all features, including predictive difficulty functional forms and sampling sizes for graphs and predictions."
       ng-show="isVisible.complexityType">
     </forecaster-input-list>
 
@@ -29,8 +29,8 @@
     <!--For BTC This will be measured in GH/s - Converted in calc-service -->
     <forecaster-input-single-value
       component-id="hashRate"
-      component-name="Miner's HashRate (MH/s)"
-      info-text="Input the hash rate of the miner you wish to forcast. "
+      component-name="Miner's HashRate ({{ hashRateUnit }})"
+      info-text="Input the hash rate of the miner you wish to forceast. "
       default-value="100"
       min-value="0"
       ng-show="isVisible.hashRate">
@@ -41,7 +41,7 @@
     <forecaster-input-list
       component-id="difficultyType"
       component-name="Difficulty Prediction Method"
-      info-text="Difficulty prediction looks at the history of network difficulty and attempts to continue the current trend into the future."
+      info-text='Difficulty prediction looks at the history of network difficulty and attempts to continue the current trend into the future. You can choose the mathematical form of the trend. "None" assumes a constant, fixed difficulty.'
       ng-show="isVisible.difficultyType">
     </forecaster-input-list>
 
@@ -59,7 +59,7 @@
     <forecaster-input-single-value
       component-id="predictiveDifficultyPointCount"
       component-name="Difficulty Prediction Resolution (points)"
-      info-text="The number of points to sample to build a prediction. (5 Points per second for Ethereum - So dont go make this too large)"
+      info-text="The number of points to sample to build a prediction. (The API used gets 5 points per second. We therefore limit the maximum to 20)."
       default-value="15"
       min-value="2"
       ng-show="isVisible.predictiveDifficultyPointCount">
@@ -77,8 +77,8 @@
     <!-- Current Difficulty  -->
     <forecaster-input-single-value
       component-id="currentDifficulty"
-      component-name="Current Block Difficulty (TH)"
-      info-text="The default value is pulled from the etherchain.org public api. Feel free to replace it with your own."
+      component-name="Current Block Difficulty {{ difficultyUnits }} "
+      info-text="The difficulty of the network. {{ difficultyExtraText }}"
       min-value="0"
       ng-show="isVisible.currentDifficulty">
     </forecaster-input-single-value>
@@ -87,7 +87,7 @@
     <forecaster-input-single-value
       component-id="blockTime"
       component-name="Average Block Time (seconds)"
-      info-text="The default value is pulled from the etherchain.org public api. Feel free to replace it with your own."
+      info-text="The average block time of the network."
       min-value="0"
       ng-show="isVisible.blockTime">
     </forecaster-input-single-value>
@@ -106,8 +106,8 @@
     <!-- Predictive Difficulty a -->
     <forecaster-input-single-value
       component-id="predictiveDifficultyAValue"
-      component-name="Predictive Difficulty a"
-      info-text="Would like to change this text depending on predictive difficulty selection. Some UI thing Paul understands. \(D = a x^2 + b x + c \)"
+      component-name="Predictive Difficulty \( \alpha \) coefficient"
+      info-text="The \( \alpha \) coefficient used for the predictive difficulty in the form  {{ predictedDiffForm }}. \( x \) is duration in days."
       default-value="0"
       ng-show="isVisible.predictiveDifficultyAValue">
     </forecaster-input-single-value>
@@ -116,7 +116,7 @@
     <forecaster-input-single-value
       component-id="predictiveDifficultyBValue"
       component-name="Predictive Difficulty b"
-      info-text="Another UI thing Paul understands"
+      info-text="The \( \beta \) coefficient used for the predictive difficulty in the form  {{ predictedDiffForm }}. \( x \) is duration in days."
       default-value="0"
       ng-show="isVisible.predictiveDifficultyBValue">
     </forecaster-input-single-value>
@@ -125,7 +125,7 @@
     <forecaster-input-single-value
       component-id="predictiveDifficultyCValue"
       component-name="Predictive Difficulty c"
-      info-text="Yet another UI thing Paul understands."
+      info-text="The \( \gamma \) coefficient used for the predictive difficulty in the form  {{ predictedDiffForm }}. \( x \) is duration in days."
       default-value="0"
       ng-show="isVisible.predictiveDifficultyCValue">
     </forecaster-input-single-value>
@@ -142,8 +142,8 @@
     <!-- Initial Investment -->
     <forecaster-input-single-value
       component-id="initialInvestment"
-      component-name="Initial Miner Investment"
-      info-text="How much have you spent to obtain your miner?"
+      component-name="Initial Miner Investment ({{ currencyUnit }})"
+      info-text="How much have you spent to obtain your miner? "
       default-value="1000"
       min-value="0"
       ng-show="isVisible.initialInvestment">
@@ -162,7 +162,7 @@
     <!-- Electricitiy Rate -->
     <forecaster-input-single-value
       component-id="electricityRate"
-      component-name="Electricity Cost per kWh"
+      component-name="Electricity Cost per kWh ({{ currencyUnit }}/kWh)"
       info-text="How much do you pay per kWh for electricity?"
       default-value="0.25"
       min-value="0"
@@ -173,7 +173,7 @@
     <forecaster-input-single-value
       component-id="plotDays"
       component-name="Plot Length (days)"
-      info-text="The amount of days the graph should run into the future. Paul, if predictive difficulty, can we give an estimate for this value or warning... dont want kiddies predicting too far into the future."
+      info-text="The amount of days to predict into the future. {{ predictiveWarningText }}"
       default-value="30"
       min-value="1"
       ng-show="isVisible.plotDays">
@@ -183,7 +183,7 @@
     <forecaster-input-single-value
       component-id="plotResolution"
       component-name="Plot Resolution (total number of points)"
-      info-text="The number of data points to sample when build the graph."
+      info-text="The number of data points to sample when constructing the plots."
       default-value="100"
       min-value="2"
       ng-show="isVisible.plotResolution">

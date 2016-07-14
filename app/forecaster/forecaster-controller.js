@@ -8,7 +8,7 @@ angular.module('ethMiningCalc')
     }
 
     var userHasCalculated = false;
-
+    var hashRateUnit = "";
 
     /* Logic for displaying options.
      * TODO: Turn this into a decision tree for simplicity
@@ -26,6 +26,18 @@ angular.module('ethMiningCalc')
       isVisible.hashRate = (function() {
         if (inputs.complexityType === undefined) { return false; }
         if (inputs.cryptocurrency === undefined) { return false; }
+        //Find the correct Units. --TODO: Update this to list + value
+        switch(inputs.cryptocurrency){
+          case 'eth':
+            $scope.hashRateUnit = "MH/s";
+            break;
+          case 'btc':
+            $scope.hashRateUnit = 'GH/s';
+            break;
+          case 'other':
+            $scope.hashRateUnit = 'H/s';
+            break;
+        }
         return true;
       })();
 
@@ -67,6 +79,20 @@ angular.module('ethMiningCalc')
       isVisible.currentDifficulty = (function() {
         if (inputs.hashRate === undefined) { return false; }
         if (inputs.cryptoPrice === undefined) { return false; }
+        switch(inputs.cryptocurrency){
+          case 'eth':
+            $scope.difficultyUnits = "(TH)";
+            $scope.difficultyExtraText = "This is the hashrate required to solve one block in one second.";
+            break;
+          case 'btc':
+            $scope.difficultyUnits = "";
+            $scope.difficultyExtraText = "";
+            break;
+          case 'other':
+            $scope.difficultyUnits = "(TH)";
+            $scope.hashRateUnit = 'The hashrate required to solve one block in one second.';
+            break;
+        }
         return true;
       })();
 
@@ -87,6 +113,18 @@ angular.module('ethMiningCalc')
         if (inputs.difficultyType == "auto") {return false;}
         if (inputs.difficultyType === 'none') { return false; }
         if (inputs.difficultyType === undefined) { return false; }
+        switch(inputs.difficultyType){
+          case 'linear':
+            $scope.predictedDiffForm = '\\( Diff = \\alpha x + \\beta \\) ';
+            break;
+          case 'quadratic':
+            $scope.predictedDiffForm = '\\( Diff = \\alpha x^2 + \\beta x + \\gamma \\) ';
+            break;
+          case 'exponential':
+            $scope.predictedDiffForm = '\\( Diff = \\alpha \\exp {\\beta  x }  \\) ';
+            break;
+        };
+
         if (inputs.blockReward !== undefined) { return true; }
         return false;
       })();
@@ -95,6 +133,17 @@ angular.module('ethMiningCalc')
         if (inputs.complexityType !== 'advanced') { return false; }
         if (inputs.difficultyType === 'none') { return false; }
         if (inputs.difficultyType === undefined) { return false; }
+        switch(inputs.difficultyType){
+          case 'linear':
+            $scope.predictedDiffForm = '\\( Diff = \\alpha x + \\beta \\) ';
+            break;
+          case 'quadratic':
+            $scope.predictedDiffForm = '\\( Diff = \\alpha x^2 + \\beta x + \\gamma \\) ';
+            break;
+          case 'exponential':
+            $scope.predictedDiffForm = '\\( Diff = \\alpha \\exp {\\beta  x }  \\) ';
+            break;
+        };
         if (inputs.predictiveDifficultyAValue !== undefined) { return true; }
         return false;
       })();
@@ -102,6 +151,17 @@ angular.module('ethMiningCalc')
       isVisible.predictiveDifficultyCValue = (function() {
         if (inputs.complexityType !== 'advanced') { return false; }
         if (inputs.difficultyType !== 'quadratic') { return false; }
+        switch(inputs.difficultyType){
+          case 'linear':
+            $scope.predictedDiffForm = '\\( Diff = \\alpha x + \\beta \\) ';
+            break;
+          case 'quadratic':
+            $scope.predictedDiffForm = '\\( Diff = \\alpha x^2 + \\beta x + \\gamma \\) ';
+            break;
+          case 'exponential':
+            $scope.predictedDiffForm = '\\( Diff = \\alpha \\exp {\\beta  x }  \\) ';
+            break;
+        };
         if (inputs.predictiveDifficultyBValue !== undefined) { return true; }
         return false;
       })();
@@ -119,7 +179,11 @@ angular.module('ethMiningCalc')
       })();
 
       isVisible.initialInvestment = (function() {
-        if (inputs.minerExpenseInclusion === "enable" && inputs.blockReward !== undefined) { return true; }
+        if (inputs.minerExpenseInclusion === "enable" && inputs.blockReward !== undefined) { 
+         // If we display this, find the currency price.
+         $scope.currencyUnit = inputs.cryptoPriceCode.toUpperCase(); 
+          return true;
+        }
         return false;
       })();
 
@@ -129,12 +193,20 @@ angular.module('ethMiningCalc')
       })();
 
       isVisible.electricityRate = (function() {
-        if (inputs.minerExpenseInclusion === "enable" && inputs.electricityUsage !== undefined) { return true; }
+        if (inputs.minerExpenseInclusion === "enable" && inputs.electricityUsage !== undefined) {
+         // If we display this, find the currency price.
+         $scope.currencyUnit = inputs.cryptoPriceCode.toUpperCase(); 
+          return true;
+        }
         return false;
       })();
 
       isVisible.plotDays = (function() {
         if (inputs.hashRate === undefined) { return false; }
+        if (inputs.difficultyType !== 'none') {
+          $scope.predictiveWarningText = '(Warning: It is not recommended predicting more than ' + Math.round(0.3*inputs.predictiveDifficultyPastDays).toString() + ' days into the future (30% of the sampled difficulty). As the difficulty fit may not be realistic. A linear fit may be more appropriate for larger predictions.)'}
+        else { $scope.predictiveWarningText = '';}
+
         if (inputs.minerExpenseInclusion === "disable") { return true; }
         if (inputs.minerExpenseInclusion === "enable" && inputs.electricityRate !== undefined) { return true; }
         return false;
@@ -253,6 +325,7 @@ angular.module('ethMiningCalc')
     $scope.reset = forecasterService.resetInputs;
     $scope.calculate = calculate;
     $scope.loading = false;
+
 
   var buildTable = function(tableData) {
     $scope.table = tableData;

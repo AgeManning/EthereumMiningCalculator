@@ -214,7 +214,6 @@ angular.module('ethMiningCalc')
         results.table.cur_week = results.table.eth_week * inputs.currencyRate - costPerDay*7;
         results.table.cur_month = results.table.eth_month * inputs.currencyRate -costPerDay*30;
         results.table.cur_year = results.table.eth_year * inputs.currencyRate -costPerDay*365;
-        console.log(inputs);
 
         // Second Table -- Doesn't make sense with predictive data.
         if(!isPredictive){
