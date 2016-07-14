@@ -55,7 +55,7 @@ angular.module('ethMiningCalc')
           // $scope.$apply is needed as we are doing some async stuff in the background
           $scope.$apply(function() {
             $scope.userHasCalculated = true; // Show plot.
-            $location.hash('miner-performance-top');
+            $location.hash('finished-calculation-position');
             $anchorScroll();
           });
           $timeout(function() {
