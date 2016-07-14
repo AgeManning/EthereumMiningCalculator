@@ -9,6 +9,9 @@ angular.module('ethMiningCalc')
     };
 
     var acceptValue = function(value) {
+      if($scope.inputForm.$invalid) {
+        return;
+      }
       state.minimised = true;
       state.accepted = true;
       state.value = value;
@@ -18,7 +21,7 @@ angular.module('ethMiningCalc')
     $scope.$on($scope.componentId, function(event, data) {
       if (data.loading) { return state.loading = true; }
       if (data.empty) { return state.loading = false; }
-      if (data.autoAccept) { 
+      if (data.autoAccept) {
         state.accepted = true;
         state.minimised = true;
       }
