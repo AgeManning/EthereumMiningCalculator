@@ -434,7 +434,13 @@ angular.module('ethMiningCalc')
             if (userInputs.difficultyType == 'quadratic'){
             userInputs.predictionVariables.c = userInputs.predictiveDifficultyCValue;
             };
-            results = calcService.calculate(userInputs, true) //Predictive
+            try {
+              results = calcService.calculate(userInputs, true) //Predictive
+            }
+            catch(err){
+              errorHandlingService.handleError(err);
+            }
+
             resolve(results);
       })
         .catch(function(err){ //Handle Errors
@@ -449,9 +455,15 @@ angular.module('ethMiningCalc')
             userInputs.predictionVariables.c = userInputs.predictiveDifficultyCValue;
             };
 
-            if (userInputs.difficultyType != 'none' ) {results = calcService.calculate(userInputs, true)} //Predictive
-            else{results = calcService.calculate(userInputs, false)}; // Not Predictive
-            resolve(results);
+            try{
+              if (userInputs.difficultyType != 'none' ) {results = calcService.calculate(userInputs, true)} //Predictive
+              else{results = calcService.calculate(userInputs, false)}; // Not Predictive
+              resolve(results);
+            }
+            catch(err){
+              errorHandlingService.handleError(err);
+            }
+
 
         };
 

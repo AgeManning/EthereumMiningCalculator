@@ -11,7 +11,11 @@ angular.module('ethMiningCalc')
    *    BTCCB     : BTC Current block source fail
    *    BTCDIFF   : BTC Difficulty source fail
    *    BTCBR     : BTC Block Reward Source fail
-   */   
+   *        Math Errors
+   *    EINF      : Infinity expectation values - Ridiculous inputs, incalculable 
+   *    VINF      : Infinity variance values - Ridiculous inputs, incalculable 
+   *    PINF      : Infinity probability values - Ridiculous inputs, incalculable 
+   */    
    
 
   factory.handleError = function(err){
@@ -48,6 +52,18 @@ angular.module('ethMiningCalc')
 
       case "BTCBR":
         alert("Can't get block reward (BTC). Fail");
+        break;
+
+      case "PINF":
+        alert("Can't calculate probabilities. Inputs are too hectic");
+        break;
+
+      case "EINF":
+        alert("Can't calculate expectation. Inputs are too hectic");
+        break;
+
+      case "VINF":
+        alert("Can't calculate variance. Inputs are too hectic");
         break;
 
       default:

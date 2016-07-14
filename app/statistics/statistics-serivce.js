@@ -47,6 +47,8 @@ angular.module('ethMiningCalc')
             return n*hashRate/b;
           }
           var linearExpectation = hashRate/(a*s)*(Math.log(a*n*s/b + 1)); // Take my word for it.
+          if(isNaN(linearExpectation))
+            throw "EINF";
           return linearExpectation; 
           break;
         case "quadratic":
@@ -77,6 +79,8 @@ angular.module('ethMiningCalc')
               var probability = hashRate/(a*Math.pow(i*s,2) + b*i*s + c);
               sumQuadraticExpectation += probability; 
             };
+            if(isNaN(sumQuadraticExpectation))
+              throw "EINF";
             return sumQuadraticExpectation; 
       };
 
@@ -85,6 +89,8 @@ angular.module('ethMiningCalc')
           var a = predictionVariables.a;
           var b = predictionVariables.b;
           var exponentialExpectation = hashRate*((Math.exp(n*b*s)-1)*Math.exp(-b*n*s))/(a*b*s);
+          if(isNaN(exponentialExpectation))
+            throw "EINF";
           return exponentialExpectation;
           break;
       };
@@ -108,6 +114,8 @@ angular.module('ethMiningCalc')
         case "fixed":
           var variance =n*hashRate/inputs.difficulty*(1- hashRate/inputs.difficulty)
             //Return the standard deviation
+          if(isNaN(variance))
+            throw "VINF";
           return Math.sqrt(variance);
           break;
         case "linear":
@@ -116,6 +124,8 @@ angular.module('ethMiningCalc')
           var b = predictionVariables.b;
           var linearVariance = hashRate*(Math.log(a*n + b)*a*b*n - Math.log(b)*a*b*n -a*hashRate*n + Math.log(a*n+b)*Math.pow(b,2) - Math.log(b)*Math.pow(b,2))/(a*b*(a*n +b));
           //Return std
+          if(isNaN(linearVariance))
+            throw "VINF";
           return Math.sqrt(linearVariance); 
           break;
         case "quadratic":
@@ -128,15 +138,18 @@ angular.module('ethMiningCalc')
             var probability = hashRate/(a*Math.pow(s*j,2) + b*j*s + c);
             quadraticVariance += probability*(1-probability); 
            }
+          if(isNaN(Variance))
+            throw "VINF";
           return Math.sqrt(quadraticVariance); 
           break;
         case "exponential":
           //Essentially just scale b
           var a = predictionVariables.a;
           var b = predictionVariables.b*s;
-          console.log
           var exponentialVariance = hashRate*Math.exp(-2*b*n)*(2*a*Math.exp(2*b*n) - 2*a*Math.exp(b*n) -Math.exp(2*n*b)*hashRate + hashRate)/(2*Math.pow(a,2)*b);
 
+          if(isNaN(exponentialVariance))
+            throw "VINF";
           return Math.sqrt(exponentialVariance);
           break;
       };
@@ -161,6 +174,9 @@ angular.module('ethMiningCalc')
         case "fixed":
           var probability = hashRate/inputs.difficulty;
 			    var probabilityLeastOneBlock = 1 - Math.pow((1 - probability),n);
+          //If we are dealing with hectic power, throw error."
+          if(isNaN(probabilityLeastOneBlock))
+            throw "PINF";
           //Turn it into a percent
           return 100*probabilityLeastOneBlock;
           break;
@@ -174,6 +190,8 @@ angular.module('ethMiningCalc')
             probability = hashRate/(a*j + b);
             probabilityLeastOneBlock *= (1-probability); 
            }
+          if(isNaN(probabilityLeastOneBlock))
+            throw "PINF";
           return (1-probabilityLeastOneBlock)*100;
           break;
         case "quadratic":
@@ -185,6 +203,8 @@ angular.module('ethMiningCalc')
             var probability = hashRate/(a*Math.pow(s*j,2) + b*j*s + c);
             probabilityLeastOneBlock *= (1-probability); 
            }
+          if(isNaN(probabilityLeastOneBlock))
+            throw "PINF";
           return (1-probabilityLeastOneBlock)*100;
           break;
         case "exponential":
@@ -196,6 +216,8 @@ angular.module('ethMiningCalc')
             var probability = hashRate/(a*Math.exp(b*j));
             probabilityLeastOneBlock *= (1-probability); 
            }
+          if(isNaN(probabilityLeastOneBlock))
+            throw "PINF";
           return (1-probabilityLeastOneBlock)*100;
           break;
       };
