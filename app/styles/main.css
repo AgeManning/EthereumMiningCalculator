@@ -1,6 +1,24 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
 body {
   background: #FFF;
-  padding-bottom: 5em;
+  margin-bottom: 45px;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 45px;
+  background-color: #eee;
+}
+
+.footer .text-muted {
+  text-align: center;
+  margin: 12px 0;
 }
 
 .navbar-default {
