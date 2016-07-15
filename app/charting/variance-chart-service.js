@@ -25,7 +25,7 @@ angular.module('ethMiningCalc')
         yAxis: {
           title: { text: yTitle},
           min: Data.minimumValue,
-          max: Data.maximumValue,
+          max: Data.maximumValue*1.1, //Show 10% above 2 sigma
           endOnTick: false,
           startOnTick: false,
           // Draw 1 Block Line
