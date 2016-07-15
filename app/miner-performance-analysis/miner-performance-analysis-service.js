@@ -27,14 +27,18 @@ angular.module('ethMiningCalc')
     var blockTime = inputs.blockTime;
     var hashRate = inputs.hashRate;
 
-    return new Promise(function(resolve){
+    return new Promise(function(resolve,reject){
 
       //Find the blocks mined
       EtherscanDataService.getMinedBlocks(address).then(function(blockData){
         if (blockData.length == 0){ //Then no mined blocks under the address
-          resolve(undefined); //Send back undefined
+          reject("MPNOB");
           return;
         };
+        if (blockData.length == 1) { // Only a single block mined, need at least 2.
+          reject("MPSB");
+          return;
+        }
         
         if (pastBlocks == 0 || pastBlocks == undefined){
           pastBlocks = blockData.length;

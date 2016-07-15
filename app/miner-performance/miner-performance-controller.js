@@ -65,6 +65,7 @@ angular.module('ethMiningCalc')
           })
         })
           .catch(function(err) {
+            $scope.loading = false;
             errorHandlingService.handleError(err);
             console.log("Couldn't perform the analysis"); //TODO: Deal with this in the UI
           });

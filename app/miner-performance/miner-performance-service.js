@@ -143,6 +143,7 @@ angular.module('ethMiningCalc')
           console.log(invalidObjects);
 
           resolve(analysePerformance(userInputs.blockTime));
+
        };
 
       });

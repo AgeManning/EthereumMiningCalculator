@@ -11,6 +11,11 @@ angular.module('ethMiningCalc')
    *    BTCCB     : BTC Current block source fail
    *    BTCDIFF   : BTC Difficulty source fail
    *    BTCBR     : BTC Block Reward Source fail
+   *
+   *        Miner Performance Errors
+   *    MPNOB     : Miner Performance No Blocks Mined Under this address
+   *    MPSP      : Miner Performance Single block : Only 1 block has been mined. Not enough to draw the graph.
+   *
    *        Math Errors
    *    EINF      : Infinity expectation values - Ridiculous inputs, incalculable 
    *    VINF      : Infinity variance values - Ridiculous inputs, incalculable 
@@ -64,6 +69,14 @@ angular.module('ethMiningCalc')
 
       case "VINF":
         alert("Can't calculate variance. Inputs are too hectic");
+        break;
+
+      case "MPNOB":
+        alert("The address you have entered is not a solo-mining address. No blocks have been solved.");
+        break;
+
+      case "MPSB":
+        alert("The address you have entered has only solved 1 block. At least two blocks need to be solved to analyse the address.");
         break;
 
       default:
