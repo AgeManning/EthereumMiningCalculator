@@ -1,6 +1,8 @@
 angular.module('ethMiningCalc')
-  .factory('ErrorHandlingService', [function() {
+  .factory('ErrorHandlingService', ['$uibModal', function($uibModal) {
     var factory = {};
+
+    factory.errors = [];
 
   /* Custom Errors:
    *    PDATAERR  : Predicting too far in the past. No blockchain data
@@ -89,7 +91,14 @@ angular.module('ethMiningCalc')
   };
 
   function raiseAlert(message) {
-    alert(message);
+    factory.errors.push(message);
+
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: 'app/error-handling/error-handling-modal.html',
+      controller: 'errorHandlingModalController',
+    });
+
   }
 
   return factory;
