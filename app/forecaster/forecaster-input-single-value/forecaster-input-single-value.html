@@ -3,7 +3,9 @@
     <h3>{{componentName}}</h3>
   </div>
   <div ng-show="state.accepted">
-    <span class="forecaster-input-title">{{componentName}}: <strong>{{ state.value }} </strong></span><a ng-click="state.minimised = !state.minimised" href="">[edit]</a>
+    <span class="text-danger" ng-show="state.invalid">[Invalid] </span>
+    <span class="forecaster-input-title">{{componentName}}: <strong>{{ state.value }} </strong></span>
+    <a ng-click="state.minimised = !state.minimised" href="">[edit]</a>
   </div>
   <div ng-hide="state.minimised || state.loading">
     <hr>

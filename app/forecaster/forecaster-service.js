@@ -414,15 +414,22 @@ angular.module('ethMiningCalc')
     }
 
     /**
+     *  Broadcast any invalid user inputs for listeners to process
+     */
+    factory.broadcastInvalidUserInputs = function(invalids) {
+      angular.forEach(invalids, function(invalid) {
+        $rootScope.$broadcast(invalid, { invalid: true });
+      });
+    };
+
+    /**
      * Generate plots & results
      */
     factory.calculate = function() {
       var results = {};
 
-      //TODO: Paul to implement results of validation
-      var invalidObjects = validationService.validateCalculate(userInputs);
-      console.log(invalidObjects);
-
+      var invalids = validationService.validateCalculate(userInputs);
+      factory.broadcastInvalidUserInputs(invalids);
 
       return new Promise(function(resolve){
 
