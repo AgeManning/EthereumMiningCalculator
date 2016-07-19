@@ -382,6 +382,8 @@ angular.module('ethMiningCalc')
 
       if (type === 'complexityType' ) { broadcastComplexityType(value); }
 
+      if(type === 'hashRate') {  broadcastCurrencyRates(); }
+
       // If we are in the advanced mode, we need to estimate the predictive difficulty values for the user to accept.
       if (userInputs['complexityType'] === 'advanced' && userInputs['difficultyType'] !== 'none' && userInputs['difficultyType'] !== 'auto' && type === "blockTime") { broadcastPredictiveDifficulty(false);}
 
@@ -416,7 +418,7 @@ angular.module('ethMiningCalc')
      */
     factory.calculate = function() {
       var results = {};
-     
+
       //TODO: Paul to implement results of validation
       var invalidObjects = validationService.validateCalculate(userInputs);
       console.log(invalidObjects);
