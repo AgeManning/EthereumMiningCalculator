@@ -9,7 +9,6 @@ angular.module('ethMiningCalc')
           'componentName': '@',
           'infoText': '@',
           'defaultValue': '@',
-          'minValue': '@'
         }
     };
   });

@@ -18,10 +18,8 @@ angular.module('ethMiningCalc')
 
     var acceptValue = function(value, valueTitle) {
       if($scope.inputForm.$invalid || value == 0) {
-        $scope.invalidNumber = true; // Some how throw the $error.min error
         return;
       }
-      $scope.invalidNumber = false;
       state.minimised = true;
       state.accepted = true;
       state.value = value;
@@ -41,13 +39,10 @@ angular.module('ethMiningCalc')
         state.accepted = true;
         state.minimised = true;
       }
-      if (data.value !== undefined && data.value != 0) {
-        state.value = parseFloat(data.value);
-        if (data.autoAccept) {
-          forecasterService.registerUserInput($scope.componentId, state.value);
-        };
-      }
-      else {$scope.invalidNumber = true;};
+      state.value = parseFloat(data.value);
+      if (data.autoAccept) {
+        forecasterService.registerUserInput($scope.componentId, state.value);
+      };
 
       if (data.list !== undefined) {
         state.list = data.list;

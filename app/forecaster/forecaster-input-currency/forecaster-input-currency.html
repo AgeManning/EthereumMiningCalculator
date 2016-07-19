@@ -9,6 +9,7 @@
     <hr>
     <p><em>{{infoText}}</em></p>
     <div class="text-danger" ng-show="inputForm.input.$error.pattern"><p>Please enter a non-zero positive number.</p></div>
+    <div class="text-danger" ng-show="inputForm.input.$error.number"><p>Please enter a number.</p></div>
     <p><em>{{items}}</em></p>
     <!-- This shows if we have items to select from -->
     <div class="input-group" ng-show="state.list.length">
