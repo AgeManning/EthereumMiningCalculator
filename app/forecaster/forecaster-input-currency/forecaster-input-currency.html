@@ -9,6 +9,7 @@
   </div>
   <div ng-hide="state.minimised || state.loading">
     <hr>
+    <ng-transclude></ng-transclude>
     <p><em>{{infoText}}</em></p>
     <div class="text-danger" ng-show="inputForm.input.$error.pattern"><p>Please enter a non-zero positive number.</p></div>
     <div class="text-danger" ng-show="inputForm.input.$error.number"><p>Please enter a number.</p></div>

@@ -4,6 +4,7 @@ angular.module('ethMiningCalc')
         restrict: 'AE',
         controller: 'ForecasterInputSingleValueController',
         templateUrl: 'app/forecaster/forecaster-input-single-value/forecaster-input-single-value.html',
+        transclude: true,
         scope: {
           'componentId': '@',
           'componentName': '@',

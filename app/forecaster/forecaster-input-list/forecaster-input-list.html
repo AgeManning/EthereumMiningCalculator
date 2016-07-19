@@ -9,6 +9,7 @@
   </div>
   <div ng-hide="state.minimised || state.loading">
     <hr>
+    <ng-transclude></ng-transclude>
     <p><em>{{infoText}}</em></p>
     <div class="list-group forecaster-list-items">
       <button ng-repeat="item in items" type="button" class="list-group-item" ng-click="accept(item)" ng-class="{active: state.itemIsAccepted(item)}">{{item.title}}</button>

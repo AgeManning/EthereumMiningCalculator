@@ -21,8 +21,14 @@
     <forecaster-input-list
       component-id="complexityType"
       component-name="Option Complexity"
-      info-text="Choose the complexity of configuration options for this calculator. <br><b>Basic -<b>Automatically chooses basic settings, disables predictive difficulty and miner expenses<br><b>Custom -<b>Manually accept each setting, enables predictive difficulty.<br><b>Advanced -<b>Enables the user to customize all features, including predictive difficulty functional forms and sampling sizes for graphs and predictions."
       ng-show="isVisible.complexityType">
+      Choose the complexity of configuration options for this calculator.
+      <br><br>
+      <ul>
+        <li><b>Basic: </b>Automatically chooses basic settings, disables predictive difficulty and miner expenses</li>
+        <li><b>Custom: </b>Manually accept each setting, enables predictive difficulty.</li>
+        <li><b>Advanced: </b>Enables the user to customize all features, including predictive difficulty functional forms and sampling sizes for graphs and predictions.</li>
+      </ul>
     </forecaster-input-list>
 
     <!-- Hash Rate of the Miner -->
