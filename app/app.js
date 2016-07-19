@@ -2,8 +2,8 @@ angular.module('ethMiningCalc', [
   'ui.router',
   'angular-json-rpc',
   'isoCurrency',
-  'angular-loading-bar'
-
+  'angular-loading-bar',
+  'ui.bootstrap'
 ]).config(function($stateProvider, $urlRouterProvider, cfpLoadingBarProvider) {
   //
 
