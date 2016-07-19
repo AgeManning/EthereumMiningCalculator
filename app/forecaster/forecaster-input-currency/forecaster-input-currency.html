@@ -8,7 +8,7 @@
   <div ng-hide="state.minimised || state.loading">
     <hr>
     <p><em>{{infoText}}</em></p>
-    <div class="text-danger" ng-show="invalidNumber"><p>Please enter a non-zero positive number.</p></div>
+    <div class="text-danger" ng-show="inputForm.input.$error.pattern"><p>Please enter a non-zero positive number.</p></div>
     <p><em>{{items}}</em></p>
     <!-- This shows if we have items to select from -->
     <div class="input-group" ng-show="state.list.length">
@@ -21,7 +21,8 @@
         </ul>
       </div>
       <form name="inputForm" ng-submit="accept(state.value, state.valueTitle)">
-        <input type="number" step="any" min="{{ minValue }}" class="form-control" placeholder="{{componentName}}" ng-model="state.value"></form>
+        <input name="input" type="number" step="any" min="{{ minValue }}" ng-pattern="/^0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*$/" class="form-control" placeholder="{{componentName}}" ng-model="state.value">
+      </form>
       <span class="btn input-group-addon" ng-click="accept(state.value, state.valueTitle)">Accept {{componentName}}</span>
     </div>
     <!-- This show if we don't have items to select from -->
