@@ -18,7 +18,7 @@ angular.module('ethMiningCalc')
                 $timeout(function() {
                   // From what I understand, .Typeset() gets mathjax to rescan
                   // the dom and render pretty math.
-                  MathJax.Hub.Typeset();
+                  MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
                 });
               });
           }]
