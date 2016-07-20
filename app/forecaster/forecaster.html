@@ -110,29 +110,30 @@
     <!-- Its annoying I have to split this logic up. Best of the worst options -->
     <!-- Predictive Difficulty a -->
     <forecaster-input-single-value
+      mathjax-bind
       component-id="predictiveDifficultyAValue"
       component-name="Predictive Difficulty \( \alpha \) coefficient"
-      info-text="The \( \alpha \) coefficient used for the predictive difficulty in the form  {{ predictedDiffForm }}. \( x \) is duration in days."
       default-value="0"
       ng-show="isVisible.predictiveDifficultyAValue">
+      <span mathjax-bind>The \( \alpha \) coefficient used for the predictive difficulty in the form  {{ predictedDiffForm }}. \( x \) is duration in days.</span>
     </forecaster-input-single-value>
 
     <!-- Predictive Difficulty b -->
     <forecaster-input-single-value
       component-id="predictiveDifficultyBValue"
       component-name="Predictive Difficulty b"
-      info-text="The \( \beta \) coefficient used for the predictive difficulty in the form  {{ predictedDiffForm }}. \( x \) is duration in days."
       default-value="0"
       ng-show="isVisible.predictiveDifficultyBValue">
+      <span mathjax-bind>The \( \beta \) coefficient used for the predictive difficulty in the form  {{ predictedDiffForm }}. \( x \) is duration in days.</span>
     </forecaster-input-single-value>
 
     <!-- Predictive Difficulty c -->
     <forecaster-input-single-value
       component-id="predictiveDifficultyCValue"
       component-name="Predictive Difficulty c"
-      info-text="The \( \gamma \) coefficient used for the predictive difficulty in the form  {{ predictedDiffForm }}. \( x \) is duration in days."
       default-value="0"
       ng-show="isVisible.predictiveDifficultyCValue">
+      <span mathjax-bind>The \( \gamma \) coefficient used for the predictive difficulty in the form  {{ predictedDiffForm }}. \( x \) is duration in days.</span>
     </forecaster-input-single-value>
 
     <!-- Miner Expense Inclusion -->
