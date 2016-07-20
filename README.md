@@ -1,8 +1,10 @@
 # EthereumMiningCalculator
-Basic Statistics Useful for Mining Ethereum
+Advanced Statistics for Mining Ethereum and other Cryptocurrencies.
 
+Available at: [www.TheCalc.io](www.thecalc.io)
 
-Currently under development, don't trust it just yet.
+This project is still under development, there may be bugs.
+
 
 ## Getting Started
 
