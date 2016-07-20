@@ -110,30 +110,32 @@
     <!-- Its annoying I have to split this logic up. Best of the worst options -->
     <!-- Predictive Difficulty a -->
     <forecaster-input-single-value
-      mathjax-bind
       component-id="predictiveDifficultyAValue"
-      component-name="Predictive Difficulty \( \alpha \) coefficient"
+      component-name="Predictive Difficulty 'a' coefficient"
       default-value="0"
       ng-show="isVisible.predictiveDifficultyAValue">
-      <span mathjax-bind>The \( \alpha \) coefficient used for the predictive difficulty in the form  {{ predictedDiffForm }}. \( x \) is duration in days.</span>
+      <span> The 'a' coefficient used for the predictive difficulty in the form  </span><span mathjax-bind="predictedDiffForm"</span>
+      <span mathjax-bind="mathX"</span><span> is duration in days, <span mathjax-bind="mathD"></span><span> is the predicted difficulty.</span>
     </forecaster-input-single-value>
 
     <!-- Predictive Difficulty b -->
     <forecaster-input-single-value
       component-id="predictiveDifficultyBValue"
-      component-name="Predictive Difficulty b"
+      component-name="Predictive Difficulty 'b' coefficient"
       default-value="0"
       ng-show="isVisible.predictiveDifficultyBValue">
-      <span mathjax-bind>The \( \beta \) coefficient used for the predictive difficulty in the form  {{ predictedDiffForm }}. \( x \) is duration in days.</span>
+      <span> The 'b' coefficient used for the predictive difficulty in the form  </span><span mathjax-bind="predictedDiffForm"</span>
+      <span mathjax-bind="mathX"</span><span> is duration in days, <span mathjax-bind="mathD"></span><span> is the predicted difficulty.</span>
     </forecaster-input-single-value>
 
     <!-- Predictive Difficulty c -->
     <forecaster-input-single-value
       component-id="predictiveDifficultyCValue"
-      component-name="Predictive Difficulty c"
+      component-name="Predictive Difficulty 'c' coefficient"
       default-value="0"
       ng-show="isVisible.predictiveDifficultyCValue">
-      <span mathjax-bind>The \( \gamma \) coefficient used for the predictive difficulty in the form  {{ predictedDiffForm }}. \( x \) is duration in days.</span>
+      <span> The 'c' coefficient used for the predictive difficulty in the form  </span><span mathjax-bind="predictedDiffForm"</span>
+      <span mathjax-bind="mathX"</span><span> is duration in days, <span mathjax-bind="mathD"></span><span> is the predicted difficulty.</span>
     </forecaster-input-single-value>
 
     <!-- Miner Expense Inclusion -->

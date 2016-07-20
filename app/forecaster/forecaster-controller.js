@@ -115,16 +115,15 @@ angular.module('ethMiningCalc')
         if (inputs.difficultyType === undefined) { return false; }
         switch(inputs.difficultyType){
           case 'linear':
-            $scope.predictedDiffForm = '\\( Diff = \\alpha x + \\beta \\) ';
+            $scope.predictedDiffForm = 'D = a x + b ';
             break;
           case 'quadratic':
-            $scope.predictedDiffForm = '\\( Diff = \\alpha x^2 + \\beta x + \\gamma \\) ';
+            $scope.predictedDiffForm = 'D = a x^2 + b x + c';
             break;
           case 'exponential':
-            $scope.predictedDiffForm = '\\( Diff = \\alpha \\exp {\\beta  x }  \\) ';
+            $scope.predictedDiffForm = 'D = a e^{b  x }';
             break;
         };
-
         if (inputs.blockReward !== undefined) { return true; }
         return false;
       })();
@@ -135,13 +134,13 @@ angular.module('ethMiningCalc')
         if (inputs.difficultyType === undefined) { return false; }
         switch(inputs.difficultyType){
           case 'linear':
-            $scope.predictedDiffForm = '\\( Diff = \\alpha x + \\beta \\) ';
+            $scope.predictedDiffForm = 'D = a x + b ';
             break;
           case 'quadratic':
-            $scope.predictedDiffForm = '\\( Diff = \\alpha x^2 + \\beta x + \\gamma \\) ';
+            $scope.predictedDiffForm = 'D = a x^2 + b x + c';
             break;
           case 'exponential':
-            $scope.predictedDiffForm = '\\( Diff = \\alpha \\exp {\\beta  x }  \\) ';
+            $scope.predictedDiffForm = 'D = a e^{b  x }';
             break;
         };
         if (inputs.predictiveDifficultyAValue !== undefined) { return true; }
@@ -153,13 +152,13 @@ angular.module('ethMiningCalc')
         if (inputs.difficultyType !== 'quadratic') { return false; }
         switch(inputs.difficultyType){
           case 'linear':
-            $scope.predictedDiffForm = '\\( Diff = \\alpha x + \\beta \\) ';
+            $scope.predictedDiffForm = 'D = a x + b ';
             break;
           case 'quadratic':
-            $scope.predictedDiffForm = '\\( Diff = \\alpha x^2 + \\beta x + \\gamma \\) ';
+            $scope.predictedDiffForm = 'D = a x^2 + b x + c';
             break;
           case 'exponential':
-            $scope.predictedDiffForm = '\\( Diff = \\alpha \\exp {\\beta  x }  \\) ';
+            $scope.predictedDiffForm = 'D = a e^{b  x }';
             break;
         };
         if (inputs.predictiveDifficultyBValue !== undefined) { return true; }
@@ -325,6 +324,10 @@ angular.module('ethMiningCalc')
     $scope.reset = forecasterService.resetInputs;
     $scope.calculate = calculate;
     $scope.loading = false;
+
+    // Math things
+    $scope.mathX = "~x";
+    $scope.mathD = "~D";
 
 
   var buildTable = function(tableData) {
