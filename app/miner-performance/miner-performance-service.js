@@ -128,7 +128,6 @@ angular.module('ethMiningCalc')
               .then(function(blockTime){
                 //TODO: Paul UI Repsonse
                 var invalidObjects = validationService.validateAnalyse(userInputs);
-                console.log(invalidObjects);
                   
                 resolve(analysePerformance(blockTime)); //Resolve a promise with the data we need
                 })
@@ -140,7 +139,6 @@ angular.module('ethMiningCalc')
 
           //TODO: Paul UI Repsonse
           var invalidObjects = validationService.validateAnalyse(userInputs);
-          console.log(invalidObjects);
 
           resolve(analysePerformance(userInputs.blockTime));
 

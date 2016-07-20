@@ -50,7 +50,7 @@ angular.module('ethMiningCalc')
     // Some components are allowed 0's others are not
     // Returns true if invalid
     var validateZeros = function(value) {
-      var allowedZeros = ['initialInvestment', 'electricityUsage', 'electricityRate','pastBlocks'];
+      var allowedZeros = ['initialInvestment', 'electricityUsage', 'electricityRate','pastBlocks','predictiveDifficultyAValue','predictiveDifficultyBValue', 'predictiveDifficultyCValue'];
       if (allowedZeros.indexOf($scope.componentId) <= -1) { //Not the allowed zero's
         if (value == 0){
           $scope.isZero=true;

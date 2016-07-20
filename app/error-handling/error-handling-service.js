@@ -62,15 +62,15 @@ angular.module('ethMiningCalc')
         break;
 
       case "PINF":
-        raiseAlert("Can't calculate probabilities. Inputs are too hectic");
+        raiseAlert("Can't calculate probabilities. Inputs are incalculable");
         break;
 
       case "EINF":
-        raiseAlert("Can't calculate expectation. Inputs are too hectic");
+        raiseAlert("Can't calculate expectation. Inputs are incalculable");
         break;
 
       case "VINF":
-        raiseAlert("Can't calculate variance. Inputs are too hectic");
+        raiseAlert("Can't calculate variance. Inputs are incalculable");
         break;
 
       case "MPNOB":

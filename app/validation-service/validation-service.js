@@ -154,7 +154,7 @@ angular.module('ethMiningCalc')
   };
 
   var validateNumber = function(number){
-    if (typeof number !== 'number' || isNaN(number) || number === 0)
+    if (typeof number !== 'number' || isNaN(number))
       return false;
     return true;
   };
