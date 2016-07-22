@@ -21,7 +21,7 @@ Enter the following commands in your terminal:
 
 ``` bash
 $ git clone https://github.com/AgeManning/EthereumMiningCalculator.git
-$ cd EthereumMiningCalculator
+$ cd EthereumMiningCalculator/
 $ npm install -g npm    # Update npm.
 $ npm install -g bower    # Install bower.
 $ npm install -g grunt-cli    # Install grunt.
