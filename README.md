@@ -28,7 +28,7 @@ $ npm install -g grunt-cli    # Install grunt.
 $ npm install    # Install the local development dependencies.
 ```
 
-Finally, Use Chrome to navigate to your new server at [localhost](http://localhost:9001) (or [loopback](http:127.0.0.1:9001))
+Finally, Use Chrome to navigate to your new server at [localhost](http://localhost:9001) or [loopback](http:127.0.0.1:9001).
 
 
 ## Third-party Components
@@ -68,4 +68,4 @@ to our index.html.
 
 * [Grunt](http://gruntjs.com/)
 
-Grunt does menial tasks. Grunt automatically inserts script and link tags (from bower_components and the app folder) into our index.html and then runs a html server on localhost:9001
+Grunt does menial tasks. Grunt automatically inserts script and link tags (from bower_components and the app folder) into our index.html and then runs a html server on 0.0.0.0:9001
