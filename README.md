@@ -37,31 +37,31 @@ This is an [AngularJS](https://angularjs.org/), HTML, JS and CSS single-page web
 
 ### Third-party APIs
 
-#### [Poloniex](https://poloniex.com/)
+* [Poloniex](https://poloniex.com/)
 
-We use the [Poloniex](https://poloniex.com/) API to determine current exchange rates.
+> We use the Poloniex API to determine current exchange rates.
 
-#### [Bitpay](https://bitpay.com/)
+* [Bitpay](https://bitpay.com/)
 
-We also use the [Bitpay](https://bitpay.com/) API to determine further current exchange rates.
+> We also use the Bitpay API to determine further current exchange rates.
 
 
-#### [etherchain.org](https://etherchain.org/)
+* [etherchain.org](https://etherchain.org/)
 
-The [etherchain.org](https://etherchain.org/) API supplies us with various current blockchain stats including difficulty, block time, hash rate, current block number
+> The etherchain.org API supplies us with various current blockchain stats including difficulty, block time, hash rate, current block number
 
 
 ### Development
 
-#### [Node.js](https://nodejs.org/en/)
+* [Node.js](https://nodejs.org/en/)
 
-We use node.js to run helpful scripts whilst we're developing. Not required for production. (No actual node.js coding is required).
+> We use node.js to run helpful scripts whilst we're developing. Not required for production. (No actual node.js coding is required).
 
-#### [Bower](https://bower.io/)
+* [Bower](https://bower.io/)
 
-Bower manages third-party dependencies. Eg, Want to install highcharts? `bower install --save highcharts`. Highcharts will then be loaded in bower_components and the grunt script will automatically load its script and link tags
+> Bower manages third-party dependencies. Eg, Want to install highcharts? `bower install --save highcharts`. Highcharts will then be loaded in bower_components and the grunt script will automatically load its script and link tags
 to our index.html.
 
-#### [Grunt](http://gruntjs.com/)
+* [Grunt](http://gruntjs.com/)
 
-Grunt does menial tasks. Grunt automatically inserts script and link tags (from bower_components and the app folder) into our index.html and then runs a html server on localhost:9001
+> Grunt does menial tasks. Grunt automatically inserts script and link tags (from bower_components and the app folder) into our index.html and then runs a html server on localhost:9001
