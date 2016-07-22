@@ -70,3 +70,11 @@ to our index.html.
 * [Grunt](http://gruntjs.com/)
 
 Grunt does menial tasks. Grunt automatically inserts script and link tags (from bower_components and the app folder) into our index.html and then runs a html server on 0.0.0.0:9001
+
+## Contributing
+
+Contribution is encouraged! Feel free to fix a technical issue or raise a discussion about a math or logic issue.
+
+### The difficulty bomb
+
+You can see a discussion about the difficulty bomb at this [issue](https://github.com/AgeManning/EthereumMiningCalculator/issues/59).
