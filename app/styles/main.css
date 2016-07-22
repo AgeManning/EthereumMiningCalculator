@@ -77,7 +77,17 @@ footer {
 
 /* fix for footer problem on small screens and mobiles */
 
-@media (max-width: 768px) {
+@media (max-width: 321px) {
+  footer {
+    height: 105px;
+  }
+
+  body {
+    margin-bottom: 105px;
+  }
+}
+
+@media (min-width: 321px) and (max-width: 768px) {
   footer {
     height: 85px;
   }
