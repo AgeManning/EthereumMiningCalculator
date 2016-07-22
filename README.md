@@ -4,7 +4,7 @@ Advanced statistics for mining ethereum and other cryptocurrencies.
 
 ## Single-Page AngularJS Web Application
 
-This is a single-page AngularJS app. You can access a hosted version at [thecalc.io](https://thecalc.io).
+This is a single-page [AngularJS](https://angularjs.org/) v1.5 app. You can access a hosted version at [thecalc.io](https://thecalc.io).
 
 You can also download/clone this repository and host your very own development server using Node.js.
 
