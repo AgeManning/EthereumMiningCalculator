@@ -26,6 +26,7 @@ $ npm install -g npm    # Update npm.
 $ npm install -g bower    # Install bower.
 $ npm install -g grunt-cli    # Install grunt.
 $ npm install    # Install the local development dependencies.
+$ npm start    # Run the build scripts and start a development server
 ```
 
 Finally, Use Chrome to navigate to your new server at [localhost](http://localhost:9001) or [loopback](http:127.0.0.1:9001).
