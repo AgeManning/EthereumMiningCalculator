@@ -77,4 +77,4 @@ Contribution is encouraged! Feel free to fix a technical issue or raise a discus
 
 ### The difficulty bomb
 
-You can see a discussion about the difficulty bomb at this [issue](https://github.com/AgeManning/EthereumMiningCalculator/issues/59).
+You can see a discussion about the difficulty bomb at [this issue](https://github.com/AgeManning/EthereumMiningCalculator/issues/59).
