@@ -98,13 +98,7 @@ angular.module('ethMiningCalc')
       
       // If the fit is linear, use the linear prediction. 
       if (Denom==0){
-        var variables = linearPredict(data);
-        predictionVariables.a = 0;
-        predictionVariables.b = variables.a;
-        predictionVariables.c = variables.b;
-        predictionVariables.type = variables.type;
-        console.log(variables);
-        return predictionVariables;
+        return linearPredict(data);
       };
 
 
@@ -194,10 +188,10 @@ angular.module('ethMiningCalc')
       predictionVariables.exponential =  exponentialPredict(data);
 
       // Find the best R2 value
-      if (predictionVariables.linear.R2 > predictionVariables.quadratic.R2 && predictionVariables.linear.R2 > predictionVariables.exponential.R2){
+      if (predictionVariables.linear.R2 >= predictionVariables.quadratic.R2 && predictionVariables.linear.R2 >= predictionVariables.exponential.R2){
         return predictionVariables.linear;
       }
-      if (predictionVariables.quadratic.R2 > predictionVariables.linear.R2 && predictionVariables.quadratic.R2 > predictionVariables.exponential.R2){
+      if (predictionVariables.quadratic.R2 > predictionVariables.linear.R2 && predictionVariables.quadratic.R2 >= predictionVariables.exponential.R2){
         return predictionVariables.quadratic;
       }
       if (predictionVariables.exponential.R2 > predictionVariables.linear.R2 && predictionVariables.exponential.R2 > predictionVariables.quadratic.R2){

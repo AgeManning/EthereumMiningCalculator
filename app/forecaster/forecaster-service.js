@@ -288,7 +288,7 @@ angular.module('ethMiningCalc')
         inputPredictionData.blockTime = userInputs.blockTime;
         inputPredictionData.curDifficulty = userInputs.currentDifficulty; //This takes difficulty and is measured in TH/s
         inputPredictionData.curBlock = userInputs.currentBlock
-        inputPredictionData.noPoints = userInputs.predictiveDifficultyPastDays;
+        inputPredictionData.noPoints = userInputs.predictiveDifficultyPointCount;
         // Get the Raw data for prediction
         dataPredictionService.getPredictionData(inputPredictionData)
           .then(function(predictionData){
