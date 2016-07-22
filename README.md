@@ -1,33 +1,37 @@
 # EthereumMiningCalculator
-Advanced Statistics for Mining Ethereum and other Cryptocurrencies.
 
-Available at: [www.TheCalc.io](https://thecalc.io)
+Advanced statistics for mining ethereum and other cryptocurrencies.
 
-This project is still under development, there may be bugs.
-
-## Single-Page AngularJS app
+## Single-Page AngularJS Web Application
 
 This is a single-page AngularJS app. You can access a hosted version at [thecalc.io](https://thecalc.io).
 
 You can also download/clone this repository and host your very own development server using Node.js.
 
+> This project is still under development, please report bugs by creating [issues](https://github.com/AgeManning/EthereumMiningCalculator/issues).
+
 
 ## Getting Started
 
+Ensure you have [Node.js](https://nodejs.org/en/) installed. 
 
-1. Install node.js. 
+> I reccomend installing node with [nvm](https://github.com/creationix/nvm). It allows you to switch easily between node versions. Whilst not required, it's worth the effort.
 
-> I reccomend using [nvm](https://github.com/creationix/nvm) so you can switch between node versions easily. Whilst not required, it's worth the effort.
+Enter the following commands in your terminal:
 
-2. Install bower globally `$ npm install -g bower`
-3. Install grunt globally `$ npm install -g grunt-cli`
-4. Switch to the project dir and do an npm install `$ npm install`
-5. Run the build script and launch the server with npm `$ npm start`
-6. Use Chrome to navigate to your new server at [localhost](http://localhost:9001) (or [loopback](http:127.0.0.1:9001)) 
+``` bash
+$ git clone https://github.com/AgeManning/EthereumMiningCalculator.git
+$ cd EthereumMiningCalculator
+$ npm install -g npm    # Update npm.
+$ npm install -g bower    # Install bower.
+$ npm install -g grunt-cli    # Install grunt.
+$ npm install    # Install the local development dependencies.
+```
 
-## Third-party components
+Finally, Use Chrome to navigate to your new server at [localhost](http://localhost:9001) (or [loopback](http:127.0.0.1:9001))
 
-Here are some technologies we rely on.
+
+## Third-party Components
 
 ### Angular.js
 
