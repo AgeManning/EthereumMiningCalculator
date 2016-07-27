@@ -26,7 +26,9 @@ angular.module('ethMiningCalc')
         return "Not Applicable";
       var years = Math.floor(decimal/365);
       var days = Math.floor(decimal - years*365);
-      var mins = Math.round((decimal - years*365 - days)*60);
+      var hours_raw = (decimal - years*365 - days)*24;
+      var hours = Math.floor(hours_raw);
+      var mins = Math.round((hours_raw - hours)*60);
       var output = "";
       // Build the text output. Be fancy and write Day(s) and Min(s)
       if (years !=0){
@@ -43,6 +45,13 @@ angular.module('ethMiningCalc')
           output += days + " Days ";
         };
       };
+      if (hours != 0){
+        if (hours ==1) {
+          output += "1 Hour ";
+        } else {
+          output += hours + " Hours ";
+        };
+      };
       if (mins != 0){
         if (mins==1){
           output = output + "1 Min";
@@ -50,8 +59,8 @@ angular.module('ethMiningCalc')
           output = output + mins + " Mins";
         };
       };
-      if (years == 0 && days == 0 && mins == 0){
-        output = "0 Days 0 Mins";
+      if (years == 0 && days == 0 && hours == 0 && mins == 0){
+        output = "0 Days 0 Hours 0 Mins";
       };
     
      return  output;
