@@ -96,8 +96,19 @@ angular.module('ethMiningCalc')
           title: "Ignore Miner Expenses",
           code: 'disable'
         }
+      },
+      "currentlyMining" : {
+        enable: {
+          title: "Currently Mining",
+          code: 'enable'
+        },
+        disable: {
+          title: "Not Currently Mining",
+          code: 'disable' 
+        }
       }
     };
+
 
     /**
      * Complexity Broadcast.

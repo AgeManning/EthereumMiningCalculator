@@ -24,12 +24,22 @@ angular.module('ethMiningCalc')
         return true;
       })();
 
+      isVisible.currentlyMining = (function() {
+        if (inputs.hashRate === undefined) { return false; }
+        if (inputs.minerAddress === undefined) { return false; }
+        if (inputs.pastBlocks === undefined) { return false; }
+        return true;
+      })();
+
       isVisible.analyse = (function() {
         if (inputs.pastBlocks === undefined) { return false; }
         return true;
       })();
 
+
     }
+
+
 
     var inputs = minerPerformanceService.getUserInputs();
     $scope.inputs = inputs;
@@ -59,6 +69,8 @@ angular.module('ethMiningCalc')
             $anchorScroll();
           });
           $timeout(function() {
+            // Let the chart know if we are calculating up to today
+            dataSet.currentlyMining = inputs.currentlyMining;
             minerPerformanceChartService.generate("#miner-performance", dataSet); // Build the graph;
             $(window).trigger('resize');
             $scope.loading = false;

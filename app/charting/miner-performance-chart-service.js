@@ -21,16 +21,15 @@ angular.module('ethMiningCalc')
             min: Data.minedBlocks[0][0],
             type: 'datetime',
             dateTimeLabelFormats: { 
-              week: '%e. %b %y'
-
+            week: '%e. %b %y'
             },
             //Make the graph the width of the data
             max: Data.minedBlocks[Data.minedBlocks.length-1][0]
         },
         yAxis: {
           title: { text: "Solved Blocks"},
-          min: 0,
-          max: Data.expected.maximumValue,
+          min: 1,
+          max: Math.max(Data.expected.maximumValue,Data.minedBlocks[Data.minedBlocks.length-1][1]*1.1),
           endOnTick: false,
           startOnTick: false,
           },
@@ -148,6 +147,34 @@ angular.module('ethMiningCalc')
           }, 0);
         }
        }
+   
+      //If we are plotting up to today. Don't limit the chart, add a dotted line showing potential.
+      if (Data.currentlyMining === 'enable')
+      {
+        //Get Data for potential line. i.e Extend Mined Blocks
+        var newPointData = [[Data.minedBlocks[Data.minedBlocks.length-1][0],Data.minedBlocks[Data.minedBlocks.length-1][1]],[Data.expected.expected[Data.expected.expected.length-1][0],Data.minedBlocks[Data.minedBlocks.length-1][1]+1]];
+        // Limit the graph to the new width
+        HighChartsData.xAxis.max = Data.expected.expected[Data.expected.expected.length-1][0];
+        HighChartsData.yAxis.max = Math.max(Data.expected.maximumValue,(Data.minedBlocks[Data.minedBlocks.length-1][1]+1)*1.1), //If we add one more potential block, make sure it fits in the graph with a 10% margin
+        //Make a fake line. 
+        HighChartsData.series.push({
+          name: "If a block was solved now",
+          type: "spline",
+          dashStyle: "dash",
+          lineWidth: 3,
+          data: newPointData,
+          marker: { enabled: true},
+          // color: '#7cb5ec',
+          color: '#4A9BE8',
+          showInLegend: true,
+          tooltip: {
+            shared: false,
+            headerFormat: "<b>If a block was mined now</b><br>",
+            pointFormat: "<b>Date:</b> {point.x:%e. %b} <b>Block Count:</b> {point.y}"
+          }
+        });
+      }
+
 			$(Name).highcharts(HighChartsData);
     }
 

@@ -11,6 +11,7 @@ angular.module('ethMiningCalc')
     var predictiveDifficultySamplePoints = 15;  // Data points to sample difficulty curve. (1s for 5 points)
     var pointResolution = 300;                  // The number of points to build expectation graph
 
+
     /**
      * Reset all user inputs and start again with a fresh calc
      */
@@ -63,8 +64,8 @@ angular.module('ethMiningCalc')
       $rootScope.$broadcast('hashRate', {value: 41, "autoAccept": true});
       $rootScope.$broadcast('minerAddress', {value: "0x8e68c0c9B5275fa684291304af9cafe6ceAf2772", "autoAccept": true});
       $rootScope.$broadcast('pastBlocks', {value: 40, "autoAccept": true});
+      $rootScope.$broadcast('currentlyMining', {value: 'disable', "autoAccept": true});
     }
-
 
 
     /**
@@ -90,6 +91,29 @@ angular.module('ethMiningCalc')
       });
      }
 
+    /**
+     * Loads current block - required if miner is currently running
+     *
+     * @returns Promise
+     */
+     var loadCurrentBlock = function() {
+      return new Promise(function(resolve,reject){
+      // Loads Current Block Time
+      marketDataService.getCurrentBlock(userInputs.cryptocurrency)
+        .then(function(result) {
+          $rootScope.$apply(function() {
+            userInputs.currentBlock = result;
+            resolve(result);
+          });
+        })
+        .catch(function(err) {
+            userInputs.currentBlock = undefined;
+            errorHandlingService.handleError(err);
+            reject();
+        });
+      });
+     }
+
      // Make loadBlockTime accessible to controller
      factory.loadBlockTime = loadBlockTime;
 
@@ -103,17 +127,38 @@ angular.module('ethMiningCalc')
      *  @Returns a Promise with data for the performance graph
      */
     var analysePerformance = function(blockTime) {
-          // Build data-set required by MinerPerformanceAnalysisService
-          var inputObj = {};
-          inputObj.noPoints = predictiveDifficultySamplePoints;
-          inputObj.dataPoints = pointResolution;
-          inputObj.performance = {}; // To adapt to legacy version
-          inputObj.blockTime = blockTime
-          inputObj.performance.address = userInputs.minerAddress;
-          inputObj.performance.pastBlocks = userInputs.pastBlocks;
-          inputObj.hashRate = userInputs.hashRate;
+      // Build data-set required by MinerPerformanceAnalysisService
+         
+      var inputObj = {};
+      inputObj.noPoints = predictiveDifficultySamplePoints;
+      inputObj.dataPoints = pointResolution;
+      inputObj.performance = {}; // To adapt to legacy version
+      inputObj.blockTime = blockTime
+      inputObj.performance.address = userInputs.minerAddress;
+      inputObj.performance.pastBlocks = userInputs.pastBlocks;
+      inputObj.hashRate = userInputs.hashRate;
+      inputObj.currentlyMining = userInputs.currentlyMining; // Calculate statistics up to today
 
-          return minerPerformanceAnalysisService.checkMinerPerformance(inputObj);
+
+      return new Promise(function(resolve,reject){ 
+        // If currently Mining - We need to get the current block
+        if (userInputs.currentlyMining === 'enable')
+        {
+          loadCurrentBlock()
+            .then(function(currentBlock){
+              inputObj.currentBlock = currentBlock;
+              resolve(minerPerformanceAnalysisService.checkMinerPerformance(inputObj));
+            })
+            .catch(function(err) {
+              reject(err);
+            });
+          }
+        else // Dont need current block
+        {
+          resolve(minerPerformanceAnalysisService.checkMinerPerformance(inputObj));
+        }
+
+      });
     }
 
 
@@ -128,8 +173,11 @@ angular.module('ethMiningCalc')
               .then(function(blockTime){
                 //TODO: Paul UI Repsonse
                 var invalidObjects = validationService.validateAnalyse(userInputs);
-                  
-                resolve(analysePerformance(blockTime)); //Resolve a promise with the data we need
+
+                analysePerformance(blockTime) //Resolve a promise with the data we need
+                  .then(function(data){
+                    resolve(data);
+                  });
                 })
           .catch(function(err) {
             errorHandlingService.handleError(err);
@@ -140,8 +188,10 @@ angular.module('ethMiningCalc')
           //TODO: Paul UI Repsonse
           var invalidObjects = validationService.validateAnalyse(userInputs);
 
-          resolve(analysePerformance(userInputs.blockTime));
-
+          analysePerformance(userInputs.blockTime)
+            .then(function(data){
+              resolve(data);
+            })
        };
 
       });

@@ -15,6 +15,8 @@ angular.module('ethMiningCalc')
    *            performance.pastBlock - Past Blocks to look over
    *            blockTime             - Current Block time
    *            hashRate              - Hashrate of the miner. 
+   *            currentlyMining       - 'enable' - if we calculate statistics up to today.
+   *            currentBlock          - If currentlyMining = enable then we need currentBlock.
    */
   factory.checkMinerPerformance = function(inputs){
 
@@ -26,6 +28,14 @@ angular.module('ethMiningCalc')
     var pastBlocks = inputs.performance.pastBlocks;
     var blockTime = inputs.blockTime;
     var hashRate = inputs.hashRate;
+    var currentlyMining = false;
+    if (inputs.currentlyMining === 'enable'){
+      currentlyMining = true;
+      var currentBlock = inputs.currentBlock;
+    };
+    
+
+
 
     return new Promise(function(resolve,reject){
 
@@ -49,17 +59,31 @@ angular.module('ethMiningCalc')
         for(var i =0;i < Math.min(pastBlocks,blockData.length);i++){
           //dataSet.minedBlocks.push([new Date(blockData[i].timeStamp*1000),i]);
           // Store just the timestamp
+
           //Set the first blocks first -- ie count backwards
           var counter =Math.min(pastBlocks,blockData.length-1)-i;
-          dataSet.minedBlocks.push([Number(blockData[counter].timeStamp*1000),i]);
+          dataSet.minedBlocks.push([Number(blockData[counter].timeStamp*1000),i+1]); //i + 1 because we start at 1
         };
         // Sample difficulty over the date range and build a predictive model.
+        // Note: If we are currently mining, we need to find the current block. 
         // Required prediction data
         var predictionData = {};
         //predictionData.pastDays = (dataSet.minedBlocks[0][0].getTime() - dataSet.minedBlocks[dataSet.minedBlocks.length-1][0].getTime())/(1000*3600*24);
-        predictionData.pastDays = (dataSet.minedBlocks[dataSet.minedBlocks.length-1][0] - dataSet.minedBlocks[0][0])/(1000*3600*24);
+
+        // The prediction range is dependent on whether we are currently mining (i.e up to today) or just last block.
+        
+        if (currentlyMining) //We predict from today to last block we need
+        {
+          predictionData.pastDays = (Date.now() - dataSet.minedBlocks[0][0])/(1000*3600*24);
+          predictionData.curBlock = Number(currentBlock);
+        }
+        else //Use last block for prediction
+        {
+          predictionData.pastDays = (dataSet.minedBlocks[dataSet.minedBlocks.length-1][0] - dataSet.minedBlocks[0][0])/(1000*3600*24);
+          predictionData.curBlock = Number(blockData[0].blockNumber); //Only need difficulty up to last block Mined
+        }
+
         predictionData.blockTime = blockTime;
-        predictionData.curBlock = Number(blockData[0].blockNumber); //Only need difficulty up to last block Mined
         predictionData.noPoints = noPoints;
         //we need to get the difficulty of the last block. As I've programmed the predictionservice to take this as an input. 
         EtherscanDataService.getDifficultyData(predictionData.curBlock).then(function(curBlockDifficulty){
@@ -102,15 +126,15 @@ angular.module('ethMiningCalc')
     data.twoSigmaUpper = new Array();
     data.maximumPlotValue = new Array();
     data.minimumPlotValue = new Array();
-    data.maximumValue = statisticsService.expectation(statsInputs, daysToCalculate) + 2 * statisticsService.variance(statsInputs, daysToCalculate); // This stores the maximum plot value. Required to fill the top of the graph with 2 sigma range.
-    data.minimumValue =0;
+    data.maximumValue = statisticsService.expectation(statsInputs, daysToCalculate) + 2 * statisticsService.variance(statsInputs, daysToCalculate) + 1; // This stores the maximum plot value. Required to fill the top of the graph with 2 sigma range.
+    data.minimumValue =1; // We start at 1 block
 
     var linearQuanta = daysToCalculate/dataPoints; //Linear increments
     for(var j=0;j<=dataPoints;j++){
     
       var dependent = j*linearQuanta;
-      var expResult = statisticsService.expectation(statsInputs, dependent);
-      var varResult = statisticsService.variance(statsInputs, dependent);
+      var expResult = statisticsService.expectation(statsInputs, dependent) + 1; //We start at 1 not 0 i.e from the first block mined.
+      var varResult = statisticsService.variance(statsInputs, dependent); 
       
       // We want to convert the dependent, which is a block-count to a timestamp.
       //Initial timestamp is firstDate
@@ -124,7 +148,6 @@ angular.module('ethMiningCalc')
 
   };
     
-
 
   function InvertPredictionData(predictionData,pastDays){
     //We know the minimum is pastDays - we can't just add this, as there are rounding errors. 

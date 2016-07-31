@@ -39,8 +39,16 @@
       min-value="0"
       ng-show="isVisible.pastBlocks">
     </forecaster-input-single-value>
-  </div> <!-- end of well -->
 
+    <!-- Past Blocks -->
+    <forecaster-input-list
+      component-id="currentlyMining"
+      component-name="Miner Status"
+      info-text="If your miner is currently mining, this option will continue the statistics plot up to today. If not, the plot will end on the date your miner last solved a block"
+      ng-show="isVisible.currentlyMining">
+    </forecaster-input-list>
+
+  </div> <!-- end of well -->
   <div class="pull-right">
     <div ng-hide="loading">
       <a class="btn btn-warning" ng-click="reset()" role="button">Reset Inputs & Start Over</a>
