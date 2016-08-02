@@ -1,5 +1,5 @@
 angular.module('ethMiningCalc')
-  .controller('ForecasterController', ['$scope', '$timeout', '$anchorScroll', '$location', 'ForecasterService', 'ProbabilityChartService', 'PredictiveDifficultyChartService','VarianceChartService', function($scope, $timeout, $anchorScroll, $location, forecasterService,probabilityChartService, predictiveDifficultyChartService, varianceChartService) {
+  .controller('ForecasterController', ['$scope', '$timeout', '$anchorScroll', '$location', 'ForecasterService', 'ProbabilityChartService', 'PredictiveDifficultyChartService','VarianceChartService','ErrorHandlingService', function($scope, $timeout, $anchorScroll, $location, forecasterService,probabilityChartService, predictiveDifficultyChartService, varianceChartService,errorHandlingService) {
 
     forecasterService.intitialiseUserInputs();
 
@@ -316,6 +316,10 @@ angular.module('ethMiningCalc')
             $(window).trigger('resize');
             $scope.loading = false;
           })
+        })
+        .catch(function(err){
+          $scope.loading = false;
+          errorHandlingService.handleError(err);
         });
     };
 

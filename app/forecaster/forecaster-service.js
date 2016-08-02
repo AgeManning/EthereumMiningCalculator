@@ -439,10 +439,14 @@ angular.module('ethMiningCalc')
     factory.calculate = function() {
       var results = {};
 
+      return new Promise(function(resolve,reject){
+
       var invalids = validationService.validateCalculate(userInputs);
       factory.broadcastInvalidUserInputs(invalids);
+      if (invalids.length != 0)
+        reject('INVIN'); // Have invalid inputs
 
-      return new Promise(function(resolve){
+        
 
       // Get Prediction Variables if we need to;
       if (userInputs.cryptocurrency === "eth" && userInputs.difficultyType != 'none' && (userInputs.complexityType != 'advanced' || userInputs.difficultyType == 'auto')){ // Then we need to find prediction variables
@@ -458,13 +462,12 @@ angular.module('ethMiningCalc')
               results = calcService.calculate(userInputs, true) //Predictive
             }
             catch(err){
-              errorHandlingService.handleError(err);
+              reject(err);
             }
-
             resolve(results);
       })
         .catch(function(err){ //Handle Errors
-           errorHandlingService.handleError(err);
+          reject(err);
         });
 
       } else { // We don't need to find prediction variables
@@ -481,9 +484,8 @@ angular.module('ethMiningCalc')
               resolve(results);
             }
             catch(err){
-              errorHandlingService.handleError(err);
+              reject(err);
             }
-
 
         };
 

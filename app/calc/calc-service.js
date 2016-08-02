@@ -163,21 +163,23 @@ angular.module('ethMiningCalc')
 
           // ********* This section we need to find max and min values of the currency graph which can go negative
           // then we retroactively correct the data to reflect this.
-          if (costPerDay != 0 ){ //Then we can have mins and max's that differ from initialisation 
+          
+          if (userInputs.minerExpenseInclusion === 'enable')//Then we can have mins and max's that differ from initialisation 
+          {
             if (data.currencyData.twoSigmaUpper[i][2] > data.currencyData.maximumValue){
               data.currencyData.maximumValue = data.currencyData.twoSigmaUpper[i][2];
             };
             if (data.currencyData.twoSigmaLower[i][1] < data.currencyData.minimumValue){
               data.currencyData.minimumValue = data.currencyData.twoSigmaLower[i][1];
             };
-            // Max profit 
+            // ROI - Can have 0 cost per day.
+            if (expectedWithCosts >= inputs.costs.initialInvestment && data.currencyData.ROI === undefined){
+              data.currencyData.ROI = dependent;// Find ROI
+            };
+            // Max profit - Can have 0 Cost per day
             if (expectedWithCosts > data.currencyData.maxProfit){
               data.currencyData.maxProfit = expectedWithCosts;
               data.currencyData.profitabilityTurningPoint = dependent;// Find turning point
-            };
-            // ROI
-            if (expectedWithCosts >= inputs.costs.initialInvestment && data.currencyData.ROI === undefined){
-              data.currencyData.ROI = dependent;// Find ROI
             };
           };
           data.probData.push([dependent, statisticsService.probabilityAtLeastOneBlock(inputs, dependent)]);
@@ -186,7 +188,8 @@ angular.module('ethMiningCalc')
         // If we need to find new max/min limits on the currency graph.
         if (costPerDay != 0){
           RescaleCurrencyGraph(data.currencyData,costPerDay);
-
+        };
+        if (userInputs.minerExpenseInclusion === 'enable'){ 
           // Remove the minimum plot value at 0 - Makes no sense here
           data.currencyData.minimumPlotValue.splice(0,1);
           //Also only plot the profitability line if there is a turning point
@@ -226,7 +229,7 @@ angular.module('ethMiningCalc')
         } 
         
         // Costs Table -- Only if we have costs
-        if (costPerDay != 0){
+        if (userInputs.minerExpenseInclusion === 'enable'){
           // If difficulty is not predictive, we can easily estimate ROI
           if(!isPredictive){
             // Use cur_day. 

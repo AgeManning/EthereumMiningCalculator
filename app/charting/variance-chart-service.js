@@ -143,6 +143,11 @@ angular.module('ethMiningCalc')
           }, 0);
         }
        }
+      // Change tooltext for Currency
+      if (Name === "#ExpectedReturnGraph"){
+        HighChartsData.series[5].tooltip.headerFormat = "<b>Expected (Average) Return</b><br>";
+      }
+
       // Removes the 1 Block Line
       if (!Draw1BlockLine){
         HighChartsData.yAxis.plotLines=""

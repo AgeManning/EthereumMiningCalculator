@@ -22,6 +22,7 @@ angular.module('ethMiningCalc')
    *    EINF      : Infinity expectation values - Ridiculous inputs, incalculable
    *    VINF      : Infinity variance values - Ridiculous inputs, incalculable
    *    PINF      : Infinity probability values - Ridiculous inputs, incalculable
+   *    INVIN     : Invalid Inputs
    */
 
 
@@ -79,6 +80,10 @@ angular.module('ethMiningCalc')
 
       case "MPSB":
         raiseAlert("The address you have entered has only solved 1 block. At least two blocks need to be solved to analyse the address.");
+        break;
+
+      case "INVIN":
+        raiseAlert("There are invalid inputs. Please correct these");
         break;
 
       default:
