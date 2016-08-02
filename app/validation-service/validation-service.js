@@ -43,12 +43,14 @@ angular.module('ethMiningCalc')
     var invalidObjects = []; // List of string of invalid objects.
 
     // Common Validations for all Currencies
-    var CommonPosNumberComponents = ['hashRate','cryptoPrice','currentDifficulty','blockTime','blockReward','plotDays'];
+    var CommonPosNumberComponents = ['hashRate','cryptoPrice','blockTime','blockReward','plotDays'];
       for (var i =0; i < CommonPosNumberComponents.length; i++){
         // Check these components are defined and are positive numbers
         if (!validatePosNumber(userInputs[CommonPosNumberComponents[i]]))
           invalidObjects.push(CommonPosNumberComponents[i]);
       };
+      
+      // Current Difficulty Doesn't need to be defined for ETH with predictive difficulty. 
 
       // Seperate, not just positive number, also >= 2
       if (!validatePointCount(userInputs.plotResolution))
@@ -63,7 +65,13 @@ angular.module('ethMiningCalc')
           invalidObjects.push('difficultyType');
           break; // No point throwing future errors.
         }
-      
+       
+        // Current Difficulty
+        if (userInputs.difficultyType === 'none'){
+          if (!validatePosNumber(userInputs.currentDifficulty))
+            invalidObjects.push('currentDifficulty');
+        };
+        
         // Different validate predictive difficulty options if we need to
         if (userInputs.difficultyType !== 'none'){
           if (!validatePosNumber(userInputs.predictiveDifficultyPastDays))
@@ -91,12 +99,14 @@ angular.module('ethMiningCalc')
        
       case 'btc':
           // BTC Specific Validation
-          // None at the moment.
+          if (!validatePosNumber(userInputs.currentDifficulty))
+            invalidObjects.push('currentDifficulty');
         break;
 
       case 'other':
           // Other Specific Validation
-          // None at the moment.
+          if (!validatePosNumber(userInputs.currentDifficulty))
+            invalidObjects.push('currentDifficulty');
         break;
 
       default:

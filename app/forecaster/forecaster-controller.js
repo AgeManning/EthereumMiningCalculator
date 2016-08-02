@@ -79,6 +79,7 @@ angular.module('ethMiningCalc')
       isVisible.currentDifficulty = (function() {
         if (inputs.hashRate === undefined) { return false; }
         if (inputs.cryptoPrice === undefined) { return false; }
+        if (inputs.difficultyType !== 'none') {return false; }
         switch(inputs.cryptocurrency){
           case 'eth':
             $scope.difficultyUnits = "(TH)";
@@ -98,6 +99,9 @@ angular.module('ethMiningCalc')
 
       isVisible.blockTime = (function() {
         if (inputs.hashRate === undefined) { return false; }
+        if (inputs.difficultyType === undefined) {return false;}
+        if (inputs.cryptoPrice === undefined) {return false;}
+        if (inputs.difficultyType !== 'none') {return true;}
         if (inputs.currentDifficulty !== undefined) { return true; }
         return false;
       })();

@@ -391,9 +391,16 @@ angular.module('ethMiningCalc')
         $rootScope.$broadcast("difficultyType", { value: "none", "autoAccept": true});
       }
 
+      // Broadcast current Difficulty if using some prediction method
+      if (type === 'difficultyType' && value !== 'none'){
+       broadcastDifficultyValue(true);
+      }
+
+
       if (type === 'complexityType' ) { broadcastComplexityType(value); }
 
       if(type === 'hashRate') {  broadcastCurrencyRates(); }
+
 
       // If we are in the advanced mode, we need to estimate the predictive difficulty values for the user to accept.
       if (userInputs['complexityType'] === 'advanced' && userInputs['difficultyType'] !== 'none' && userInputs['difficultyType'] !== 'auto' && type === "blockTime") { broadcastPredictiveDifficulty(false);}
