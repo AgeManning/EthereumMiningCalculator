@@ -61,7 +61,7 @@ angular.module('ethMiningCalc')
           // Store just the timestamp
 
           //Set the first blocks first -- ie count backwards
-          var counter =Math.min(pastBlocks,blockData.length-1)-i;
+          var counter =Math.min(pastBlocks-1,blockData.length-1)-i;
           dataSet.minedBlocks.push([Number(blockData[counter].timeStamp*1000),i+1]); //i + 1 because we start at 1
         };
         // Sample difficulty over the date range and build a predictive model.
