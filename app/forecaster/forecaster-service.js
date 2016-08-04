@@ -450,8 +450,11 @@ angular.module('ethMiningCalc')
 
       var invalids = validationService.validateCalculate(userInputs);
       factory.broadcastInvalidUserInputs(invalids);
-      if (invalids.length != 0)
+      if (invalids.length != 0){
         reject('INVIN'); // Have invalid inputs
+        return;
+      }
+        
 
         
 

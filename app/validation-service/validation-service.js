@@ -81,7 +81,7 @@ angular.module('ethMiningCalc')
         };
          
         // Predictive Difficulty Advanced Complexity, we need A,B,C Coefficients.
-        if (userInputs.difficultyType !== 'none' && userInputs.difficultyType !== 'auto'){
+        if (userInputs.difficultyType !== 'none' && userInputs.difficultyType !== 'auto' && userInputs.complexityType === 'advanced'){
           if (!validateNumber(userInputs.predictiveDifficultyAValue))
             invalidObjects.push('predictiveDifficultyAValue');
 
